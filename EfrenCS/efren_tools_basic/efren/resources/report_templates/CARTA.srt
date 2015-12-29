@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report Type="StyleSheet" ScriptLanguage="1" Top="1.6" Left="1.0" Bottom="0.6" Right="0.4" HeaderFromEdge="0.4" FooterFromEdge="0.5" PageNumbering="0" HorizontalWrap="true" TabStops="0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0">
+<Version>5.0</Version>
+<ReportProperty Name="report.modified">
+<![CDATA[2008-04-03 09:10:26]]>
+</ReportProperty>
+<ReportProperty Name="TextMode">
+<![CDATA[false]]>
+</ReportProperty>
+<ReportProperty Name="PageSize">
+<![CDATA[Letter [8.5x11 in]]]>
+</ReportProperty>
+<ReportProperty Name="Orientation">
+<![CDATA[Portrait]]>
+</ReportProperty>
+<ReportProperty Name="edit.layout">
+<![CDATA[false]]>
+</ReportProperty>
+<ReportProperty Name="report.created">
+<![CDATA[2003-10-20 10:40:15]]>
+</ReportProperty>
+<Parameters>
+</Parameters>
+<ParameterSheets>
+</ParameterSheets>
+<RunningTotals>
+</RunningTotals>
+<Header Type="256">
+<TextBoxElement ID="TextBox_TITULO1" Alignment="66" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-BOLD-11"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="5.125x0.19444445" Margin="5,0,0,0">
+<![CDATA[TITULO_REPORTE_1]]>
+</TextBoxElement>
+<NewlineElement ID="Newline74" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Serif-PLAIN-10"
+ Foreground="-16777216" Count="1">
+</NewlineElement>
+<TextBoxElement ID="TextBox_TITULO2" Alignment="66" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-BOLD-11"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="5.0277777x0.19444445" Margin="5,0,0,0">
+<![CDATA[TITULO_REPORTE_2]]>
+</TextBoxElement>
+<NewlineElement ID="Newline73" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Serif-PLAIN-10"
+ Foreground="-16777216" Count="1">
+</NewlineElement>
+<TextBoxElement ID="TextBox_TITULO3" Alignment="66" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-8"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="4.8194447x0.1388889" Margin="5,0,0,0">
+<![CDATA[TITULO_REPORTE_3]]>
+</TextBoxElement>
+<SeparatorElement ID="Separator6" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Verdana-PLAIN-10"
+ Foreground="-16777216" Style="4097" SeparatorAdvance="4">
+</SeparatorElement>
+<TextBoxElement ID="TextBox_TIMESTAMP" Alignment="68" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-8"
+ Foreground="-16777216" Border="4097" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Anchor="4.6944447,0.0" Size="2.1805556x0.16666667" Margin="5,0,0,0">
+<![CDATA[Impreso al: (un timestamp)]]>
+</TextBoxElement>
+</Header>
+<Header Type="512">
+<SeparatorElement ID="Separator5" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Verdana-PLAIN-10"
+ Foreground="-16777216" Style="4097" SeparatorAdvance="4">
+</SeparatorElement>
+<TextBoxElement ID="TextBoxPagina" Alignment="65" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-9"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="17" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="1.125x0.15277778" Margin="0,0,0,0">
+<![CDATA[Página {P} / {N}]]>
+</TextBoxElement>
+<TextBoxElement ID="TextBox_ELABORADO_POR" Alignment="68" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-9"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="20" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Anchor="2.0416667,0.0" Size="4.8333335x0.15277778" Margin="0,0,0,0">
+<![CDATA[Elaborado por: NOMBRE_DE_USUARIO]]>
+</TextBoxElement>
+</Header>
+</Report>
