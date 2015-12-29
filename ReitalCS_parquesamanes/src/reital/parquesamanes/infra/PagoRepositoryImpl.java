@@ -24,6 +24,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 	public FranjaHoraria getFranjaHorariaFor(int minutos) {
 
 		Statement st = ParqueSamanesConn.getConnection().createStatement();
+		
 
 		boolean oracle = ParqueSamanesConstantes.DATASOURCE_TYPE.equalsIgnoreCase("oracle");
 
