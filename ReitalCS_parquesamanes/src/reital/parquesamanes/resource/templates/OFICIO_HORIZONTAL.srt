@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report Type="StyleSheet" ScriptLanguage="1" Top="1.6" Left="1.0" Bottom="0.6" Right="0.4" HeaderFromEdge="0.4" FooterFromEdge="0.5" PageNumbering="0" HorizontalWrap="true" TabStops="0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0">
+<Version>5.0</Version>
+<ReportProperty Name="report.modified">
+<![CDATA[2010-08-29 23:32:07]]>
+</ReportProperty>
+<ReportProperty Name="TextMode">
+<![CDATA[false]]>
+</ReportProperty>
+<ReportProperty Name="PageSize">
+<![CDATA[Legal [8.5x14 in]]]>
+</ReportProperty>
+<ReportProperty Name="Orientation">
+<![CDATA[Landscape]]>
+</ReportProperty>
+<ReportProperty Name="edit.layout">
+<![CDATA[false]]>
+</ReportProperty>
+<ReportProperty Name="report.created">
+<![CDATA[2003-10-20 10:40:15]]>
+</ReportProperty>
+<Parameters>
+</Parameters>
+<ParameterSheets>
+</ParameterSheets>
+<RunningTotals>
+</RunningTotals>
+<Header Type="256">
+<ImageElement ID="Image1" Alignment="65" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Serif-PLAIN-10"
+ Background="-1" Foreground="-4144960" PathType="1" Embedded="true" Layout="0" Wrapping="3" Rotation="0" Size="0.8194444x0.29166666" Margin="1,1,1,1">
+<![CDATA[D:\Java_work\Reital_workspace\ReitalCS_fybeca2\reital_fybeca2\reital\fybeca2\resource\images\fybeca.gif]]>
+<Image Width="150" Height="42">
+<![CDATA[GhVOi4fVL:&D$:>5d44mEsWWM^eV*J?L%duHWqFN_*S\aX^:*!`6Jh)hF;Gn=$Q5-+j=;6P4Nb:J`1WF
+P0#!F17:f_kORU'e)arJG]5NS;A3@8a&#@@ptrgW/>SEqCT07U.3j&6%]9!!0B/1p@gW/Dc?bK3PGbTZ
+04)@U]mfRpV3/?O16dId>5il0Y2"+1e#e'gH_NVn@lf'9YLO/"6T!sh\QO^>B)HuG7f>)G5G8#E5Aj5a
+kNB&+Ap\ld--)@Uhpaj.H^"QfbB3Yp3oial[6,Nq?iNd.nk^s7A"<%]%._LtK7/T(aH*ni>bV2=:Qla^
+X@l2R=dC_G7GQoh*ihH!1%jtPor7(>>=RnY>$O?7[)&2t*'9DZGS"*53,kBRi'H.#)!-!WF-(g14N*tK
+3t590%-?""Q+56r]15O,=!QgA_3Lk#QqjB9dH^@G)TNKPWN2-<l;Li`L+AS!m'$ase4"U5*@tc.$X6NC
+UZ&6&Q.C7YVPAVuCk<c!K_0:)jP!Z6>*o=4NiSJ$C">>aZ-dO0\u"1cH0SaP5*!Jpl8p2m1u$WgTp\Zf
+>K[iETaf4.dVcM[HS5o`JbRNrgA9&NXXs9gY@6NYGq4;]\nY#aHe.X_QLXNVr%!o5+leX)peY_JP2q!m
+_^D8Is!$gF:9aX)>H`\/#uW]5m73J?:==M0Xo'J`W>A3bGd-S301bq1f!a&(I#u=bPa'Rb>;\UgCgIKN
+GgCf&-8TTWq/j8(VgS_T<rH9mZM_&A]lfok6J[bWBIgha#$9U[f(cpN66BoaB(BR4B\pDCp+:-5RQ<$m
+do,$@Y$0m2YM/f[-X9f'MUKPaI8\'k>DappO=`L@M<k93nb2E']J]S+M0tc<FDG,mmFN7]H$Oc%WslG&
+Ng[r&Q++\30DX2;<lVkJDd"C0e"bhno,H,,p2$:#r_)t=`)UaOf(*0:\>kr!8&/-8c=VKKdV#05O#FJi
+cZRdE)9R(Jg'_#(CTk8%;I@ghVLJW]&Pd"PBClN)<'3h!oG,uqB^I!^qAW&LkUQ(`qfVa*>P=L!=15fX
+rq4PtjV`!$:Z=%.f;K4mr,S?Dh+Lj_eadOtH:IefO,PUX*"_QpAZ\)5/EG*Ha&?ngoM!hbNn2"ErLVf>
+f>=<B8rH?ARHs3@C[C:ec.FN`Hg0ROf%8"+Og4j/s%aoXka7bHY,'<G;J&W@JZHj]M#'!G<H`;Wl&9H7
+RB^IC^PoAL,HfBGbH<,`elNa(ka&`Ak9H9WXG<r<B771a?So'<U42dh("lZ[%7U6^g"i#79D;phm45C=
+Hb`XBF.CZkjIP=AD,73NC@()ADi!p'dY>W+d_DL7/+QtkQrmi_GRh6HlOJ=oSfXml"-L;G3Tf1caut2#
+7];:/.*##>SV[+e)^dDXIs!SQ7J8rU\@aQJlH@+u0_U=m[MaQNI@X5an-<;N/k9A>mL:sb35D=*djAS;
+14G6%J,@W4[3Y1iM@8Wjk%_<%2uiH]34$o5Gs6I0>kL/(ZhEdgj(#2SU\L1)Cu4VbMU*>bp8GJ>)8jBS
+VnFh>j6fHkfbSu\j/h>_f5ngZ)ZKUh:=Ql4hP+)ID*-_e-%1.^Ao%(*G)ra_?M#5g_:lNrgr!d>=44st
+2?l<k`[pSnB)*[$7X+N_Dr1n'ZiR6i+g'XYaR%qkj0%Km+1U8g(J&d`h3l>n=8Jk?\!4i0RW\'^F3b9c
+BsNqsEG(`QO2Lq)N4lLU1"V5tZG(HLMU$2cMU#R5q.@@7Zpa?1YMPIe0A/K+UO#DMN5!((piLRsIgCV7
+V>$Yg7b0`E+.(C4hEr<]>IT?KLF_ShO`aI*$.q:?>Z"kQELs\/\2k^:NK-HIfT%0E>b/BnZjj/1D4.fH
+<O:gH^*]BeamWTfqIh5Cn(ZU'+"",WkF=B.L&M&\EkV)
+]]>
+</Image>
+</ImageElement>
+<TextBoxElement ID="TextBox_TITULO1" Alignment="66" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-BOLD-11"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="5.125x0.19444445" Margin="5,0,0,0">
+<![CDATA[FYBECA]]>
+</TextBoxElement>
+<NewlineElement ID="Newline74" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Serif-PLAIN-10"
+ Foreground="-16777216" Count="1">
+</NewlineElement>
+<TextBoxElement ID="TextBox_TITULO2" Alignment="66" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-BOLD-11"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="5.0277777x0.19444445" Margin="5,0,0,0">
+<![CDATA[TITULO_REPORTE_2]]>
+</TextBoxElement>
+<NewlineElement ID="Newline73" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Serif-PLAIN-10"
+ Foreground="-16777216" Count="1">
+</NewlineElement>
+<TextBoxElement ID="TextBox_TITULO3" Alignment="66" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-8"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="4.8194447x0.1388889" Margin="5,0,0,0">
+<![CDATA[TITULO_REPORTE_3]]>
+</TextBoxElement>
+<SeparatorElement ID="Separator6" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Verdana-PLAIN-10"
+ Foreground="-16777216" Style="4097" SeparatorAdvance="4">
+</SeparatorElement>
+<TextBoxElement ID="TextBox_TIMESTAMP" Alignment="68" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-8"
+ Foreground="-16777216" Border="4097" Shape="1" Justify="false" TextAlignment="18" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Anchor="4.6944447,0.0" Size="2.1805556x0.16666667" Margin="5,0,0,0">
+<![CDATA[Impreso al: (un timestamp)]]>
+</TextBoxElement>
+</Header>
+<Header Type="512">
+<SeparatorElement ID="Separator5" Alignment="1" Indent="0.0" Hindent="0" Spacing="0" Block="true" Continuation="false" Visible="true" KeepWithNext="false" Font="Verdana-PLAIN-10"
+ Foreground="-16777216" Style="4097" SeparatorAdvance="4">
+</SeparatorElement>
+<TextBoxElement ID="TextBoxPagina" Alignment="65" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-9"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="17" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Size="1.125x0.15277778" Margin="0,0,0,0">
+<![CDATA[Página {P} / {N}]]>
+</TextBoxElement>
+<TextBoxElement ID="TextBox_ELABORADO_POR" Alignment="68" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Arial-PLAIN-9"
+ Foreground="-16777216" Border="0" Shape="1" Justify="false" TextAlignment="20" Shadow="false" Padding="0,1,0,1" Borders="0,0,0,0" Layout="0" Wrapping="3" Rotation="0" Anchor="3.0694444,0.0" Size="3.8055556x0.20833333" Margin="0,0,0,0">
+<![CDATA[Elaborado por:]]>
+</TextBoxElement>
+</Header>
+</Report>
