@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import efren.util.CoderManager;
 import efren.util.ExceptionManager;
+import efren.util.SystemLogManager;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.PasswordFieldExt;
 import efren.util.gui.text.TextFieldExt;
@@ -574,50 +575,41 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 
 	private boolean permanentUpdateBO() {
 		try {
+
+			boolean resultado = false;
+
 			if (getAbmEstado().esNuevo()) {
 				String clave = getPasswordFieldExtClave().getValue().trim();
 				clave = CoderManager.encrypt(clave);
-				boolean resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().create(
-						getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
+				resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().create(getTextFieldExtUserName().getValue().trim(),
+						clave, getTextFieldExtNombre().getValue(),
 						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
 								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
 						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
-				if (resultado) {
-					return true;
-				} else {
-					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
-					return false;
-				}
 			}
 			if (getAbmEstado().esModificado()) {
 				String clave = getPasswordFieldExtClave().getValue().trim();
 				clave = CoderManager.encrypt(clave);
-				boolean resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().update(
-						getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
+				resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().update(getTextFieldExtUserName().getValue().trim(),
+						clave, getTextFieldExtNombre().getValue(),
 						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
 								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
 						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
-				if (resultado) {
-					return true;
-				} else {
-					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
-					return false;
-				}
 			}
 			if (getAbmEstado().esEliminado()) {
-				boolean resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().delete(getTextFieldExtUserName().getValue());
-				if (resultado) {
-					return true;
-				} else {
-					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
-					return false;
-				}
+				resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().delete(getTextFieldExtUserName().getValue());
 			}
 
-			return true;
+			if (resultado) {
+				return true;
+			} else {
+				InfoView.showErrorDialog(this, "ERROR. Revise logs y vuelva a intentar la operación");
+				return false;
+			}
 
 		} catch (Throwable t) {
 			InfoView.showErrorDialog(this, "ERROR: " + t.getMessage());
+			SystemLogManager.error(t);
 			return false;
 		}
 	}

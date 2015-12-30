@@ -37,7 +37,7 @@ public class ParqueSamanesConstantes {
 
 	public static String DATASOURCE_PORT = "50000";
 
-	public static String DATASOURCE_DBNAME = "FYBE2DB";
+	public static String DATASOURCE_DBNAME = "ANY_DB";
 
 	public static String PUERTO_SERIAL = "COM6";
 
@@ -49,9 +49,9 @@ public class ParqueSamanesConstantes {
 
 	public static String PUERTA_2_CLOSE = "3";
 
-	public static boolean TICKET_BAR_CODE_WITH_BAR_ID = false;
+	public static boolean TICKET_BAR_CODE_WITH_BAR_ID = true;
 
-	public static int TICKET_BAR_CODE_LENGTH = 12;
+	public static int TICKET_BAR_CODE_LENGTH = 13;
 
 	public static int MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = 60;
 

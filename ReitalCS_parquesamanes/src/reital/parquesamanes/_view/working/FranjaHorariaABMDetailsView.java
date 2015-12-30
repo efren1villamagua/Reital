@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 import efren.util.ExceptionManager;
 import efren.util.MethodInvocation;
 import efren.util.StringTools;
+import efren.util.SystemLogManager;
 import efren.util.gui.LabelExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
@@ -805,37 +806,33 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 					exc.getMessage();
 				}
 			}
+
+			boolean resultado = false;
+
 			if (getAbmEstado().esNuevo()) {
-				return SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().create(getTextFieldExtCodigo().getValue(),
+				resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().create(getTextFieldExtCodigo().getValue(),
 						getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(),
 						getTextFieldExtObservaciones().getValue(), horasValores);
 			}
 			if (getAbmEstado().esModificado()) {
-				boolean resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().update(
-						getTextFieldExtCodigo().getValue(), getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(),
-						getTextFieldExtHoraFin().getValue(), getTextFieldExtObservaciones().getValue(), horasValores);
-				if (resultado) {
-					return true;
-				} else {
-					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
-					return false;
-				}
+				resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().update(getTextFieldExtCodigo().getValue(),
+						getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(),
+						getTextFieldExtObservaciones().getValue(), horasValores);
 			}
 			if (getAbmEstado().esEliminado()) {
-				boolean resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository()
-						.delete(getTextFieldExtCodigo().getValue());
-				if (resultado) {
-					return true;
-				} else {
-					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
-					return false;
-				}
+				resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().delete(getTextFieldExtCodigo().getValue());
 			}
 
-			return true;
+			if (resultado) {
+				return true;
+			} else {
+				InfoView.showErrorDialog(this, "ERROR. Revise logs y vuelva a intentar la operación");
+				return false;
+			}
 
 		} catch (Throwable t) {
 			efren.util.gui.dialogs.InfoView.showErrorDialog(this, "ERROR: " + t.getMessage());
+			SystemLogManager.error(t);
 			return false;
 		}
 	}
