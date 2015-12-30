@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -9,19 +9,16 @@ import java.awt.event.WindowEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import efren.util.CoderManager;
 import efren.util.ExceptionManager;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.PasswordFieldExt;
 import efren.util.gui.text.TextFieldExt;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.UsuarioRepository;
 import reital.parquesamanes.domain.entidades.Usuario;
 
-@Component
 public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
 	/**
 	 *
@@ -581,7 +578,8 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 			if (getAbmEstado().esNuevo()) {
 				String clave = getPasswordFieldExtClave().getValue().trim();
 				clave = CoderManager.encrypt(clave);
-				boolean resultado = getRepository().create(getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
+				boolean resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().create(
+						getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
 						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
 								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
 						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
@@ -595,7 +593,8 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 			if (getAbmEstado().esModificado()) {
 				String clave = getPasswordFieldExtClave().getValue().trim();
 				clave = CoderManager.encrypt(clave);
-				boolean resultado = getRepository().update(getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
+				boolean resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().update(
+						getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
 						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
 								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
 						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
@@ -607,7 +606,7 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 				}
 			}
 			if (getAbmEstado().esEliminado()) {
-				boolean resultado = getRepository().delete(getTextFieldExtUserName().getValue());
+				boolean resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().delete(getTextFieldExtUserName().getValue());
 				if (resultado) {
 					return true;
 				} else {
@@ -768,19 +767,4 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 		return jCheckBoxActivo;
 	}
 
-	/**
-	 * @return the repository
-	 */
-	public UsuarioRepository getRepository() {
-		return repository;
-	}
-
-	/**
-	 * @param repository
-	 *            the repository to set
-	 */
-	@Autowired
-	public void setRepository(UsuarioRepository repository) {
-		this.repository = repository;
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

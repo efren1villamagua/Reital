@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.seguridades;
+package reital.parquesamanes._view.seguridades;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -32,7 +32,7 @@ import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import efren.seguridades.gui.UTILefrenView;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes.app.gui.working.UsuarioABMView;
+import reital.parquesamanes._view.working.UsuarioABMView;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.infra.DBConnectionModel;
 

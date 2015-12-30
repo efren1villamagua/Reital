@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -11,13 +11,14 @@ import efren.util.StringTools;
 import efren.util.gui.dialogs.InfoView;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.serialport.util.SerialPortException;
 import reital.parquesamanes.app.serialport.util.SerialPortModel;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
-public class PagoController {
+public class PagoHelper {
 	/**
 	 *
 	 */
@@ -35,17 +36,14 @@ public class PagoController {
 	 */
 	private PagoView pagoView = null;
 
-	private PagoModel pagoModel = null;
-
 	private SerialPortModel serialModel = null;
 
 	/**
 	 *
 	 */
-	public PagoController(PagoView pagoView, PagoModel pagoModel) {
+	public PagoHelper(PagoView pagoView) {
 		super();
 		this.pagoView = pagoView;
-		this.pagoModel = pagoModel;
 		/**
 		 *
 		 */
@@ -55,14 +53,7 @@ public class PagoController {
 	/**
 	 *
 	 */
-	public PagoModel getModel() {
-		return this.pagoModel;
-	}
-
-	/**
-	 *
-	 */
-	public ActividadForPagoEntity createActividadEntity(String secuenciaCaracteres, PagoController.TIPO_CLIENTE tipoCliente, String observaciones) {
+	public ActividadForPagoEntity createActividadEntity(String secuenciaCaracteres, PagoHelper.TIPO_CLIENTE tipoCliente, String observaciones) {
 		try {
 			CadenaPair cp = parseSecuenciaCaracteres(secuenciaCaracteres);
 
@@ -121,7 +112,7 @@ public class PagoController {
 	 */
 	public void registrarActividad() {
 
-		getModel().registrarActividad(getActividad());
+		SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(getActividad());
 
 		this.pagoView.reinicializarVisual();
 	}
@@ -145,7 +136,7 @@ public class PagoController {
 	 */
 	public boolean yaSalio(String secuenciaCaracteres) {
 
-		return getModel().yaSalio(parseSecuenciaCaracteres(secuenciaCaracteres));
+		return SpringInitializator.getSingleton().getPagoControllerBean().yaSalio(parseSecuenciaCaracteres(secuenciaCaracteres));
 	}
 
 	/**
@@ -269,7 +260,7 @@ public class PagoController {
 	/**
 	 *
 	 */
-	public void validarYCalcularPago(PagoController.TIPO_CLIENTE tipoCliente, String observaciones) {
+	public void validarYCalcularPago(PagoHelper.TIPO_CLIENTE tipoCliente, String observaciones) {
 		String error1 = "Error en la lectura del ticket. Vuelva a intentar la operación !";
 		try {
 
@@ -300,7 +291,7 @@ public class PagoController {
 				return;
 			}
 
-			ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = getModel().getMinutosGracia();
+			ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean().getMinutosGracia();
 
 			/**
 			 *
@@ -414,7 +405,7 @@ public class PagoController {
 					Hashtable<Integer, BigDecimal> hv = null;
 
 					Vector<FranjaHoraria> franjasPorCobrar = new Vector<FranjaHoraria>();
-					FranjaHoraria franjaAnterior = getModel().getFranjaHorariaFor(minutosTemp);
+					FranjaHoraria franjaAnterior = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
 					FranjaHoraria franjaNueva = null;
 					int horasCount = 0;
 
@@ -424,7 +415,7 @@ public class PagoController {
 
 					while (minutosTemp < minutosSalidaAbsolutos) {
 						try {
-							franjaNueva = getModel().getFranjaHorariaFor(minutosTemp);
+							franjaNueva = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
 							cambioFranja = !franjaNueva.getNombre().equalsIgnoreCase(franjaAnterior.getNombre());
 							if (cambioFranja) {
 								/**

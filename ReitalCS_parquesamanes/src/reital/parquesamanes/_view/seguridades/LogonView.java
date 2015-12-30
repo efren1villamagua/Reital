@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.seguridades;
+package reital.parquesamanes._view.seguridades;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -26,29 +26,25 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
+import efren.util.LoggerManager;
+import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.config.SystemProperties;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes.app.SpringInitializator;
-import reital.parquesamanes.app.gui.working.ControlPanelView;
-import reital.parquesamanes.app.gui.working.PagoView;
+import reital.parquesamanes._view.working.ControlPanelView;
+import reital.parquesamanes._view.working.PagoView;
+import reital.parquesamanes.app.controllers.LogonController;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
-import reital.parquesamanes.domain.LogonRepository;
 
-@Component
 public class LogonView extends JFrame {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -556079025843630131L;
-
-	private LogonRepository logonRepository;
 
 	private JPanel jContentPane = null;
 
@@ -181,11 +177,17 @@ public class LogonView extends JFrame {
 	}
 
 	public static void main(String args[]) {
+		try {
+			LoggerManager.init("SystemAdmin");
+			SystemLogManager.setLogger(LoggerManager.logger);
+		} catch (Exception e) {
+			e.getMessage();
+		}
 		Locale.setDefault(new Locale("es", "ES"));
 		try {
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
 
-			LogonView ventana = SpringInitializator.getSingleton().getLogonViewBean();
+			LogonView ventana = new LogonView();
 
 			ventana.setResizable(false);
 			ventana.setVisible(true);
@@ -312,7 +314,9 @@ public class LogonView extends JFrame {
 
 	private boolean autenticar(String userName, String key) {
 
-		AutenticacionRespuesta respuesta = getLogonRepository().autenticar(userName, key);
+		LogonController controller = SpringInitializator.getSingleton().getLogonControllerBean();
+
+		AutenticacionRespuesta respuesta = controller.getRepository().autenticar(userName, key);
 
 		if (respuesta == null) {
 			return false;
@@ -320,8 +324,13 @@ public class LogonView extends JFrame {
 
 		switch (respuesta.getResultadoLogon()) {
 		case USUARIO_O_CLAVE_INCORRECTA:
+			InfoView.showErrorDialog(this, "ERROR: usuario o clave incorrecta");
+			return false;
 		case USUARIO_INACTIVO:
+			InfoView.showErrorDialog(this, "ERROR: usuario inactivo");
+			return false;
 		case ERROR_AL_AUTENTICAR:
+			InfoView.showErrorDialog(this, "ERROR: error al autenticar, revise logs");
 			return false;
 		case AUTENTICACION_OK:
 			LogonView.setAdmin(respuesta.isAdmin());
@@ -377,12 +386,4 @@ public class LogonView extends JFrame {
 		LogonView.username = username;
 	}
 
-	public LogonRepository getLogonRepository() {
-		return logonRepository;
-	}
-
-	@Autowired
-	public void setLogonRepository(LogonRepository logonRepository) {
-		this.logonRepository = logonRepository;
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

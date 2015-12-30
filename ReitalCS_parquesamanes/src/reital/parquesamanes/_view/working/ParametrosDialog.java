@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -18,7 +18,8 @@ import efren.util.gui.bars.BarraAceptarCancelarPanelListener;
 import efren.util.gui.dialogs.DialogExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
-import reital.parquesamanes.app.gui.working.PagoModel.Valores;
+import reital.parquesamanes.app.controllers.PagoController.Valores;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarPanelListener, MouseListener {
@@ -40,8 +41,6 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 
 	private Valores valoresIniciales = null;
 
-	private PagoModel pagoModel = null;
-
 	@SuppressWarnings("unused")
 	private ControlPanelView parentView = null;
 
@@ -49,7 +48,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 	 * Constructor
 	 */
 	/* WARNING: THIS METHOD WILL BE REGENERATED. */
-	public ParametrosDialog(ControlPanelView view, PagoModel pagoModel) {
+	public ParametrosDialog(ControlPanelView view) {
 		super(view);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(final WindowEvent e) {
@@ -57,7 +56,6 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 			}
 		});
 		this.parentView = view;
-		this.pagoModel = pagoModel;
 		initialize();
 	}
 
@@ -77,7 +75,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 	 *
 	 */
 	private void initializeValores() {
-		this.valoresIniciales = this.pagoModel.getValores();
+		this.valoresIniciales = SpringInitializator.getSingleton().getPagoControllerBean().getValores();
 		// getTextFieldExtValorHoraOFraccion().setValue(StringTools.parseFromNumberToQuantity(this.valoresIniciales.valorHoraOFraccion));
 		getTextFieldExtMinutosGracia().setValue(String.valueOf(this.valoresIniciales.minutosGracia));
 		// getJCheckBoxImprimirRecibo().setSelected(this.valoresIniciales.imprimeRecibo);
@@ -100,7 +98,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 		 * valorHoraOFraccion.doubleValue()); }
 		 */
 		if (minutosGracia != this.valoresIniciales.minutosGracia) {
-			this.pagoModel.actualizarValor("CLFY_MG", minutosGracia);
+			SpringInitializator.getSingleton().getPagoControllerBean().actualizarValor("CLFY_MG", minutosGracia);
 		}
 		/*
 		 * if (imprimirRecibo != this.valoresIniciales.imprimeRecibo) { int temp

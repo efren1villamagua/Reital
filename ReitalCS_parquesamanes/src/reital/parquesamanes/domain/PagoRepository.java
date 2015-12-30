@@ -2,7 +2,7 @@ package reital.parquesamanes.domain;
 
 import java.math.BigDecimal;
 
-import reital.parquesamanes.app.gui.working.PagoController.CadenaPair;
+import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 

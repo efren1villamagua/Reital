@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -25,9 +25,6 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import efren.util.ExceptionManager;
 import efren.util.WindowManager;
 import efren.util.gui.LabelExt;
@@ -44,7 +41,6 @@ import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.infra.ParqueSamanesConn;
 import reital.parquesamanes.infra.ReporterSQLClausesFactory;
 
-@Component
 public class ReporterView extends DialogExt {
 	/**
 	 *
@@ -1129,7 +1125,6 @@ public class ReporterView extends DialogExt {
 	 * @param sqlClausesFactory
 	 *            the sqlClausesFactory to set
 	 */
-	@Autowired
 	public void setSqlClausesFactory(ReporterSQLClausesFactory sqlClausesFactory) {
 		this.sqlClausesFactory = sqlClausesFactory;
 	}

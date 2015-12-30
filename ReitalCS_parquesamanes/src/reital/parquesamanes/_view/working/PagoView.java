@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -37,7 +37,8 @@ import javax.swing.SwingConstants;
 import efren.util.CalendarManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes.app.gui.working.PagoController.CadenaPair;
+import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class PagoView extends JFrame {
@@ -62,7 +63,7 @@ public class PagoView extends JFrame {
 
 	private JButton jButtonReiniciar = null;
 
-	private PagoController pagoController = null; // @jve:decl-index=0:
+	private PagoHelper pagoHelper = null; // @jve:decl-index=0:
 
 	private JPanel jPanel2 = null;
 
@@ -132,7 +133,7 @@ public class PagoView extends JFrame {
 
 		getJButtonReiniciar().setEnabled(false);
 
-		initController();
+		initHelper();
 
 		getJButtonClientes().setEnabled(false);
 		getJButtonNoClientes().setEnabled(false);
@@ -164,10 +165,9 @@ public class PagoView extends JFrame {
 	/**
 	 *
 	 */
-	private void initController() {
-		PagoModel pagoModel = new PagoModel();
-		setPagoController(new PagoController(this, pagoModel));
-		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = pagoModel.getMinutosGracia();
+	private void initHelper() {
+		setPagoHelper(new PagoHelper(this));
+		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean().getMinutosGracia();
 	}
 
 	/**
@@ -423,7 +423,7 @@ public class PagoView extends JFrame {
 				for (int i = 0; i < getJPasswordFieldData().getPassword().length; i++) {
 					secuenciaCaracteres = secuenciaCaracteres + String.valueOf(getJPasswordFieldData().getPassword()[i]);
 				}
-				CadenaPair cp = getPagoController().parseSecuenciaCaracteres(secuenciaCaracteres);
+				CadenaPair cp = getPagoHelper().parseSecuenciaCaracteres(secuenciaCaracteres);
 				GregorianCalendar gcEntrada = cp.getCalendar();
 				CalendarManager cmEntrada = new CalendarManager(gcEntrada);
 				jLabelRegistroEntrada.setText(cmEntrada.getInternationalDateExpression() + "  hora: " + cmEntrada.getTimeExpression2());
@@ -459,18 +459,18 @@ public class PagoView extends JFrame {
 	}
 
 	/**
-	 * @return the pagoController
+	 * @return the pagoHelper
 	 */
-	public PagoController getPagoController() {
-		return pagoController;
+	public PagoHelper getPagoHelper() {
+		return pagoHelper;
 	}
 
 	/**
-	 * @param pagoController
-	 *            the pagoController to set
+	 * @param pagoHelper
+	 *            the pagoHelper to set
 	 */
-	public void setPagoController(PagoController pagoController) {
-		this.pagoController = pagoController;
+	public void setPagoHelper(PagoHelper pagoHelper) {
+		this.pagoHelper = pagoHelper;
 	}
 
 	/**
@@ -620,7 +620,7 @@ public class PagoView extends JFrame {
 	 *
 	 */
 	public void abrirBarrera() {
-		getPagoController().enviarSenialAbrirBarrera();
+		getPagoHelper().enviarSenialAbrirBarrera();
 		/**
 		 * OJO TODO: HAY QUE MARCAR EL REGISTRO DE LA TABLA ACTIVIDAD COMO
 		 * PROCESADO LUEGO DE ABRIR LA BARRERA
@@ -635,7 +635,7 @@ public class PagoView extends JFrame {
 				"CLIENTE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
 			return;
 		}
-		getPagoController().validarYCalcularPago(PagoController.TIPO_CLIENTE.CLIENTE_ParqueSamanes, "-");
+		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.CLIENTE_ParqueSamanes, "-");
 	}
 
 	/**
@@ -646,7 +646,7 @@ public class PagoView extends JFrame {
 				"NO CLIENTE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
 			return;
 		}
-		getPagoController().validarYCalcularPago(PagoController.TIPO_CLIENTE.NO_CLIENTE_ParqueSamanes, "-");
+		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.NO_CLIENTE_ParqueSamanes, "-");
 	}
 
 	/**
@@ -667,7 +667,7 @@ public class PagoView extends JFrame {
 		if (observaciones.length() > 200) {
 			observaciones = observaciones.substring(0, 200);
 		}
-		getPagoController().validarYCalcularPago(PagoController.TIPO_CLIENTE.FUNCIONARIO_ParqueSamanes, observaciones);
+		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.FUNCIONARIO_ParqueSamanes, observaciones);
 	}
 
 	/**

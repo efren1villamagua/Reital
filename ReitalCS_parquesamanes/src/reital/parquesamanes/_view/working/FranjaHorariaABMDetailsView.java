@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -23,9 +23,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import efren.util.ExceptionManager;
 import efren.util.MethodInvocation;
 import efren.util.StringTools;
@@ -33,10 +30,9 @@ import efren.util.gui.LabelExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
 import efren.util.gui.text.TextFieldExtListener;
-import reital.parquesamanes.domain.FranjaHorariaRepository;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
-@Component
 public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
 	/**
 	 *
@@ -230,8 +226,6 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 	private JLabel jLabelValorPorHora23 = null;
 
 	private JLabel jLabelValorPorHora24 = null;
-
-	private FranjaHorariaRepository repository = null;
 
 	/**
 	 * Constructor
@@ -812,12 +806,14 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 				}
 			}
 			if (getAbmEstado().esNuevo()) {
-				return getRepository().create(getTextFieldExtCodigo().getValue(), getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(),
-						getTextFieldExtHoraFin().getValue(), getTextFieldExtObservaciones().getValue(), horasValores);
+				return SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().create(getTextFieldExtCodigo().getValue(),
+						getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(),
+						getTextFieldExtObservaciones().getValue(), horasValores);
 			}
 			if (getAbmEstado().esModificado()) {
-				boolean resultado = getRepository().update(getTextFieldExtCodigo().getValue(), getTextFieldExtNombre().getValue(),
-						getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(), getTextFieldExtObservaciones().getValue(), horasValores);
+				boolean resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().update(
+						getTextFieldExtCodigo().getValue(), getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(),
+						getTextFieldExtHoraFin().getValue(), getTextFieldExtObservaciones().getValue(), horasValores);
 				if (resultado) {
 					return true;
 				} else {
@@ -826,7 +822,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 				}
 			}
 			if (getAbmEstado().esEliminado()) {
-				boolean resultado = getRepository().delete(getTextFieldExtCodigo().getValue());
+				boolean resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository()
+						.delete(getTextFieldExtCodigo().getValue());
 				if (resultado) {
 					return true;
 				} else {
@@ -3061,19 +3058,4 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 		jLabelValorPorHora24.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
-	/**
-	 * @return the repository
-	 */
-	public FranjaHorariaRepository getRepository() {
-		return repository;
-	}
-
-	/**
-	 * @param repository
-	 *            the repository to set
-	 */
-	@Autowired
-	public void setRepository(FranjaHorariaRepository repository) {
-		this.repository = repository;
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

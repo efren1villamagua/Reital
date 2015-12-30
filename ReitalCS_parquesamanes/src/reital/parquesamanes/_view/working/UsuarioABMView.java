@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -10,18 +10,14 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import efren.util.ExceptionManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.table.DataTableColumn;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
-import reital.parquesamanes.domain.UsuarioRepository;
 import reital.parquesamanes.domain.entidades.Usuario;
 
-@Component
 public class UsuarioABMView extends JFrame
 		implements efren.util.gui.table.DataTablePanelListener, efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
 	/**
@@ -34,8 +30,6 @@ public class UsuarioABMView extends JFrame
 	private efren.util.ABMViewObserver2 ivjobserver = null;
 
 	private efren.util.gui.table.DataTablePanel ivjDataTablePanel = null;
-
-	private UsuarioRepository repository = null;
 
 	/**
 	 * Constructor
@@ -243,7 +237,7 @@ public class UsuarioABMView extends JFrame
 			orderBy = getDataTablePanel().SQL_ORDER_BY_text();
 		}
 
-		List<Usuario> bos = getRepository().getAll(orderBy);
+		List<Usuario> bos = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().getAll(orderBy);
 
 		for (Usuario usuario : bos) {
 			getDataTablePanel().add(usuario);
@@ -630,19 +624,4 @@ public class UsuarioABMView extends JFrame
 		// user code end
 	}
 
-	/**
-	 * @return the repository
-	 */
-	public UsuarioRepository getRepository() {
-		return repository;
-	}
-
-	/**
-	 * @param repository
-	 *            the repository to set
-	 */
-	@Autowired
-	public void setRepository(UsuarioRepository repository) {
-		this.repository = repository;
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"

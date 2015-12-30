@@ -1,4 +1,4 @@
-package reital.parquesamanes.app;
+package reital.parquesamanes.app.ioc;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,7 +15,7 @@ import reital.parquesamanes.infra.PagoRepositoryImpl;
 import reital.parquesamanes.infra.UsuarioRepositoryImpl;
 
 @Configuration
-@ComponentScan(value = { "reital.parquesamanes.app.gui.seguridades", "reital.parquesamanes.app.gui.working" })
+@ComponentScan(value = { "reital.parquesamanes.app.controllers" })
 public class DIConfiguration {
 
 	@Bean

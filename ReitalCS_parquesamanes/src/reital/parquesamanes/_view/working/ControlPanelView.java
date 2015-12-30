@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -252,7 +252,7 @@ public class ControlPanelView extends JFrame {
 	 *
 	 */
 	private void abrirDialogCambiarParametros() {
-		ParametrosDialog vd = new ParametrosDialog(this, new PagoModel());
+		ParametrosDialog vd = new ParametrosDialog(this);
 		vd.setResizable(false);
 		vd.setVisible(true);
 		vd.toFront();

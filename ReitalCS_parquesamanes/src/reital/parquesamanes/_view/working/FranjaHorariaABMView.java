@@ -1,4 +1,4 @@
-package reital.parquesamanes.app.gui.working;
+package reital.parquesamanes._view.working;
 
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -10,18 +10,14 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import efren.util.ExceptionManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.table.DataTableColumn;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
-import reital.parquesamanes.domain.FranjaHorariaRepository;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
-@Component
 public class FranjaHorariaABMView extends JFrame
 		implements efren.util.gui.table.DataTablePanelListener, efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
 	/**
@@ -34,8 +30,6 @@ public class FranjaHorariaABMView extends JFrame
 	private efren.util.ABMViewObserver2 ivjobserver = null;
 
 	private efren.util.gui.table.DataTablePanel ivjDataTablePanel = null;
-
-	private FranjaHorariaRepository repository = null;
 
 	/**
 	 * Constructor
@@ -238,7 +232,7 @@ public class FranjaHorariaABMView extends JFrame
 		getDataTablePanel().clearSelection();
 		getDataTablePanel().removeAll();
 
-		List<FranjaHoraria> bos = getRepository().getAll();
+		List<FranjaHoraria> bos = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().getAll();
 
 		for (FranjaHoraria franjaHoraria : bos) {
 			getDataTablePanel().add(franjaHoraria);
@@ -592,19 +586,4 @@ public class FranjaHorariaABMView extends JFrame
 		// user code end
 	}
 
-	/**
-	 * @return the repository
-	 */
-	public FranjaHorariaRepository getRepository() {
-		return repository;
-	}
-
-	/**
-	 * @param repository
-	 *            the repository to set
-	 */
-	@Autowired
-	public void setRepository(FranjaHorariaRepository repository) {
-		this.repository = repository;
-	}
 } // @jve:decl-index=0:visual-constraint="10,10"
