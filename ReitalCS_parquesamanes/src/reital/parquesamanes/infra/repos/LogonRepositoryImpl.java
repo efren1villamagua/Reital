@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra;
+package reital.parquesamanes.infra.repos;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -7,7 +7,9 @@ import efren.util.SystemLogManager;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
 import reital.parquesamanes.domain.AutenticacionRespuesta.ResultadoLogon;
-import reital.parquesamanes.domain.LogonRepository;
+import reital.parquesamanes.domain.repos.LogonRepository;
+import reital.parquesamanes.infra.DBConnectionModel;
+import reital.parquesamanes.infra.ParqueSamanesConn;
 import reital.parquesamanes.infra.util.GarbageRecollector;
 
 public class LogonRepositoryImpl implements LogonRepository {

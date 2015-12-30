@@ -1,4 +1,4 @@
-package reital.parquesamanes.domain;
+package reital.parquesamanes.domain.repos;
 
 import java.util.List;
 

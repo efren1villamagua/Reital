@@ -167,7 +167,8 @@ public class PagoView extends JFrame {
 	 */
 	private void initHelper() {
 		setPagoHelper(new PagoHelper(this));
-		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean().getMinutosGracia();
+		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
+				.getCantidadMinutosGracia();
 	}
 
 	/**

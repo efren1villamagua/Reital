@@ -1,4 +1,6 @@
-package reital.parquesamanes.domain;
+package reital.parquesamanes.domain.repos;
+
+import reital.parquesamanes.domain.AutenticacionRespuesta;
 
 public interface LogonRepository {
 

@@ -98,7 +98,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 		 * valorHoraOFraccion.doubleValue()); }
 		 */
 		if (minutosGracia != this.valoresIniciales.minutosGracia) {
-			SpringInitializator.getSingleton().getPagoControllerBean().actualizarValor("CLFY_MG", minutosGracia);
+			SpringInitializator.getSingleton().getPagoControllerBean().actualizarParametro_MinutosGracia(minutosGracia);
 		}
 		/*
 		 * if (imprimirRecibo != this.valoresIniciales.imprimeRecibo) { int temp

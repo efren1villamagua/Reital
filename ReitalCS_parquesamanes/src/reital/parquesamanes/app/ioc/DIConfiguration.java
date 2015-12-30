@@ -4,23 +4,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import reital.parquesamanes.domain.AutenticacionRespuesta;
-import reital.parquesamanes.domain.FranjaHorariaRepository;
-import reital.parquesamanes.domain.LogonRepository;
-import reital.parquesamanes.domain.PagoRepository;
-import reital.parquesamanes.domain.UsuarioRepository;
-import reital.parquesamanes.infra.FranjaHorariaRepositoryImpl;
-import reital.parquesamanes.infra.LogonRepositoryImpl;
-import reital.parquesamanes.infra.PagoRepositoryImpl;
-import reital.parquesamanes.infra.UsuarioRepositoryImpl;
+import reital.parquesamanes.domain.repos.ActividadRepository;
+import reital.parquesamanes.domain.repos.FranjaHorariaRepository;
+import reital.parquesamanes.domain.repos.LogonRepository;
+import reital.parquesamanes.domain.repos.ParametroRepository;
+import reital.parquesamanes.domain.repos.UsuarioRepository;
+import reital.parquesamanes.infra.repos.ActividadRepositoryImpl;
+import reital.parquesamanes.infra.repos.FranjaHorariaRepositoryImpl;
+import reital.parquesamanes.infra.repos.LogonRepositoryImpl;
+import reital.parquesamanes.infra.repos.ParametroRepositoryImpl;
+import reital.parquesamanes.infra.repos.UsuarioRepositoryImpl;
 
 @Configuration
 @ComponentScan(value = { "reital.parquesamanes.app.controllers" })
 public class DIConfiguration {
 
 	@Bean
-	public AutenticacionRespuesta getAutenticacionRespuesta() {
-		return new AutenticacionRespuesta();
+	public ActividadRepository getActividadRepository() {
+		return new ActividadRepositoryImpl();
 	}
 
 	@Bean
@@ -34,8 +35,8 @@ public class DIConfiguration {
 	}
 
 	@Bean
-	public PagoRepository getPagoRepository() {
-		return new PagoRepositoryImpl();
+	public ParametroRepository getParametroRepository() {
+		return new ParametroRepositoryImpl();
 	}
 
 	@Bean

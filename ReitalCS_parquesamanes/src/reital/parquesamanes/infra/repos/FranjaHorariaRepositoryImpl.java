@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra;
+package reital.parquesamanes.infra.repos;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import efren.util.SystemLogManager;
-import reital.parquesamanes.domain.FranjaHorariaRepository;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
+import reital.parquesamanes.domain.repos.FranjaHorariaRepository;
+import reital.parquesamanes.infra.ParqueSamanesConn;
 import reital.parquesamanes.infra.util.GarbageRecollector;
 
 public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
@@ -166,5 +168,58 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 		GarbageRecollector.closeAndFinalize(null, st, null);
 
 		return afectados > 0;
+	}
+
+	public FranjaHoraria getFranjaHorariaFor(int minutos) {
+
+		FranjaHoraria franja = null;
+		Statement st = null;
+
+		try {
+
+			st = ParqueSamanesConn.getConnection().createStatement();
+
+			boolean oracle = ParqueSamanesConstantes.DATASOURCE_TYPE.equalsIgnoreCase("oracle");
+
+			String sql = null;
+
+			if (oracle) {
+				sql = "SELECT " + " to_number(to_char(fh.HORA_INICIO, 'hh24'))*60+to_number(to_char(fh.HORA_INICIO, 'mi')) AS INICIO_MINUTOS, " + " fh.NOMBRE, "
+						+ " fh.HORAS_VALORES " + " FROM  FRANJA_HORARIA fh " + " WHERE "
+						+ "          to_number(to_char(fh.HORA_INICIO, 'hh24'))*60+to_number(to_char(fh.HORA_INICIO, 'mi')) <= " + minutos + " "
+						+ "  AND to_number(to_char(fh.HORA_FIN, 'hh24'))*60+to_number(to_char(fh.HORA_FIN, 'mi')) >= " + minutos + " "
+						+ " ORDER BY fh.HORA_INICIO ";
+			} else {
+				sql = "SELECT " + " HOUR(fh.HORA_INICIO)*60+MINUTE(fh.HORA_INICIO) AS INICIO_MINUTOS, " + " fh.NOMBRE, " + " fh.HORAS_VALORES "
+						+ " FROM  FRANJA_HORARIA fh " + " WHERE " + "          HOUR(fh.HORA_INICIO)*60+MINUTE(fh.HORA_INICIO) <= " + minutos + " "
+						+ "  AND HOUR(fh.HORA_FIN)*60+MINUTE(fh.HORA_FIN) >= " + minutos + " " + " ORDER BY fh.HORA_INICIO ";
+			}
+
+			SystemLogManager.debug(sql);
+
+			ResultSet rs = st.executeQuery(sql);
+
+			while (rs.next()) {
+
+				franja = new FranjaHoraria();
+
+				franja.setNombre(rs.getString("NOMBRE").trim());
+				franja.setHorasValores(rs.getString("HORAS_VALORES").trim());
+				franja.setInicioMinutos(rs.getInt("INICIO_MINUTOS"));
+				/**
+				 * NOS QUEDAMOS CON LA PRIMERA FRANJA HORARIA (EN EL CASO DE
+				 * CRUCES DE FRANJAS)
+				 */
+				break;
+			}
+			rs.close();
+
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
+
+		GarbageRecollector.closeAndFinalize(null, st, null);
+
+		return franja;
 	}
 }

@@ -23,7 +23,22 @@ public class PagoHelper {
 	 *
 	 */
 	public static enum TIPO_CLIENTE {
-		CLIENTE_ParqueSamanes, NO_CLIENTE_ParqueSamanes, FUNCIONARIO_ParqueSamanes
+
+		CLIENTE_ParqueSamanes("A"), NO_CLIENTE_ParqueSamanes("B"), FUNCIONARIO_ParqueSamanes("C");
+
+		TIPO_CLIENTE(String unValor) {
+			setValor(unValor);
+		}
+
+		private String valor;
+
+		public String getValor() {
+			return valor;
+		}
+
+		public void setValor(String valor) {
+			this.valor = valor;
+		}
 	}
 
 	/**
@@ -84,21 +99,7 @@ public class PagoHelper {
 																			// del
 																			// pago
 
-			String tipoClienteStr = "";
-			switch (tipoCliente) {
-			case CLIENTE_ParqueSamanes:
-				tipoClienteStr = "A";
-				break;
-			case NO_CLIENTE_ParqueSamanes:
-				tipoClienteStr = "B";
-				break;
-			case FUNCIONARIO_ParqueSamanes:
-				tipoClienteStr = "C";
-				break;
-			default:
-				break;
-			}
-			getActividad().setTipoCliente(tipoClienteStr);
+			getActividad().setTipoCliente(tipoCliente);
 
 			return getActividad();
 
@@ -291,7 +292,8 @@ public class PagoHelper {
 				return;
 			}
 
-			ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean().getMinutosGracia();
+			ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
+					.getCantidadMinutosGracia();
 
 			/**
 			 *

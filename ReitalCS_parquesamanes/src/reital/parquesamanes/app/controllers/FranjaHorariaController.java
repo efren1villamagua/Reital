@@ -3,7 +3,7 @@ package reital.parquesamanes.app.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reital.parquesamanes.domain.FranjaHorariaRepository;
+import reital.parquesamanes.domain.repos.FranjaHorariaRepository;
 
 @Component
 public class FranjaHorariaController {

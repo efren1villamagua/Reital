@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra;
+package reital.parquesamanes.infra.repos;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import efren.util.SystemLogManager;
-import reital.parquesamanes.domain.UsuarioRepository;
 import reital.parquesamanes.domain.entidades.Usuario;
+import reital.parquesamanes.domain.repos.UsuarioRepository;
+import reital.parquesamanes.infra.ParqueSamanesConn;
 import reital.parquesamanes.infra.util.GarbageRecollector;
 
 public class UsuarioRepositoryImpl implements UsuarioRepository {

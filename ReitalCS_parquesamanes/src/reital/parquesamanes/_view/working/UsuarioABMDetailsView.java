@@ -16,7 +16,6 @@ import efren.util.gui.text.PasswordFieldExt;
 import efren.util.gui.text.TextFieldExt;
 import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
-import reital.parquesamanes.domain.UsuarioRepository;
 import reital.parquesamanes.domain.entidades.Usuario;
 
 public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
@@ -60,8 +59,6 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 	private JCheckBox jCheckBoxAdministrador = null;
 
 	private JCheckBox jCheckBoxActivo = null;
-
-	private UsuarioRepository repository = null;
 
 	/**
 	 * Constructor
@@ -497,7 +494,7 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 				ivjTextFieldExtUserName = new efren.util.gui.text.TextFieldExt();
 				ivjTextFieldExtUserName.setAllowedKey(TextFieldExt.AllowedKey.AK_ALFANUMERICOS);
 				ivjTextFieldExtUserName.setName("TextFieldExtUserName");
-				ivjTextFieldExtUserName.setMaxLength(10);
+				ivjTextFieldExtUserName.setMaxLength(100);
 				// user code begin {1}
 				// user code end
 			} catch (java.lang.Throwable ivjExc) {

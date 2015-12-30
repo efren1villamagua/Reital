@@ -3,6 +3,8 @@ package reital.parquesamanes.domain.entidades;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
+import reital.parquesamanes._view.working.PagoHelper;
+
 public class ActividadForPagoEntity {
 	/**
 	 *
@@ -32,7 +34,7 @@ public class ActividadForPagoEntity {
 
 	private int cantidadHoras = 0;
 
-	private String tipoCliente = null;
+	private PagoHelper.TIPO_CLIENTE tipoCliente = null;
 
 	private String observaciones = null;
 
@@ -159,21 +161,6 @@ public class ActividadForPagoEntity {
 	}
 
 	/**
-	 * @return the tipoCliente
-	 */
-	public String getTipoCliente() {
-		return tipoCliente;
-	}
-
-	/**
-	 * @param tipoCliente
-	 *            the tipoCliente to set
-	 */
-	public void setTipoCliente(String tipoCliente) {
-		this.tipoCliente = tipoCliente;
-	}
-
-	/**
 	 * @return the observaciones
 	 */
 	public String getObservaciones() {
@@ -201,6 +188,21 @@ public class ActividadForPagoEntity {
 	 */
 	public void setFranjaHoraria(String franjaHoraria) {
 		this.franjaHoraria = franjaHoraria;
+	}
+
+	/**
+	 * @param tipoCliente
+	 *            the tipoCliente to set
+	 */
+	public void setTipoCliente(PagoHelper.TIPO_CLIENTE tipoCliente) {
+		this.tipoCliente = tipoCliente;
+	}
+
+	/**
+	 * @return the tipoCliente
+	 */
+	public PagoHelper.TIPO_CLIENTE getTipoCliente() {
+		return tipoCliente;
 	}
 
 }
