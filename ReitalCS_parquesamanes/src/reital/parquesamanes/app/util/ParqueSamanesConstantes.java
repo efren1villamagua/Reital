@@ -31,7 +31,7 @@ public class ParqueSamanesConstantes {
 	/**
 	 *
 	 */
-	public static String DATASOURCE_TYPE = "db2";
+	public static String DATASOURCE_TYPE = "h2";
 
 	public static String DATASOURCE_IP = "127.0.0.1";
 
@@ -55,9 +55,9 @@ public class ParqueSamanesConstantes {
 
 	public static int MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = 60;
 
-	public static String DB_USUARIO = "efren";
+	public static String ADMIN_USERNAME = "admin";
 
-	public static String DB_KEY = "917712438111131970334269010360084011471098891764613900170925688795004387671302871056074941895100831167847586104085135";
+	public static String ADMIN_PASSWORD = "admin";
 
 	public static String EMPRESA_NOMBRE_01 = "ParqueSamanes";
 
@@ -166,12 +166,12 @@ public class ParqueSamanesConstantes {
 			 * } catch (Exception exc) { exc.getMessage(); }
 			 */
 			try {
-				ParqueSamanesConstantes.DB_USUARIO = propiedades.getProperty("DB_USUARIO").trim();
+				ParqueSamanesConstantes.ADMIN_USERNAME = propiedades.getProperty("ADMIN_USERNAME").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
 			try {
-				ParqueSamanesConstantes.DB_KEY = propiedades.getProperty("DB_KEY").trim();
+				ParqueSamanesConstantes.ADMIN_PASSWORD = propiedades.getProperty("ADMIN_PASSWORD").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}

@@ -7,5 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Spring_Framework"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/EfrenCS"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ApacheCommonsLogging"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/H2"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

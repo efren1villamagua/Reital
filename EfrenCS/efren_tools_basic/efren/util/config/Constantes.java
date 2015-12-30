@@ -12,6 +12,8 @@ public class Constantes {
 
 	public static final String CONFIG_DIR = System.getProperty("user.dir") + File.separator + "config";
 
+	public static final String DATA_DIR = System.getProperty("user.dir") + File.separator + "data";
+
 	/**
 	 *
 	 */
