@@ -10,17 +10,20 @@ import efren.util.SystemLogManager;
 import efren.util.config.SystemProperties;
 import reital.parquesamanes.domain.FranjaHorariaRepository;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
+import reital.parquesamanes.infra.util.GarbageRecollector;
 
 public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 	@SuppressWarnings("deprecation")
 	public List<FranjaHoraria> getAll() {
 
+		Statement st = null;
+
 		ArrayList<FranjaHoraria> bos = new ArrayList<FranjaHoraria>();
 
 		try {
 
-			Statement st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getConnection().createStatement();
 			StringBuffer sql = new StringBuffer();
 			sql.append(" SELECT fh.CODIGO, fh.NOMBRE, fh.HORA_INICIO, fh.HORA_FIN, fh.OBSERVACIONES, fh.HORAS_VALORES ");
 			sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + "." + "FRANJA_HORARIA fh ");
@@ -51,22 +54,25 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 				bos.add(bo);
 			}
 
-			st.close();
-
 		} catch (Throwable t) {
 			SystemLogManager.error(t);
 		}
+
+		GarbageRecollector.closeAndFinalize(null, st, null);
 
 		return bos;
 
 	}
 
 	public boolean create(String codigo, String nombre, String horaInicio, String horaFin, String observaciones, String horasValores) {
+
+		Statement st = null;
+
 		int afectados = 0;
 		try {
 
 			Connection con = ParqueSamanesConn.getConnection();
-			Statement st = con.createStatement();
+			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
 
@@ -81,22 +87,27 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 			afectados = st.executeUpdate(sql.toString());
 
 			st.close();
-			con.commit();
 
 		} catch (Throwable t) {
 			SystemLogManager.error(t);
+			GarbageRecollector.closeAndFinalize(null, st, null);
 			return false;
 		}
+
+		GarbageRecollector.closeAndFinalize(null, st, null);
 
 		return afectados > 0;
 	}
 
 	public boolean update(String codigo, String nombre, String horaInicio, String horaFin, String observaciones, String horasValores) {
+
+		Statement st = null;
+
 		int afectados = 0;
 		try {
 
 			Connection con = ParqueSamanesConn.getConnection();
-			Statement st = con.createStatement();
+			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
 
@@ -117,18 +128,24 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 		} catch (Throwable t) {
 			SystemLogManager.error(t);
+			GarbageRecollector.closeAndFinalize(null, st, null);
 			return false;
 		}
+
+		GarbageRecollector.closeAndFinalize(null, st, null);
 
 		return afectados > 0;
 	}
 
 	public boolean delete(String codigo) {
+
+		Statement st = null;
+
 		int afectados = 0;
 		try {
 
 			Connection con = ParqueSamanesConn.getConnection();
-			Statement st = con.createStatement();
+			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
 
@@ -143,8 +160,11 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 		} catch (Throwable t) {
 			SystemLogManager.error(t);
+			GarbageRecollector.closeAndFinalize(null, st, null);
 			return false;
 		}
+
+		GarbageRecollector.closeAndFinalize(null, st, null);
 
 		return afectados > 0;
 	}

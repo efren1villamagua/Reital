@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.GregorianCalendar;
 
 import efren.util.StringTools;
+import efren.util.SystemLogManager;
 import efren.util.config.SystemProperties;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes.domain.PagoRepository;
@@ -22,6 +23,11 @@ import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
 public class PagoRepositoryImpl implements PagoRepository {
 
 	public FranjaHoraria getFranjaHorariaFor(int minutos) {
+		
+		FranjaHoraria franja = null;
+		Statement st = null;
+		
+		try {
 
 		Statement st = ParqueSamanesConn.getConnection().createStatement();
 		
@@ -44,7 +50,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 		}
 		ResultSet rs = st.executeQuery(sql);
 
-		FranjaHoraria franja = null;
+		
 
 		while (rs.next()) {
 
@@ -61,6 +67,10 @@ public class PagoRepositoryImpl implements PagoRepository {
 		}
 		rs.close();
 		st.close();
+		
+		}catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
 
 		return franja;
 	}

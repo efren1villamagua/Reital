@@ -8,11 +8,14 @@ import efren.util.config.SystemProperties;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
 import reital.parquesamanes.domain.AutenticacionRespuesta.ResultadoLogon;
 import reital.parquesamanes.domain.LogonRepository;
+import reital.parquesamanes.infra.util.GarbageRecollector;
 import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
 
 public class LogonRepositoryImpl implements LogonRepository {
 
 	public AutenticacionRespuesta autenticar(String userName, String key) {
+
+		Statement st = null;
 
 		AutenticacionRespuesta respuesta = new AutenticacionRespuesta();
 
@@ -28,7 +31,7 @@ public class LogonRepositoryImpl implements LogonRepository {
 			sqlClause.append(" WHERE RTRIM(LTRIM(USERNAME))='" + userName.trim() + "' ");
 			String clave_sys = null;
 
-			Statement st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sqlClause.toString());
 			ResultSet rs = st.executeQuery(sqlClause.toString());
@@ -51,7 +54,6 @@ public class LogonRepositoryImpl implements LogonRepository {
 				break;
 			}
 			rs.close();
-			st.close();
 
 			if (!registroEncontrado) {
 				SystemLogManager.info("Usuario no encontrado");
@@ -80,6 +82,8 @@ public class LogonRepositoryImpl implements LogonRepository {
 			SystemLogManager.error(exc);
 			respuesta.setResultadoLogon(ResultadoLogon.ERROR_AL_AUTENTICAR);
 		}
+
+		GarbageRecollector.closeAndFinalize(null, st, null);
 
 		return respuesta;
 	}
