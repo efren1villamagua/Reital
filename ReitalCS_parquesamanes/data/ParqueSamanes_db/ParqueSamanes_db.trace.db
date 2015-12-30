@@ -480,3 +480,7 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:D:/git_stuff
 	at org.h2.mvstore.FileStore.open(FileStore.java:172)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:342)
 	... 63 more
+2015-12-30 03:41:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tabla "USUARIO" no encontrada
+Table "USUARIO" not found; SQL statement:
+SELECT CLAVE, NOMBRE, TIPO, ESTADO  FROM  USUARIO  WHERE RTRIM(LTRIM(USERNAME))='vcdsf'  [42102-190]
