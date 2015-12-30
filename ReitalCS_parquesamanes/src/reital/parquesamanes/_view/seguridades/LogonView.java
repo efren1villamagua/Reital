@@ -178,7 +178,7 @@ public class LogonView extends JFrame {
 
 	public static void main(String args[]) {
 		try {
-			LoggerManager.init("SystemAdmin");
+			LoggerManager.init(ParqueSamanesConstantes.EMPRESA_NOMBRE_01);
 			SystemLogManager.setLogger(LoggerManager.logger);
 		} catch (Exception e) {
 			e.getMessage();
