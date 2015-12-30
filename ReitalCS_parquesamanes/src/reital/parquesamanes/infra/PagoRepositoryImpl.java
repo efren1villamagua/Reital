@@ -9,7 +9,6 @@ import java.util.GregorianCalendar;
 
 import efren.util.StringTools;
 import efren.util.SystemLogManager;
-import efren.util.config.SystemProperties;
 import reital.parquesamanes._view.seguridades.LogonView;
 import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
@@ -35,15 +34,14 @@ public class PagoRepositoryImpl implements PagoRepository {
 
 			if (oracle) {
 				sql = "SELECT " + " to_number(to_char(fh.HORA_INICIO, 'hh24'))*60+to_number(to_char(fh.HORA_INICIO, 'mi')) AS INICIO_MINUTOS, " + " fh.NOMBRE, "
-						+ " fh.HORAS_VALORES " + " FROM " + SystemProperties.SCHEMA_PRINCIPAL + "." + "FRANJA_HORARIA fh " + " WHERE "
+						+ " fh.HORAS_VALORES " + " FROM  FRANJA_HORARIA fh " + " WHERE "
 						+ "          to_number(to_char(fh.HORA_INICIO, 'hh24'))*60+to_number(to_char(fh.HORA_INICIO, 'mi')) <= " + minutos + " "
 						+ "  AND to_number(to_char(fh.HORA_FIN, 'hh24'))*60+to_number(to_char(fh.HORA_FIN, 'mi')) >= " + minutos + " "
 						+ " ORDER BY fh.HORA_INICIO ";
 			} else {
-				sql = "SELECT " + " HOUR(fh.HORA_INICIO)*60+MINUTE(fh.HORA_INICIO) AS INICIO_MINUTOS, " + " fh.NOMBRE, " + " fh.HORAS_VALORES " + " FROM "
-						+ SystemProperties.SCHEMA_PRINCIPAL + "." + "FRANJA_HORARIA fh " + " WHERE "
-						+ "          HOUR(fh.HORA_INICIO)*60+MINUTE(fh.HORA_INICIO) <= " + minutos + " " + "  AND HOUR(fh.HORA_FIN)*60+MINUTE(fh.HORA_FIN) >= "
-						+ minutos + " " + " ORDER BY fh.HORA_INICIO ";
+				sql = "SELECT " + " HOUR(fh.HORA_INICIO)*60+MINUTE(fh.HORA_INICIO) AS INICIO_MINUTOS, " + " fh.NOMBRE, " + " fh.HORAS_VALORES "
+						+ " FROM  FRANJA_HORARIA fh " + " WHERE " + "          HOUR(fh.HORA_INICIO)*60+MINUTE(fh.HORA_INICIO) <= " + minutos + " "
+						+ "  AND HOUR(fh.HORA_FIN)*60+MINUTE(fh.HORA_FIN) >= " + minutos + " " + " ORDER BY fh.HORA_INICIO ";
 			}
 
 			SystemLogManager.debug(sql);
@@ -81,7 +79,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 		BigDecimal valor = null;
 
 		try {
-			String sql = "SELECT VALOR " + " FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".PARAMETRO " + " WHERE CODIGO='VALOR_HORA_FRACCION' ";
+			String sql = "SELECT VALOR " + " FROM  PARAMETRO " + " WHERE CODIGO='VALOR_HORA_FRACCION' ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
@@ -107,7 +105,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 
 		int minutosGracia = -1;
 		try {
-			String sql = "SELECT VALOR " + " FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".PARAMETRO " + " WHERE CODIGO='CLFY_MG' ";
+			String sql = "SELECT VALOR " + " FROM  PARAMETRO " + " WHERE CODIGO='CLFY_MG' ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
@@ -133,7 +131,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 
 		boolean imprimeRecibo = false;
 		try {
-			String sql = "SELECT VALOR " + " FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".PARAMETRO " + " WHERE CODIGO='IMPRIMIR_RECIBO' ";
+			String sql = "SELECT VALOR " + " FROM  PARAMETRO " + " WHERE CODIGO='IMPRIMIR_RECIBO' ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
@@ -162,8 +160,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 		int count = 0;
 		try {
 			Timestamp tstamp = new Timestamp(gc.getTimeInMillis());
-			String sql = "SELECT COUNT(SALIDA) AS CUANTOS_HAY " + " FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD " + " WHERE " + " ENTRADA={ ts '"
-					+ tstamp.toString() + "'} ";
+			String sql = "SELECT COUNT(SALIDA) AS CUANTOS_HAY " + " FROM  ACTIVIDAD " + " WHERE " + " ENTRADA={ ts '" + tstamp.toString() + "'} ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
@@ -190,7 +187,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 		boolean seRegistro = false;
 		try {
 			StringBuffer sql = new StringBuffer();
-			sql.append("INSERT INTO " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD ");
+			sql.append("INSERT INTO  ACTIVIDAD ");
 			sql.append(" (CODIGO, ENTRADA, SALIDA, VALOR, VALOR_HORA_FRACCION, TIPO_CLIENTE, OBSERVACIONES, FRANJA_HORARIA, CANTIDAD_HORAS ) ");
 			sql.append(" VALUES (?,?,?,?,?,?,?,?,?)");
 			ps = ParqueSamanesConn.getConnection().prepareStatement(sql.toString());
@@ -257,7 +254,7 @@ public class PagoRepositoryImpl implements PagoRepository {
 
 		boolean seRegistro = false;
 		try {
-			String sql = "UPDATE " + SystemProperties.SCHEMA_PRINCIPAL + ".PARAMETRO " + " SET VALOR=? " + " WHERE CODIGO=? ";
+			String sql = "UPDATE  PARAMETRO " + " SET VALOR=? " + " WHERE CODIGO=? ";
 			ps = ParqueSamanesConn.getConnection().prepareStatement(sql);
 
 			StringBuffer paramMetaClause = new StringBuffer();

@@ -65,9 +65,6 @@ public class ParqueSamanesConstantes {
 	 *
 	 */
 	public static void setInitialValues() {
-		SystemProperties.SCHEMA_SEGURIDADES = "PARKING";
-		SystemProperties.SCHEMA_UTIL = "PARKING";
-		SystemProperties.SCHEMA_PRINCIPAL = "PARKING";
 		SystemProperties.REPORTER_TEMPLATES_PATH = "/reital/parquesamanes/resource/templates/";
 		SystemProperties.SYSTEM_TYPE = efren.util.config.Constantes.SYSTEM_TYPE_3_LO;
 		SystemProperties.SISTEMA_ICONO_PATH = "/reital/parquesamanes/resource/images/CLOCK_16_hot.png";

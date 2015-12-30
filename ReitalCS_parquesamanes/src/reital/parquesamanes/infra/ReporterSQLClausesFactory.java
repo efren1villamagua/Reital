@@ -2,7 +2,6 @@ package reital.parquesamanes.infra;
 
 import java.sql.Date;
 
-import efren.util.config.SystemProperties;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ReporterSQLClausesFactory {
@@ -14,7 +13,7 @@ public class ReporterSQLClausesFactory {
 		sql.append("SELECT ");
 		sql.append(" TIPO_CLIENTE, FECHA, HORA_ENTRADA, HORA_SALIDA, ");
 		sql.append(" VALOR, USUARIO, TIPO_USR, OBSERVACIONES ");
-		sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD ");
+		sql.append(" FROM  ACTIVIDAD ");
 		return sql.toString();
 	}
 
@@ -33,7 +32,7 @@ public class ReporterSQLClausesFactory {
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 2, 19)) AS USUARIO, ");
 			sql.append(" CASE WHEN SUBSTR(OBSERVACIONES, 1, 1) = 'A' THEN 'Administrador' ELSE 'Usuario' END AS TIPO_USR, ");
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 20)) AS OBSERVACIONES ");
-			sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD a ");
+			sql.append(" FROM  ACTIVIDAD a ");
 			sql.append(" WHERE to_char(ENTRADA, 'yyyy-mm-dd')>='" + desde + "' AND to_char(SALIDA, 'yyyy-mm-dd')<='" + hasta + "' " + " AND (1=2 ");
 			if (clientes) {
 				sql.append(" OR a.TIPO_CLIENTE='A' ");
@@ -55,7 +54,7 @@ public class ReporterSQLClausesFactory {
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 2, 19)) AS USUARIO, ");
 			sql.append(" CASE WHEN SUBSTR(OBSERVACIONES, 1, 1) = 'A' THEN 'Administrador' ELSE 'Usuario' END AS TIPO_USR, ");
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 20)) AS OBSERVACIONES ");
-			sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD a ");
+			sql.append(" FROM  ACTIVIDAD a ");
 			sql.append(" WHERE DATE(ENTRADA)>={ d '" + desde + "'} AND DATE(SALIDA)<={ d '" + hasta + "'} " + " AND (1=2 ");
 			if (clientes) {
 				sql.append(" OR a.TIPO_CLIENTE='A' ");
@@ -80,7 +79,7 @@ public class ReporterSQLClausesFactory {
 		sql.append("SELECT ");
 		sql.append(" FECHA, HORA_ENTRADA, HORA_SALIDA, ");
 		sql.append(" USUARIO, TIPO_USR, OBSERVACIONES ");
-		sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD ");
+		sql.append(" FROM  ACTIVIDAD ");
 		return sql.toString();
 	}
 
@@ -99,7 +98,7 @@ public class ReporterSQLClausesFactory {
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 2, 19)) AS USUARIO, ");
 			sql.append(" CASE WHEN SUBSTR(OBSERVACIONES, 1, 1) = 'A' THEN 'Administrador' ELSE 'Usuario' END AS TIPO_USR, ");
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 20)) AS OBSERVACIONES ");
-			sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD a ");
+			sql.append(" FROM  ACTIVIDAD a ");
 			sql.append(
 					" WHERE to_char(ENTRADA, 'yyyy-mm-dd')>='" + desde + "' AND to_char(SALIDA, 'yyyy-mm-dd')<='" + hasta + "' " + " AND a.TIPO_CLIENTE='C' ");
 			sql.append(" ORDER BY FECHA, HORA_ENTRADA");
@@ -108,7 +107,7 @@ public class ReporterSQLClausesFactory {
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 2, 19)) AS USUARIO, ");
 			sql.append(" CASE WHEN SUBSTR(OBSERVACIONES, 1, 1) = 'A' THEN 'Administrador' ELSE 'Usuario' END AS TIPO_USR, ");
 			sql.append(" RTRIM(SUBSTR(OBSERVACIONES, 20)) AS OBSERVACIONES ");
-			sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + ".ACTIVIDAD a ");
+			sql.append(" FROM  ACTIVIDAD a ");
 			sql.append(" WHERE DATE(ENTRADA)>={ d '" + desde + "'} AND DATE(SALIDA)<={ d '" + hasta + "'} " + " AND a.TIPO_CLIENTE='C' ");
 			sql.append(" ORDER BY FECHA, HORA_ENTRADA");
 		}

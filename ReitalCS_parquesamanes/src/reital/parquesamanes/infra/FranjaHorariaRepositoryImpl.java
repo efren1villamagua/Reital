@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import efren.util.SystemLogManager;
-import efren.util.config.SystemProperties;
 import reital.parquesamanes.domain.FranjaHorariaRepository;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 import reital.parquesamanes.infra.util.GarbageRecollector;
@@ -26,7 +25,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 			st = ParqueSamanesConn.getConnection().createStatement();
 			StringBuffer sql = new StringBuffer();
 			sql.append(" SELECT fh.CODIGO, fh.NOMBRE, fh.HORA_INICIO, fh.HORA_FIN, fh.OBSERVACIONES, fh.HORAS_VALORES ");
-			sql.append(" FROM " + SystemProperties.SCHEMA_PRINCIPAL + "." + "FRANJA_HORARIA fh ");
+			sql.append(" FROM  FRANJA_HORARIA fh ");
 			sql.append(" ORDER BY fh.HORA_INICIO");
 
 			SystemLogManager.debug(sql.toString());
@@ -76,7 +75,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 			StringBuffer sql = new StringBuffer();
 
-			sql.append(" INSERT INTO " + SystemProperties.SCHEMA_SEGURIDADES + "." + "FRANJA_HORARIA ");
+			sql.append(" INSERT INTO  FRANJA_HORARIA ");
 			sql.append(" (CODIGO, NOMBRE, HORA_INICIO, HORA_FIN, VALOR_POR_HORA, OBSERVACIONES, HORAS_VALORES) VALUES ( ");
 			sql.append(" '" + codigo + "', '" + nombre + "', ");
 			sql.append(" { ts '2000-01-01 " + horaInicio + ":00' }, { ts '2000-01-01 " + horaFin + ":00' }, ");
@@ -111,7 +110,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 			StringBuffer sql = new StringBuffer();
 
-			sql.append(" UPDATE " + SystemProperties.SCHEMA_SEGURIDADES + "." + "FRANJA_HORARIA ");
+			sql.append(" UPDATE  FRANJA_HORARIA ");
 			sql.append(" SET ");
 			sql.append(" NOMBRE='" + nombre + "',");
 			sql.append(" HORA_INICIO={ ts '2000-01-01 " + horaInicio + ":00' },");
@@ -149,7 +148,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 			StringBuffer sql = new StringBuffer();
 
-			sql.append(" DELETE FROM " + SystemProperties.SCHEMA_SEGURIDADES + "." + "FRANJA_HORARIA ");
+			sql.append(" DELETE FROM  FRANJA_HORARIA ");
 			sql.append(" WHERE CODIGO='" + codigo + "' ");
 			SystemLogManager.debug(sql.toString());
 

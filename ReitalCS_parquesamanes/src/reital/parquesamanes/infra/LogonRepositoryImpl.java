@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import efren.util.SystemLogManager;
-import efren.util.config.SystemProperties;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
 import reital.parquesamanes.domain.AutenticacionRespuesta.ResultadoLogon;
@@ -27,7 +26,7 @@ public class LogonRepositoryImpl implements LogonRepository {
 
 			StringBuffer sqlClause = new StringBuffer();
 			sqlClause.append("SELECT CLAVE, NOMBRE, TIPO, ESTADO ");
-			sqlClause.append(" FROM " + SystemProperties.SCHEMA_SEGURIDADES + ".USUARIO ");
+			sqlClause.append(" FROM  USUARIO ");
 			sqlClause.append(" WHERE RTRIM(LTRIM(USERNAME))='" + userName.trim() + "' ");
 			String clave_sys = null;
 

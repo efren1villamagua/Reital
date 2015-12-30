@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import efren.util.SystemLogManager;
-import efren.util.config.SystemProperties;
 import reital.parquesamanes.domain.UsuarioRepository;
 import reital.parquesamanes.domain.entidades.Usuario;
 import reital.parquesamanes.infra.util.GarbageRecollector;
@@ -24,7 +23,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
 			st = ParqueSamanesConn.getConnection().createStatement();
 
-			String sql = " SELECT " + " u.USERNAME, u.CLAVE, u.NOMBRE, u.TIPO, u.ESTADO " + " FROM " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO u ";
+			String sql = " SELECT " + " u.USERNAME, u.CLAVE, u.NOMBRE, u.TIPO, u.ESTADO " + " FROM  " + "USUARIO u ";
 			if (orderBy == null) {
 				sql = sql + " ORDER BY u.NOMBRE";
 			} else {
@@ -72,8 +71,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
 			StringBuffer sql = new StringBuffer();
 
-			sql.append(" INSERT INTO " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO " + " (USERNAME, CLAVE, NOMBRE, TIPO, ESTADO) VALUES ( '"
-					+ userName + "', '" + clave + "', '" + nombre + "', '" + tipo + "', '" + estado + "') ");
+			sql.append(" INSERT INTO  " + "USUARIO " + " (USERNAME, CLAVE, NOMBRE, TIPO, ESTADO) VALUES ( '" + userName + "', '" + clave + "', '" + nombre
+					+ "', '" + tipo + "', '" + estado + "') ");
 
 			SystemLogManager.debug(sql.toString());
 
@@ -104,8 +103,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
 			StringBuffer sql = new StringBuffer();
 
-			sql.append(" UPDATE " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO " + " SET " + " CLAVE='" + clave + "', NOMBRE='" + nombre + "', TIPO='"
-					+ tipo + "', ESTADO='" + estado + "' " + " WHERE USERNAME='" + userName + "' ");
+			sql.append(" UPDATE  " + "USUARIO " + " SET " + " CLAVE='" + clave + "', NOMBRE='" + nombre + "', TIPO='" + tipo + "', ESTADO='" + estado + "' "
+					+ " WHERE USERNAME='" + userName + "' ");
 			SystemLogManager.debug(sql.toString());
 
 			afectados = st.executeUpdate(sql.toString());
@@ -136,7 +135,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
 			StringBuffer sql = new StringBuffer();
 
-			sql.append(" DELETE FROM " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO WHERE USERNAME='" + userName + "' ");
+			sql.append(" DELETE FROM  " + "USUARIO WHERE USERNAME='" + userName + "' ");
 			SystemLogManager.debug(sql.toString());
 
 			afectados = st.executeUpdate(sql.toString());
