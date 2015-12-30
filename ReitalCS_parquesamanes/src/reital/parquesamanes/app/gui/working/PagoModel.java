@@ -2,11 +2,15 @@ package reital.parquesamanes.app.gui.working;
 
 import java.math.BigDecimal;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import reital.parquesamanes.app.gui.working.PagoController.CadenaPair;
 import reital.parquesamanes.domain.PagoRepository;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
+@Component
 public class PagoModel {
 
 	private PagoRepository repository = null;
@@ -63,6 +67,7 @@ public class PagoModel {
 		return repository;
 	}
 
+	@Autowired
 	public void setRepository(PagoRepository repository) {
 		this.repository = repository;
 	}

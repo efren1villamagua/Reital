@@ -10,6 +10,9 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import efren.util.ExceptionManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
@@ -18,6 +21,7 @@ import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.FranjaHorariaRepository;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
+@Component
 public class FranjaHorariaABMView extends JFrame
 		implements efren.util.gui.table.DataTablePanelListener, efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
 	/**
@@ -599,6 +603,7 @@ public class FranjaHorariaABMView extends JFrame
 	 * @param repository
 	 *            the repository to set
 	 */
+	@Autowired
 	public void setRepository(FranjaHorariaRepository repository) {
 		this.repository = repository;
 	}

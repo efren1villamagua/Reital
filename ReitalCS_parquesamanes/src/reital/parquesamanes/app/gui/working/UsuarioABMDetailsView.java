@@ -3,22 +3,25 @@ package reital.parquesamanes.app.gui.working;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import efren.util.CoderManager;
 import efren.util.ExceptionManager;
-import efren.util.config.SystemProperties;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.PasswordFieldExt;
 import efren.util.gui.text.TextFieldExt;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
+import reital.parquesamanes.domain.UsuarioRepository;
 import reital.parquesamanes.domain.entidades.Usuario;
-import reital.parquesamanes.infra.ParqueSamanesConn;
 
+@Component
 public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
 	/**
 	 *
@@ -60,6 +63,8 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 	private JCheckBox jCheckBoxAdministrador = null;
 
 	private JCheckBox jCheckBoxActivo = null;
+
+	private UsuarioRepository repository = null;
 
 	/**
 	 * Constructor
@@ -551,8 +556,6 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 	/* WARNING: THIS METHOD WILL BE REGENERATED. */
 	private void initialize() {
 		try {
-			// user code begin {1}
-			// user code end
 			setName("UsuarioABMDetailsView");
 			setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 			setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
@@ -562,110 +565,61 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 		} catch (java.lang.Throwable ivjExc) {
 			handleException(ivjExc);
 		}
-		// user code begin {2}
-		this.addWindowListener(new WindowListener() {
-
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
+		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
 				try {
 					_cerrar();
 				} catch (Throwable t) {
 					t.getMessage();
 				}
 			}
-
-			public void windowClosed(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
 		});
-		// user code end
 	}
 
 	private boolean permanentUpdateBO() {
 		try {
-			/**
-			 * OJO TODO FALTA MANEJAR AUDITORIA
-			 */
-			String s;
-			java.sql.Connection con = ParqueSamanesConn.getConnection();
-			java.sql.Statement st = con.createStatement();
-
 			if (getAbmEstado().esNuevo()) {
 				String clave = getPasswordFieldExtClave().getValue().trim();
 				clave = CoderManager.encrypt(clave);
-				s = " INSERT INTO " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO " + " (USERNAME, CLAVE, NOMBRE, TIPO, ESTADO) VALUES ( " + " "
-						+ getTextFieldExtUserName().SQLText() + " " + " ,'" + clave + "' " + " ," + getTextFieldExtNombre().SQLText() + " " + " ,"
-						+ (getJCheckBoxAdministrador().isSelected() ? " '" + ParqueSamanesConstantes.USUARIO_TIPO_Administrador + "', "
-								: " '" + ParqueSamanesConstantes.USUARIO_TIPO_Usuario + "', ")
-						+ (getJCheckBoxActivo().isSelected() ? " '" + ParqueSamanesConstantes.USUARIO_ESTADO_Activo + "' "
-								: " '" + ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo + "' ")
-						+ ")";
-				st.executeUpdate(s);
-				st.close();
-				con.commit();
-				return true;
+				boolean resultado = getRepository().create(getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
+						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
+								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
+						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
+				if (resultado) {
+					return true;
+				} else {
+					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
+					return false;
+				}
 			}
 			if (getAbmEstado().esModificado()) {
 				String clave = getPasswordFieldExtClave().getValue().trim();
 				clave = CoderManager.encrypt(clave);
-				s = " UPDATE " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO " + " SET " + " CLAVE='" + clave + "' " + " ,NOMBRE=" + getTextFieldExtNombre().SQLText()
-						+ " " + " ," + " TIPO="
-						+ (getJCheckBoxAdministrador().isSelected() ? " '" + ParqueSamanesConstantes.USUARIO_TIPO_Administrador + "', "
-								: " '" + ParqueSamanesConstantes.USUARIO_TIPO_Usuario + "', ")
-						+ " ESTADO=" + (getJCheckBoxActivo().isSelected() ? " '" + ParqueSamanesConstantes.USUARIO_ESTADO_Activo + "' "
-								: " '" + ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo + "' ")
-						+ " WHERE USERNAME='" + getTextFieldExtUserName().getValue().trim() + "' ";
-				int act = st.executeUpdate(s);
-				st.close();
-				if (act == 0) {
-					efren.util.gui.dialogs.InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
+				boolean resultado = getRepository().update(getTextFieldExtUserName().getValue().trim(), clave, getTextFieldExtNombre().getValue(),
+						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
+								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
+						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
+				if (resultado) {
+					return true;
+				} else {
+					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
 					return false;
 				}
-				con.commit();
-				return true;
 			}
 			if (getAbmEstado().esEliminado()) {
-				s = " DELETE FROM " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO " + " WHERE USERNAME=" + getTextFieldExtUserName().SQLText() + " ";
-				int act = st.executeUpdate(s);
-				st.close();
-				if (act == 0) {
-					efren.util.gui.dialogs.InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
+				boolean resultado = getRepository().delete(getTextFieldExtUserName().getValue());
+				if (resultado) {
+					return true;
+				} else {
+					InfoView.showErrorDialog(this, "El registro ya ha sido actualizado por otro usuario. Vuelva a intentar la operación");
 					return false;
 				}
-				con.commit();
-				return true;
 			}
 
 			return true;
 
 		} catch (Throwable t) {
-			efren.util.gui.dialogs.InfoView.showErrorDialog(this, "ERROR: " + t.getMessage());
+			InfoView.showErrorDialog(this, "ERROR: " + t.getMessage());
 			return false;
 		}
 	}
@@ -746,15 +700,15 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 			String clave = getPasswordFieldExtClave().getValue();
 			String confirmarClave = getPasswordFieldExtConfirmarClave().getValue();
 			if (clave.length() == 0) {
-				efren.util.gui.dialogs.InfoView.showErrorDialog(this, "Ingrese una Clave !");
+				InfoView.showErrorDialog(this, "Ingrese una Clave !");
 				return false;
 			}
 			if (confirmarClave.length() == 0) {
-				efren.util.gui.dialogs.InfoView.showErrorDialog(this, "Ingrese la Confirmación de la Clave !");
+				InfoView.showErrorDialog(this, "Ingrese la Confirmación de la Clave !");
 				return false;
 			}
 			if (clave.trim().compareTo(confirmarClave.trim()) != 0) {
-				efren.util.gui.dialogs.InfoView.showErrorDialog(this, "¡ La clave no es la misma en la repetición hecha !");
+				InfoView.showErrorDialog(this, "¡ La clave no es la misma en la repetición hecha !");
 				return false;
 			}
 		}
@@ -812,5 +766,21 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 			jCheckBoxActivo.setSelected(true);
 		}
 		return jCheckBoxActivo;
+	}
+
+	/**
+	 * @return the repository
+	 */
+	public UsuarioRepository getRepository() {
+		return repository;
+	}
+
+	/**
+	 * @param repository
+	 *            the repository to set
+	 */
+	@Autowired
+	public void setRepository(UsuarioRepository repository) {
+		this.repository = repository;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

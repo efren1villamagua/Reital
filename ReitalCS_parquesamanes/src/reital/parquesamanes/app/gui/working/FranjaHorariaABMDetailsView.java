@@ -23,6 +23,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import efren.util.ExceptionManager;
 import efren.util.MethodInvocation;
 import efren.util.StringTools;
@@ -33,6 +36,7 @@ import efren.util.gui.text.TextFieldExtListener;
 import reital.parquesamanes.domain.FranjaHorariaRepository;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
+@Component
 public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
 	/**
 	 *
@@ -3068,6 +3072,7 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 	 * @param repository
 	 *            the repository to set
 	 */
+	@Autowired
 	public void setRepository(FranjaHorariaRepository repository) {
 		this.repository = repository;
 	}
