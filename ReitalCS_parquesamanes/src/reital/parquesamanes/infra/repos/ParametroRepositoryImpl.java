@@ -25,7 +25,7 @@ public class ParametroRepositoryImpl implements ParametroRepository {
 		BigDecimal valor = null;
 
 		try {
-			String sql = "SELECT VALOR " + " FROM  PARAMETRO " + " WHERE CODIGO='" + VALOR_HORA_FRACCION + "' ";
+			String sql = "SELECT VALOR FROM PARAMETRO WHERE CODIGO='" + VALOR_HORA_FRACCION + "' ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
@@ -51,7 +51,7 @@ public class ParametroRepositoryImpl implements ParametroRepository {
 
 		int minutosGracia = -1;
 		try {
-			String sql = "SELECT VALOR " + " FROM  PARAMETRO " + " WHERE CODIGO='" + CANTIDAD_MINUTOS_GRACIA + "' ";
+			String sql = "SELECT VALOR FROM PARAMETRO WHERE CODIGO='" + CANTIDAD_MINUTOS_GRACIA + "' ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
@@ -77,7 +77,7 @@ public class ParametroRepositoryImpl implements ParametroRepository {
 
 		boolean imprimeRecibo = false;
 		try {
-			String sql = "SELECT VALOR " + " FROM  PARAMETRO " + " WHERE CODIGO='" + IMPRIMIR_RECIBO + "' ";
+			String sql = "SELECT VALOR FROM PARAMETRO WHERE CODIGO='" + IMPRIMIR_RECIBO + "' ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
