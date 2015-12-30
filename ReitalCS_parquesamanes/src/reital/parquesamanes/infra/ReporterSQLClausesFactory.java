@@ -3,7 +3,7 @@ package reital.parquesamanes.infra;
 import java.sql.Date;
 
 import efren.util.config.SystemProperties;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ReporterSQLClausesFactory {
 

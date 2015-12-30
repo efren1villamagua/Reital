@@ -1,4 +1,4 @@
-package reital.parquesamanes.serialport.util;
+package reital.parquesamanes.app.serialport.util;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,7 +19,7 @@ import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class SerialPortTesterView extends JFrame {
 

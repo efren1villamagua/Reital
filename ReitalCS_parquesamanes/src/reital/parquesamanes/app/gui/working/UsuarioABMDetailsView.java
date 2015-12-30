@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.gui.working;
+package reital.parquesamanes.app.gui.working;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -15,9 +15,9 @@ import efren.util.config.SystemProperties;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.PasswordFieldExt;
 import efren.util.gui.text.TextFieldExt;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.Usuario;
 import reital.parquesamanes.infra.ParqueSamanesConn;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
 
 public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
 	/**

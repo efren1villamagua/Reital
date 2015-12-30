@@ -1,7 +1,7 @@
 package reital.parquesamanes.domain.entidades;
 
 import efren.util.entidades.EntityObjectUtil;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 /**
  * This type was created in VisualAge.

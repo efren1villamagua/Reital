@@ -5,11 +5,11 @@ import java.sql.Statement;
 
 import efren.util.SystemLogManager;
 import efren.util.config.SystemProperties;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
 import reital.parquesamanes.domain.AutenticacionRespuesta.ResultadoLogon;
 import reital.parquesamanes.domain.LogonRepository;
 import reital.parquesamanes.infra.util.GarbageRecollector;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
 
 public class LogonRepositoryImpl implements LogonRepository {
 

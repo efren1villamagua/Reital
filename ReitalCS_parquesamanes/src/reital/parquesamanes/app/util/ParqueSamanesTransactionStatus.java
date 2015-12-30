@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.util;
+package reital.parquesamanes.app.util;
 
 public class ParqueSamanesTransactionStatus {
 	private boolean ok = false;

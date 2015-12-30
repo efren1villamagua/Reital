@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.gui.working;
+package reital.parquesamanes.app.gui.working;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,7 +20,7 @@ import javax.swing.SwingConstants;
 
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ControlPanelView extends JFrame {
 	/**
@@ -252,7 +252,7 @@ public class ControlPanelView extends JFrame {
 	 *
 	 */
 	private void abrirDialogCambiarParametros() {
-		ParametrosDialog vd = new ParametrosDialog(this, new PagoModel(this));
+		ParametrosDialog vd = new ParametrosDialog(this, new PagoModel());
 		vd.setResizable(false);
 		vd.setVisible(true);
 		vd.toFront();

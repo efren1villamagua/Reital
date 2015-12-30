@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.gui.working;
+package reital.parquesamanes.app.gui.working;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -37,8 +37,8 @@ import javax.swing.SwingConstants;
 import efren.util.CalendarManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes.lector.gui.working.PagoController.CadenaPair;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.gui.working.PagoController.CadenaPair;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class PagoView extends JFrame {
 	/**
@@ -165,7 +165,7 @@ public class PagoView extends JFrame {
 	 *
 	 */
 	private void initController() {
-		PagoModel pagoModel = new PagoModel(this);
+		PagoModel pagoModel = new PagoModel();
 		setPagoController(new PagoController(this, pagoModel));
 		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = pagoModel.getMinutosGracia();
 	}

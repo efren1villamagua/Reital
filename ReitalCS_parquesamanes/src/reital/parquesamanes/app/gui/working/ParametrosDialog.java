@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.gui.working;
+package reital.parquesamanes.app.gui.working;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -18,8 +18,8 @@ import efren.util.gui.bars.BarraAceptarCancelarPanelListener;
 import efren.util.gui.dialogs.DialogExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
-import reital.parquesamanes.lector.gui.working.PagoModel.Valores;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.gui.working.PagoModel.Valores;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarPanelListener, MouseListener {
 	/**

@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.gui.seguridades;
+package reital.parquesamanes.app.gui.seguridades;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -24,25 +24,31 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
-import efren.seguridades.gui.UTILefrenView;
 import efren.util.WindowManager2;
+import efren.util.config.SystemProperties;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes.infra.DBConnectionModel;
-import reital.parquesamanes.lector.gui.working.UsuarioABMView;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.SpringInitializator;
+import reital.parquesamanes.app.gui.working.ControlPanelView;
+import reital.parquesamanes.app.gui.working.PagoView;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
+import reital.parquesamanes.domain.AutenticacionRespuesta;
+import reital.parquesamanes.domain.LogonRepository;
 
-public class LogonToUsuariosView extends JFrame {
+@Component
+public class LogonView extends JFrame {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -556079025843630131L;
 
-	public static String usuario = null;
+	private LogonRepository logonRepository;
 
 	private JPanel jContentPane = null;
 
@@ -60,24 +66,26 @@ public class LogonToUsuariosView extends JFrame {
 
 	private JLabel jLabel3 = null;
 
-	private JButton jButton1 = null;
+	private static boolean admin = false;
 
-	public LogonToUsuariosView() throws HeadlessException {
+	private static String username = null;
+
+	public LogonView() throws HeadlessException {
 		super();
 		initialize();
 	}
 
-	public LogonToUsuariosView(GraphicsConfiguration gc) {
+	public LogonView(GraphicsConfiguration gc) {
 		super(gc);
 		initialize();
 	}
 
-	public LogonToUsuariosView(String title) throws HeadlessException {
+	public LogonView(String title) throws HeadlessException {
 		super(title);
 		initialize();
 	}
 
-	public LogonToUsuariosView(String title, GraphicsConfiguration gc) {
+	public LogonView(String title, GraphicsConfiguration gc) {
 		super(title, gc);
 		initialize();
 	}
@@ -117,8 +125,9 @@ public class LogonToUsuariosView extends JFrame {
 			jButton = new JButton();
 			jButton.setText("Ingresar");
 			jButton.setMnemonic(KeyEvent.VK_I);
-			jButton.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/key1.png")));
+			jButton.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/unlock24x24.png")));
 			jButton.addMouseListener(new MouseAdapter() {
+
 				public void mouseEntered(MouseEvent e) {
 					jButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
@@ -126,11 +135,14 @@ public class LogonToUsuariosView extends JFrame {
 				public void mouseExited(MouseEvent e) {
 					jButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
+
 			});
 			jButton.addActionListener(new ActionListener() {
+
 				public void actionPerformed(ActionEvent e) {
 					accesar();
 				}
+
 			});
 		}
 		return jButton;
@@ -143,93 +155,61 @@ public class LogonToUsuariosView extends JFrame {
 	 */
 	private JPanel getJPanel() {
 		if (jPanel == null) {
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 3;
-			gridBagConstraints.anchor = GridBagConstraints.SOUTHEAST;
-			gridBagConstraints.insets = new Insets(1, 1, 1, 1);
-			gridBagConstraints.weightx = 1.0;
-			gridBagConstraints.weighty = 1.0;
-			gridBagConstraints.gridy = 2;
 			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-			gridBagConstraints11.gridx = 2;
-			gridBagConstraints11.insets = new Insets(5, 5, 5, 5);
+			gridBagConstraints11.gridx = 0;
 			gridBagConstraints11.weightx = 1.0;
 			gridBagConstraints11.weighty = 1.0;
-			gridBagConstraints11.gridy = 0;
+			gridBagConstraints11.insets = new Insets(5, 5, 5, 5);
+			gridBagConstraints11.fill = GridBagConstraints.BOTH;
+			gridBagConstraints11.gridy = 2;
 			jLabel3 = new JLabel();
 			jLabel3.setText("");
-			jLabel3.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/users128x128.png")));
+			jLabel3.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/bft_galleria-bgv-01.jpg")));
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
-			gridBagConstraints6.gridx = 2;
+			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.insets = new Insets(5, 5, 5, 5);
 			gridBagConstraints6.weightx = 1.0;
 			gridBagConstraints6.weighty = 1.0;
-			gridBagConstraints6.gridy = 2;
+			gridBagConstraints6.gridy = 3;
 			jPanel = new JPanel();
 			jPanel.setLayout(new GridBagLayout());
 			jPanel.setBackground(Color.white);
 			jPanel.add(getJContentPane(), gridBagConstraints6);
 			jPanel.add(jLabel3, gridBagConstraints11);
-			jPanel.add(getJButton1(), gridBagConstraints);
 		}
 		return jPanel;
-	}
-
-	/**
-	 * This method initializes jButton1
-	 *
-	 * @return javax.swing.JButton
-	 */
-	private JButton getJButton1() {
-		if (jButton1 == null) {
-			jButton1 = new JButton();
-			jButton1.setMnemonic(KeyEvent.VK_I);
-			jButton1.setText("Encriptador");
-			jButton1.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/paquete.png")));
-			jButton1.addMouseListener(new MouseAdapter() {
-				public void mouseEntered(MouseEvent e) {
-					jButton1.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-
-				public void mouseExited(MouseEvent e) {
-					jButton1.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			});
-			jButton1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					mostrarEncriptador();
-				}
-			});
-		}
-		return jButton1;
 	}
 
 	public static void main(String args[]) {
 		Locale.setDefault(new Locale("es", "ES"));
 		try {
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
+
+			LogonView ventana = SpringInitializator.getSingleton().getLogonViewBean();
+
+			ventana.setResizable(false);
+			ventana.setVisible(true);
+			ventana.toFront();
 		} catch (Throwable exception) {
+			System.out.println(exception.getMessage());
+			exception.printStackTrace(System.out);
+			System.exit(1);
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				LogonToUsuariosView thisClass = new LogonToUsuariosView();
-				thisClass.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-				thisClass.setResizable(false);
-				thisClass.setVisible(true);
-			}
-		});
 	}
 
 	private void initialize() {
+		setCursor(new Cursor(0));
 		this.setContentPane(getJPanel());
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
-		setSize(429, 297);
-		setTitle("Reital - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - Usuarios - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setDefaultCloseOperation(0);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/clock16x16.png")));
+		setSize(447, 377);
+		setTitle("Reital - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - Login - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		addWindowListener(new WindowAdapter() {
+
 			public void windowClosing(WindowEvent e) {
 				cerrarVentana();
 			}
+
 		});
 		setResizable(false);
 		WindowManager2.centerWindow(this);
@@ -256,7 +236,7 @@ public class LogonToUsuariosView extends JFrame {
 			gridBagConstraints1.insets = new Insets(0, 0, 2, 10);
 			gridBagConstraints2.gridx = 2;
 			gridBagConstraints2.gridy = 0;
-			gridBagConstraints2.anchor = GridBagConstraints.EAST;
+			gridBagConstraints2.anchor = GridBagConstraints.SOUTHEAST;
 			gridBagConstraints2.insets = new Insets(0, 10, 2, 0);
 			jLabel.setText("Usuario:");
 			jLabel.setDisplayedMnemonic(85);
@@ -270,12 +250,11 @@ public class LogonToUsuariosView extends JFrame {
 			gridBagConstraints3.insets = new Insets(2, 0, 0, 10);
 			gridBagConstraints4.gridx = 2;
 			gridBagConstraints4.gridy = 1;
-			gridBagConstraints4.anchor = GridBagConstraints.EAST;
+			gridBagConstraints4.anchor = GridBagConstraints.NORTHEAST;
 			gridBagConstraints4.insets = new Insets(2, 10, 0, 0);
 			jLabel1.setText("Clave:");
 			jLabel1.setDisplayedMnemonic(67);
 			gridBagConstraints5.gridx = 2;
-			gridBagConstraints5.insets = new Insets(5, 5, 5, 5);
 			gridBagConstraints5.anchor = GridBagConstraints.NORTH;
 			gridBagConstraints5.gridy = 2;
 			gridBagConstraints5.weighty = 1.0D;
@@ -308,24 +287,51 @@ public class LogonToUsuariosView extends JFrame {
 		for (int i = 0; i < getJPasswordField().getPassword().length; i++) {
 			key = key + String.valueOf(getJPasswordField().getPassword()[i]);
 		}
-		LogonToUsuariosView.usuario = userName;
-
-		boolean autenticado = DBConnectionModel.autenticar(userName, key);
-		if (!autenticado) {
-			InfoView.showErrorDialog(this, "¡ Usuario o clave incorrecta !");
-			getJTextField().setText("");
-			getJPasswordField().setText("");
-			getJTextField().requestFocus();
+		LogonView.setUsername(userName);
+		try {
+			boolean autenticado = autenticar(userName, key);
+			if (!autenticado) {
+				getJTextField().setText("");
+				getJPasswordField().setText("");
+				getJTextField().requestFocus();
+				return;
+			}
+		} catch (Exception exc) {
+			exc.getMessage();
+			InfoView.showErrorDialog(this, "ERROR: " + exc.getMessage());
 			return;
 		}
 		/**
 		 *
 		 */
-		UsuarioABMView ventana = new UsuarioABMView();
-		// ventana.setResizable(false);
+		JFrame ventana = LogonView.isAdmin() ? new ControlPanelView() : new PagoView();
 		ventana.setVisible(true);
 
 		dispose();
+	}
+
+	private boolean autenticar(String userName, String key) {
+
+		AutenticacionRespuesta respuesta = getLogonRepository().autenticar(userName, key);
+
+		if (respuesta == null) {
+			return false;
+		}
+
+		switch (respuesta.getResultadoLogon()) {
+		case USUARIO_O_CLAVE_INCORRECTA:
+		case USUARIO_INACTIVO:
+		case ERROR_AL_AUTENTICAR:
+			return false;
+		case AUTENTICACION_OK:
+			LogonView.setAdmin(respuesta.isAdmin());
+			SystemProperties.RUNTIME_USER_NAME = userName;
+			SystemProperties.RUNTIME_NOMBRE_USUARIO = respuesta.getNombreUsuario();
+			return true;
+		default:
+			return false;
+		}
+
 	}
 
 	/**
@@ -334,15 +340,49 @@ public class LogonToUsuariosView extends JFrame {
 	private void cerrarVentana() {
 		if (InfoView.showConfirmDialog(this, "Desea salir del sistema?") == 0) {
 			dispose();
+
+			SpringInitializator.getSingleton().destroy();
+
 			System.exit(0);
 		}
 	}
 
 	/**
-	 *
+	 * @return the admin
 	 */
-	private void mostrarEncriptador() {
-		UTILefrenView ventana = new UTILefrenView(false);
-		ventana.setVisible(true);
+	public static boolean isAdmin() {
+		return admin;
+	}
+
+	/**
+	 * @param admin
+	 *            the admin to set
+	 */
+	public static void setAdmin(boolean admin) {
+		LogonView.admin = admin;
+	}
+
+	/**
+	 * @return the username
+	 */
+	public static String getUsername() {
+		return username;
+	}
+
+	/**
+	 * @param username
+	 *            the username to set
+	 */
+	public static void setUsername(String username) {
+		LogonView.username = username;
+	}
+
+	public LogonRepository getLogonRepository() {
+		return logonRepository;
+	}
+
+	@Autowired
+	public void setLogonRepository(LogonRepository logonRepository) {
+		this.logonRepository = logonRepository;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

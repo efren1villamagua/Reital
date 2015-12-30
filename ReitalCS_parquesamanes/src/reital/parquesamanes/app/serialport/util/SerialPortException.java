@@ -1,4 +1,4 @@
-package reital.parquesamanes.serialport.util;
+package reital.parquesamanes.app.serialport.util;
 
 public class SerialPortException extends Exception {
 

@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.gui.working;
+package reital.parquesamanes.app.gui.working;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -11,11 +11,11 @@ import efren.util.StringTools;
 import efren.util.gui.dialogs.InfoView;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import reital.parquesamanes.app.serialport.util.SerialPortException;
+import reital.parquesamanes.app.serialport.util.SerialPortModel;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
-import reital.parquesamanes.serialport.util.SerialPortException;
-import reital.parquesamanes.serialport.util.SerialPortModel;
 
 public class PagoController {
 	/**
@@ -121,7 +121,7 @@ public class PagoController {
 	 */
 	public void registrarActividad() {
 
-		this.pagoModel.registrarActividad(getActividad());
+		getModel().registrarActividad(getActividad());
 
 		this.pagoView.reinicializarVisual();
 	}
@@ -144,7 +144,8 @@ public class PagoController {
 	 *
 	 */
 	public boolean yaSalio(String secuenciaCaracteres) {
-		return this.pagoModel.yaSalio(parseSecuenciaCaracteres(secuenciaCaracteres));
+
+		return getModel().yaSalio(parseSecuenciaCaracteres(secuenciaCaracteres));
 	}
 
 	/**
@@ -299,7 +300,7 @@ public class PagoController {
 				return;
 			}
 
-			ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = pagoModel.getMinutosGracia();
+			ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = getModel().getMinutosGracia();
 
 			/**
 			 *
@@ -413,7 +414,7 @@ public class PagoController {
 					Hashtable<Integer, BigDecimal> hv = null;
 
 					Vector<FranjaHoraria> franjasPorCobrar = new Vector<FranjaHoraria>();
-					FranjaHoraria franjaAnterior = pagoModel.getFranjaHorariaFor(minutosTemp);
+					FranjaHoraria franjaAnterior = getModel().getFranjaHorariaFor(minutosTemp);
 					FranjaHoraria franjaNueva = null;
 					int horasCount = 0;
 
@@ -423,7 +424,7 @@ public class PagoController {
 
 					while (minutosTemp < minutosSalidaAbsolutos) {
 						try {
-							franjaNueva = pagoModel.getFranjaHorariaFor(minutosTemp);
+							franjaNueva = getModel().getFranjaHorariaFor(minutosTemp);
 							cambioFranja = !franjaNueva.getNombre().equalsIgnoreCase(franjaAnterior.getNombre());
 							if (cambioFranja) {
 								/**

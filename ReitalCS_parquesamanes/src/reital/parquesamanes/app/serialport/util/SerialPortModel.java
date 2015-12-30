@@ -1,4 +1,4 @@
-package reital.parquesamanes.serialport.util;
+package reital.parquesamanes.app.serialport.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -8,8 +8,8 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
-import reital.parquesamanes.lector.util.ParqueSamanesTransactionStatus;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.util.ParqueSamanesTransactionStatus;
 
 public class SerialPortModel {
 

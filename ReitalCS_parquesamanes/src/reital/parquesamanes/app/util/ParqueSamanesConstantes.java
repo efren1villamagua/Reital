@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.util;
+package reital.parquesamanes.app.util;
 
 import java.io.File;
 import java.io.FileInputStream;

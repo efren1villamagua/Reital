@@ -1,9 +1,10 @@
-package reital.parquesamanes.lector.gui.working;
+package reital.parquesamanes.app.gui.working;
 
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -11,14 +12,13 @@ import javax.swing.WindowConstants;
 
 import efren.util.ExceptionManager;
 import efren.util.WindowManager2;
-import efren.util.config.SystemProperties;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.table.DataTableColumn;
-import reital.parquesamanes.domain.entidades.Usuario;
-import reital.parquesamanes.infra.ParqueSamanesConn;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
+import reital.parquesamanes.domain.FranjaHorariaRepository;
+import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
-public class UsuarioABMView extends JFrame
+public class FranjaHorariaABMView extends JFrame
 		implements efren.util.gui.table.DataTablePanelListener, efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
 	/**
 	 *
@@ -31,11 +31,13 @@ public class UsuarioABMView extends JFrame
 
 	private efren.util.gui.table.DataTablePanel ivjDataTablePanel = null;
 
+	private FranjaHorariaRepository repository = null;
+
 	/**
 	 * Constructor
 	 */
 	/* WARNING: THIS METHOD WILL BE REGENERATED. */
-	public UsuarioABMView() {
+	public FranjaHorariaABMView() {
 		super();
 		initialize();
 	}
@@ -46,15 +48,14 @@ public class UsuarioABMView extends JFrame
 	 * @param title
 	 *            java.lang.String
 	 */
-	public UsuarioABMView(String title) {
+	public FranjaHorariaABMView(String title) {
 		super(title);
 	}
 
 	public void _cerrar() {
-		if (InfoView.showConfirmDialog(this, "Desea salir ?") == 0) {
+		if (InfoView.showConfirmDialog(this, "Desea salir de esta opción ?") == 0) {
 			getobserver().cerrarVentanas();
 			this.dispose();
-			System.exit(0);
 		}
 	}
 
@@ -206,7 +207,7 @@ public class UsuarioABMView extends JFrame
 
 	/**
 	 * connEtoC5: (DataTablePanel.selectedObjectFromDoubleClick -->
-	 * UsuarioABMView.modificar()V)
+	 * FranjaHorariaABMView.modificar()V)
 	 *
 	 * @param arg1
 	 *            java.beans.PropertyChangeEvent
@@ -230,42 +231,13 @@ public class UsuarioABMView extends JFrame
 
 		this.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
 
-		try {
+		getDataTablePanel().clearSelection();
+		getDataTablePanel().removeAll();
 
-			java.sql.Statement st = ParqueSamanesConn.getConnection().createStatement();
-			String sql = " SELECT " + " u.USERNAME, u.CLAVE, u.NOMBRE, u.TIPO, u.ESTADO " + " FROM " + SystemProperties.SCHEMA_SEGURIDADES + "." + "USUARIO u ";
-			if (getDataTablePanel().SQL_ORDER_BY_text().length() == 0) {
-				sql = sql + " ORDER BY u.NOMBRE";
-			} else {
-				sql = sql + getDataTablePanel().SQL_ORDER_BY_text();
-			}
-			java.sql.ResultSet rs = st.executeQuery(sql);
+		List<FranjaHoraria> bos = getRepository().getAll();
 
-			getDataTablePanel().clearSelection();
-			getDataTablePanel().removeAll();
-
-			Usuario bo;
-
-			while (rs.next()) {
-
-				bo = new Usuario();
-
-				bo.setNombre(rs.getString("NOMBRE").trim());
-				bo.setUserName(rs.getString("USERNAME").trim());
-				bo.setEstado(rs.getString("ESTADO"));
-				bo.setClave(rs.getString("CLAVE").trim());
-				bo.setTipo(rs.getString("TIPO"));
-
-				getDataTablePanel().add(bo);
-			}
-
-			st.close();
-
-		} catch (Throwable t) {
-			getDataTablePanel().clearSelection();
-			getDataTablePanel().removeAll();
-			t.getMessage();
-			this.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+		for (FranjaHoraria franjaHoraria : bos) {
+			getDataTablePanel().add(franjaHoraria);
 		}
 
 		this.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -279,15 +251,15 @@ public class UsuarioABMView extends JFrame
 		 * que aparezca en dicha ventana
 		 */
 
-		UsuarioABMDetailsView view = new UsuarioABMDetailsView();
+		FranjaHorariaABMDetailsView view = new FranjaHorariaABMDetailsView();
 
 		view.setObserverThis(getobserver());
 		view.mainView = this;
 
-		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoEliminado("ELIMINAR usuario");
+		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoEliminado("ELIMINAR franja horaria");
 		view.setAbmEstado(estado);
 
-		Usuario bo = (Usuario) getDataTablePanel().getSelectedObject();
+		FranjaHoraria bo = (FranjaHoraria) getDataTablePanel().getSelectedObject();
 
 		view.bo = bo;
 		view.setAbmEstado(estado);
@@ -390,11 +362,11 @@ public class UsuarioABMView extends JFrame
 			ivjDataTablePanel.setName("DataTablePanel");
 			ivjDataTablePanel.setOpcionesBarButton02Visible(false);
 			Vector<DataTableColumn> columnsDefinition = new Vector<DataTableColumn>();
-			columnsDefinition.add(new DataTableColumn("User Name", 90, "userName", false, "USERNAME"));
-			columnsDefinition.add(new DataTableColumn("Nombre", 150, "nombre", false, "NOMBRE"));
-			columnsDefinition.add(new DataTableColumn("Administrador", 130, "administrador", false, null));
-			columnsDefinition.add(new DataTableColumn("Activo", 70, "activo", false, null));
-			ivjDataTablePanel.setColumnsDefinition(Usuario.class, columnsDefinition);
+			columnsDefinition.add(new DataTableColumn("Código", 90, "codigo", false, null));
+			columnsDefinition.add(new DataTableColumn("Nombre", 150, "nombre", false, null));
+			columnsDefinition.add(new DataTableColumn("Inicio", 90, "horaInicio", false, null));
+			columnsDefinition.add(new DataTableColumn("Fin", 90, "horaFin", false, null));
+			ivjDataTablePanel.setColumnsDefinition(FranjaHoraria.class, columnsDefinition);
 		}
 		return ivjDataTablePanel;
 	}
@@ -422,79 +394,46 @@ public class UsuarioABMView extends JFrame
 		try {
 			// user code begin {1}
 			// user code end
-			setName("UsuarioABMView");
+			setName("FranjaHorariaABMView");
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-			setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
-			setSize(629, 506);
-			setTitle("Reital - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - USUARIOS - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+			setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/calendar16x16.png")));
+			setSize(604, 390);
+			setTitle("Franjas Horarias - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 			setContentPane(getJFrameContentPane());
 			initConnections();
 		} catch (java.lang.Throwable ivjExc) {
 			handleException(ivjExc);
 		}
-		// user code begin {2}
 		WindowManager2.centerWindow(this);
-		this.addWindowListener(new WindowListener() {
-			public void windowOpened(WindowEvent e) {
-			}
-
-			public void windowIconified(WindowEvent e) {
-			}
-
-			public void windowDeiconified(WindowEvent e) {
-			}
-
-			public void windowDeactivated(WindowEvent e) {
-			}
-
+		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				try {
 					_cerrar();
 				} catch (Throwable t) {
 					t.getMessage();
 				}
-
-			}
-
-			public void windowClosed(WindowEvent e) {
-			}
-
-			public void windowActivated(WindowEvent e) {
 			}
 		});
 		this.dataFetch();
-		// user code end
 	}
 
-	/**
-	 * Method to handle events for the TextFieldExtListener interface.
-	 *
-	 * @param newEvent
-	 *            java.awt.event.KeyEvent
-	 */
-	/* WARNING: THIS METHOD WILL BE REGENERATED. */
 	public void keyReleased(java.awt.event.KeyEvent newEvent) {
-		// user code begin {1}
-		// user code end
-		// user code begin {2}
-		// user code end
 	}
 
 	private void modificar() throws Exception {
 
 		if (!(getDataTablePanel().getOpcionesBarButton01Visible() && getDataTablePanel().getOpcionesBarButton01Enabled()))
 			return;
-		// manejo de doble click
 
-		UsuarioABMDetailsView view = new UsuarioABMDetailsView();
+		FranjaHorariaABMDetailsView view = new FranjaHorariaABMDetailsView();
 
 		view.setObserverThis(getobserver());
 		view.mainView = this;
 
-		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoModificado("MODIFICAR usuario");
+		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoModificado("MODIFICAR franja horaria");
 		view.setAbmEstado(estado);
 
-		Usuario bo = (Usuario) getDataTablePanel().getSelectedObject();
+		FranjaHoraria bo = (FranjaHoraria) getDataTablePanel().getSelectedObject();
 
 		view.bo = bo;
 		view.setAbmEstado(estado);
@@ -511,15 +450,15 @@ public class UsuarioABMView extends JFrame
 		 * que aparezca en dicha ventana
 		 */
 
-		UsuarioABMDetailsView view = new UsuarioABMDetailsView();
+		FranjaHorariaABMDetailsView view = new FranjaHorariaABMDetailsView();
 
 		view.setObserverThis(getobserver());
 		view.mainView = this;
 
-		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoNuevo("NUEVO usuario");
+		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoNuevo("NUEVA franja horaria");
 		view.setAbmEstado(estado);
 
-		Usuario bo = new Usuario();
+		FranjaHoraria bo = new FranjaHoraria();
 		// bo.setOid(efren.util.OidManager.newOid());
 
 		view.bo = bo;
@@ -647,5 +586,20 @@ public class UsuarioABMView extends JFrame
 		// user code end
 		// user code begin {2}
 		// user code end
+	}
+
+	/**
+	 * @return the repository
+	 */
+	public FranjaHorariaRepository getRepository() {
+		return repository;
+	}
+
+	/**
+	 * @param repository
+	 *            the repository to set
+	 */
+	public void setRepository(FranjaHorariaRepository repository) {
+		this.repository = repository;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

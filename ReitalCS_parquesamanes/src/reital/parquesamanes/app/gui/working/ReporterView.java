@@ -1,4 +1,4 @@
-package reital.parquesamanes.lector.gui.working;
+package reital.parquesamanes.app.gui.working;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -37,9 +37,9 @@ import efren.util.reportes.DetallesPresentacionPanel;
 import efren.util.reportes.tools.TableModel;
 import inetsoft.report.StyleFont;
 import inetsoft.report.StyleSheet;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.infra.ParqueSamanesConn;
 import reital.parquesamanes.infra.ReporterSQLClausesFactory;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
 
 public class ReporterView extends DialogExt {
 	/**

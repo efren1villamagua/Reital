@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import efren.util.CoderManager;
 import efren.util.Conn;
-import reital.parquesamanes.lector.util.ParqueSamanesConstantes;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class DBConnectionModel {
 	/**

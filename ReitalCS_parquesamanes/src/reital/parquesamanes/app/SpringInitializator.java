@@ -3,7 +3,7 @@ package reital.parquesamanes.app;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import efren.util.SystemLogManager;
-import reital.parquesamanes.lector.gui.seguridades.LogonView;
+import reital.parquesamanes.app.gui.seguridades.LogonView;
 
 public class SpringInitializator {
 
