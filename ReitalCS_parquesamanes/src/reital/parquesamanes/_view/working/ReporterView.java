@@ -549,6 +549,7 @@ public class ReporterView extends DialogExt {
 	 */
 	/* WARNING: THIS METHOD WILL BE REGENERATED. */
 	private void initialize() {
+		setSqlClausesFactory(new ReporterSQLClausesFactory());
 		setName("DataTableReporterView");
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setSize(713, 614);
@@ -557,7 +558,6 @@ public class ReporterView extends DialogExt {
 		setResizable(true);
 		setModal(true);
 		WindowManager.centerWindow2(this);
-		setSqlClausesFactory(new ReporterSQLClausesFactory());
 	}
 
 	/**

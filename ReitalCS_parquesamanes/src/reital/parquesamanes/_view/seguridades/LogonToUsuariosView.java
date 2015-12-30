@@ -29,12 +29,15 @@ import javax.swing.UIManager;
 
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
-import efren.seguridades.gui.UTILefrenView;
+import efren.util.LoggerManager;
+import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes._view.working.UsuarioABMView;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.infra.DBConnectionModel;
+import reital.parquesamanes.infra.ParqueSamanesConn;
 
 public class LogonToUsuariosView extends JFrame {
 	/**
@@ -144,14 +147,15 @@ public class LogonToUsuariosView extends JFrame {
 	private JPanel getJPanel() {
 		if (jPanel == null) {
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 3;
+			gridBagConstraints.gridx = 1;
 			gridBagConstraints.anchor = GridBagConstraints.SOUTHEAST;
 			gridBagConstraints.insets = new Insets(1, 1, 1, 1);
 			gridBagConstraints.weightx = 1.0;
 			gridBagConstraints.weighty = 1.0;
 			gridBagConstraints.gridy = 2;
 			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-			gridBagConstraints11.gridx = 2;
+			gridBagConstraints11.gridwidth = 2;
+			gridBagConstraints11.gridx = 0;
 			gridBagConstraints11.insets = new Insets(5, 5, 5, 5);
 			gridBagConstraints11.weightx = 1.0;
 			gridBagConstraints11.weighty = 1.0;
@@ -160,8 +164,8 @@ public class LogonToUsuariosView extends JFrame {
 			jLabel3.setText("");
 			jLabel3.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/users128x128.png")));
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
-			gridBagConstraints6.gridx = 2;
-			gridBagConstraints6.insets = new Insets(5, 5, 5, 5);
+			gridBagConstraints6.gridx = 0;
+			gridBagConstraints6.insets = new Insets(5, 5, 0, 5);
 			gridBagConstraints6.weightx = 1.0;
 			gridBagConstraints6.weighty = 1.0;
 			gridBagConstraints6.gridy = 2;
@@ -205,6 +209,12 @@ public class LogonToUsuariosView extends JFrame {
 	}
 
 	public static void main(String args[]) {
+		try {
+			LoggerManager.init(ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "_" + LogonToUsuariosView.class.getSimpleName());
+			SystemLogManager.setLogger(LoggerManager.logger);
+		} catch (Exception e) {
+			e.getMessage();
+		}
 		Locale.setDefault(new Locale("es", "ES"));
 		try {
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -224,7 +234,7 @@ public class LogonToUsuariosView extends JFrame {
 		this.setContentPane(getJPanel());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
-		setSize(429, 297);
+		setSize(429, 335);
 		setTitle("Reital - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - Usuarios - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -333,7 +343,21 @@ public class LogonToUsuariosView extends JFrame {
 	 */
 	private void cerrarVentana() {
 		if (InfoView.showConfirmDialog(this, "Desea salir del sistema?") == 0) {
-			dispose();
+			try {
+				dispose();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
+			try {
+				ParqueSamanesConn.getConnection().close();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
+			try {
+				SpringInitializator.getSingleton().destroy();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
 			System.exit(0);
 		}
 	}
@@ -342,7 +366,8 @@ public class LogonToUsuariosView extends JFrame {
 	 *
 	 */
 	private void mostrarEncriptador() {
-		UTILefrenView ventana = new UTILefrenView(false);
-		ventana.setVisible(true);
+		InfoView.showErrorDialog(this, "Opción no disponible");
+		// UTILefrenView ventana = new UTILefrenView(false);
+		// ventana.setVisible(true);
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

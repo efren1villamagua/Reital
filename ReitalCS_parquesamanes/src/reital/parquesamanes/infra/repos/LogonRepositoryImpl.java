@@ -59,11 +59,15 @@ public class LogonRepositoryImpl implements LogonRepository {
 			if (!registroEncontrado) {
 				SystemLogManager.info("Usuario no encontrado");
 				respuesta.setResultadoLogon(ResultadoLogon.USUARIO_O_CLAVE_INCORRECTA);
+				GarbageRecollector.closeAndFinalize(null, st, null);
+				return respuesta;
 			}
 
 			if (!activo) {
 				SystemLogManager.info("Usuario inactivo");
 				respuesta.setResultadoLogon(ResultadoLogon.USUARIO_INACTIVO);
+				GarbageRecollector.closeAndFinalize(null, st, null);
+				return respuesta;
 			}
 
 			clave_sys = efren.util.CoderManager.decrypt(clave_sys);
@@ -71,6 +75,8 @@ public class LogonRepositoryImpl implements LogonRepository {
 			if (!key.equals(clave_sys)) {
 				SystemLogManager.info("Clave incorrecta");
 				respuesta.setResultadoLogon(ResultadoLogon.USUARIO_O_CLAVE_INCORRECTA);
+				GarbageRecollector.closeAndFinalize(null, st, null);
+				return respuesta;
 			}
 
 			respuesta.setAdmin(administrador);

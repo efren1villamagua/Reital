@@ -103,11 +103,12 @@ public class ControlPanelView extends JFrame {
 			gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints6.weightx = 1.0;
 			gridBagConstraints6.weighty = 1.0;
-			gridBagConstraints6.gridy = 8;
+			gridBagConstraints6.gridy = 4;
 			GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
+			gridBagConstraints13.insets = new Insets(0, 0, 5, 0);
 			gridBagConstraints13.gridx = 0;
 			gridBagConstraints13.gridwidth = 2;
-			gridBagConstraints13.gridy = 7;
+			gridBagConstraints13.gridy = 3;
 			jPanel4 = new JPanel();
 			jPanel4.setLayout(new GridBagLayout());
 			jPanel4.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));

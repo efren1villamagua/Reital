@@ -258,7 +258,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 
 			java.awt.GridBagConstraints constraintsBarraAceptarCancelarPanel = new java.awt.GridBagConstraints();
 			constraintsBarraAceptarCancelarPanel.gridx = 0;
-			constraintsBarraAceptarCancelarPanel.gridy = 5;
+			constraintsBarraAceptarCancelarPanel.gridy = 3;
 			constraintsBarraAceptarCancelarPanel.gridwidth = 3;
 			constraintsBarraAceptarCancelarPanel.weightx = 1.0;
 			constraintsBarraAceptarCancelarPanel.weighty = 1.0;
@@ -266,16 +266,16 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 			java.awt.GridBagConstraints constraintsTextFieldExtMinutosGracia = new java.awt.GridBagConstraints();
 			constraintsTextFieldExtMinutosGracia.ipady = 15;
 			constraintsTextFieldExtMinutosGracia.gridx = 1;
-			constraintsTextFieldExtMinutosGracia.gridy = 3;
+			constraintsTextFieldExtMinutosGracia.gridy = 1;
 			constraintsTextFieldExtMinutosGracia.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			constraintsTextFieldExtMinutosGracia.weightx = 1.0;
 			constraintsTextFieldExtMinutosGracia.anchor = GridBagConstraints.NORTHWEST;
 			constraintsTextFieldExtMinutosGracia.insets = new Insets(0, 5, 5, 5);
 			java.awt.GridBagConstraints constraintsLabelExt2 = new java.awt.GridBagConstraints();
 			constraintsLabelExt2.gridx = 1;
-			constraintsLabelExt2.gridy = 2;
+			constraintsLabelExt2.gridy = 0;
 			constraintsLabelExt2.anchor = GridBagConstraints.SOUTHWEST;
-			constraintsLabelExt2.insets = new Insets(5, 5, 0, 5);
+			constraintsLabelExt2.insets = new Insets(5, 5, 5, 5);
 			ivjJPanel1.add(getBarraAceptarCancelarPanel(), constraintsBarraAceptarCancelarPanel);
 			ivjJPanel1.add(getTextFieldExtMinutosGracia(), constraintsTextFieldExtMinutosGracia);
 			ivjJPanel1.add(getLabelExt2(), constraintsLabelExt2);
@@ -350,7 +350,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 		try {
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			setTitle("Cambio de parámetros");
-			setSize(221, 200);
+			setSize(328, 265);
 			setResizable(false);
 			setContentPane(getJPanel1());
 			initConnections();

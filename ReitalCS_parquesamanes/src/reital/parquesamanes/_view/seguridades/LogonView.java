@@ -39,6 +39,7 @@ import reital.parquesamanes.app.controllers.LogonController;
 import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
+import reital.parquesamanes.infra.ParqueSamanesConn;
 
 public class LogonView extends JFrame {
 	/**
@@ -155,18 +156,18 @@ public class LogonView extends JFrame {
 			gridBagConstraints11.gridx = 0;
 			gridBagConstraints11.weightx = 1.0;
 			gridBagConstraints11.weighty = 1.0;
-			gridBagConstraints11.insets = new Insets(5, 5, 5, 5);
+			gridBagConstraints11.insets = new Insets(5, 5, 5, 0);
 			gridBagConstraints11.fill = GridBagConstraints.BOTH;
-			gridBagConstraints11.gridy = 2;
+			gridBagConstraints11.gridy = 0;
 			jLabel3 = new JLabel();
 			jLabel3.setText("");
 			jLabel3.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/bft_galleria-bgv-01.jpg")));
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
 			gridBagConstraints6.gridx = 0;
-			gridBagConstraints6.insets = new Insets(5, 5, 5, 5);
+			gridBagConstraints6.insets = new Insets(5, 5, 0, 0);
 			gridBagConstraints6.weightx = 1.0;
 			gridBagConstraints6.weighty = 1.0;
-			gridBagConstraints6.gridy = 3;
+			gridBagConstraints6.gridy = 1;
 			jPanel = new JPanel();
 			jPanel.setLayout(new GridBagLayout());
 			jPanel.setBackground(Color.white);
@@ -178,7 +179,7 @@ public class LogonView extends JFrame {
 
 	public static void main(String args[]) {
 		try {
-			LoggerManager.init(ParqueSamanesConstantes.EMPRESA_NOMBRE_01);
+			LoggerManager.init(ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "_" + LogonView.class.getSimpleName());
 			SystemLogManager.setLogger(LoggerManager.logger);
 		} catch (Exception e) {
 			e.getMessage();
@@ -200,11 +201,10 @@ public class LogonView extends JFrame {
 	}
 
 	private void initialize() {
-		setCursor(new Cursor(0));
 		this.setContentPane(getJPanel());
-		setDefaultCloseOperation(0);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/clock16x16.png")));
-		setSize(447, 377);
+		setSize(463, 410);
 		setTitle("Reital - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - Login - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		addWindowListener(new WindowAdapter() {
 
@@ -348,10 +348,21 @@ public class LogonView extends JFrame {
 	 */
 	private void cerrarVentana() {
 		if (InfoView.showConfirmDialog(this, "Desea salir del sistema?") == 0) {
-			dispose();
-
-			SpringInitializator.getSingleton().destroy();
-
+			try {
+				dispose();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
+			try {
+				ParqueSamanesConn.getConnection().close();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
+			try {
+				SpringInitializator.getSingleton().destroy();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
 			System.exit(0);
 		}
 	}

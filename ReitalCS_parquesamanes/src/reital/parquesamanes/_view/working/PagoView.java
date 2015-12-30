@@ -178,19 +178,19 @@ public class PagoView extends JFrame {
 		if (jPanel4 == null) {
 			GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
 			gridBagConstraints7.gridx = 0;
-			gridBagConstraints7.insets = new Insets(1, 5, 5, 5);
+			gridBagConstraints7.insets = new Insets(1, 5, 5, 0);
 			gridBagConstraints7.weightx = 1.0;
 			gridBagConstraints7.weighty = 1.0;
-			gridBagConstraints7.gridwidth = 7;
+			gridBagConstraints7.gridwidth = 2;
 			gridBagConstraints7.anchor = GridBagConstraints.NORTH;
-			gridBagConstraints7.gridy = 7;
+			gridBagConstraints7.gridy = 4;
 			jLabelStatus = new JLabel();
 			jLabelStatus.setText("...");
 			jLabelStatus.setForeground(Color.blue);
 			jLabelStatus.setFont(new Font("Arial Black", Font.BOLD, 36));
 			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
 			gridBagConstraints5.fill = GridBagConstraints.VERTICAL;
-			gridBagConstraints5.gridy = 8;
+			gridBagConstraints5.gridy = 5;
 			gridBagConstraints5.weightx = 1.0;
 			gridBagConstraints5.gridwidth = 2;
 			gridBagConstraints5.insets = new Insets(30, 30, 30, 30);
@@ -198,7 +198,7 @@ public class PagoView extends JFrame {
 			gridBagConstraints5.gridx = 0;
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
 			gridBagConstraints4.fill = GridBagConstraints.VERTICAL;
-			gridBagConstraints4.gridy = 1;
+			gridBagConstraints4.gridy = 0;
 			gridBagConstraints4.weightx = 1.0;
 			gridBagConstraints4.insets = new Insets(20, 20, 20, 20);
 			gridBagConstraints4.weighty = 1.0;
@@ -210,30 +210,30 @@ public class PagoView extends JFrame {
 			gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
 			gridBagConstraints6.weightx = 1.0;
 			gridBagConstraints6.weighty = 1.0;
-			gridBagConstraints6.gridy = 10;
+			gridBagConstraints6.gridy = 7;
 			GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
 			gridBagConstraints13.gridx = 0;
 			gridBagConstraints13.gridwidth = 2;
 			gridBagConstraints13.anchor = GridBagConstraints.SOUTHEAST;
 			gridBagConstraints13.weighty = 1.0;
 			gridBagConstraints13.weightx = 1.0;
-			gridBagConstraints13.insets = new Insets(2, 2, 2, 2);
-			gridBagConstraints13.gridy = 9;
+			gridBagConstraints13.insets = new Insets(2, 2, 5, 0);
+			gridBagConstraints13.gridy = 6;
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.anchor = GridBagConstraints.NORTHEAST;
-			gridBagConstraints2.insets = new Insets(2, 5, 1, 1);
+			gridBagConstraints2.insets = new Insets(2, 5, 5, 5);
 			gridBagConstraints2.weightx = 1.0;
-			gridBagConstraints2.gridy = 6;
+			gridBagConstraints2.gridy = 3;
 			jLabelRegistroSalida1 = new JLabel();
 			jLabelRegistroSalida1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			jLabelRegistroSalida1.setText("Salida:");
 			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 			gridBagConstraints1.gridx = 0;
 			gridBagConstraints1.anchor = GridBagConstraints.SOUTHEAST;
-			gridBagConstraints1.insets = new Insets(2, 5, 2, 1);
+			gridBagConstraints1.insets = new Insets(2, 5, 5, 5);
 			gridBagConstraints1.weightx = 1.0;
-			gridBagConstraints1.gridy = 5;
+			gridBagConstraints1.gridy = 2;
 			jLabelRegistroEntrada1 = new JLabel();
 			jLabelRegistroEntrada1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			jLabelRegistroEntrada1.setText("Entrada:");
@@ -245,19 +245,19 @@ public class PagoView extends JFrame {
 			jPanel4.setLayout(new GridBagLayout());
 			jPanel4.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 			gridBagConstraints52.gridx = 1;
-			gridBagConstraints52.gridy = 5;
+			gridBagConstraints52.gridy = 2;
 			jLabelRegistroEntrada.setText("...");
 			jLabelRegistroEntrada.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			gridBagConstraints61.gridx = 1;
-			gridBagConstraints61.gridy = 6;
+			gridBagConstraints61.gridy = 3;
 			jLabelRegistroSalida.setText("...");
 			jLabelRegistroSalida.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			gridBagConstraints52.anchor = 16;
-			gridBagConstraints52.insets = new Insets(2, 1, 2, 5);
+			gridBagConstraints52.insets = new Insets(2, 1, 5, 0);
 			gridBagConstraints52.fill = 2;
 			gridBagConstraints52.weightx = 1.0D;
 			gridBagConstraints52.weighty = 1.0D;
-			gridBagConstraints61.insets = new Insets(2, 1, 1, 5);
+			gridBagConstraints61.insets = new Insets(2, 1, 5, 0);
 			gridBagConstraints61.anchor = 18;
 			gridBagConstraints61.fill = 2;
 			gridBagConstraints61.weightx = 1.0D;
@@ -498,7 +498,7 @@ public class PagoView extends JFrame {
 			jButtonClientes.setHorizontalTextPosition(SwingConstants.CENTER);
 			jButtonClientes.setVerticalTextPosition(SwingConstants.BOTTOM);
 			jButtonClientes.setFont(new Font("Arial", Font.BOLD, 14));
-			jButtonClientes.setText("CLIENTES " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "");
+			jButtonClientes.setText("CLIENTES");
 			jButtonClientes.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					registrarActividadCliente();
@@ -525,7 +525,7 @@ public class PagoView extends JFrame {
 			jButtonNoClientes.setVerticalTextPosition(SwingConstants.BOTTOM);
 			jButtonNoClientes.setFont(new Font("Arial", Font.BOLD, 14));
 			jButtonNoClientes.setMargin(new Insets(2, 44, 2, 14));
-			jButtonNoClientes.setText("NO CLIENTES " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "");
+			jButtonNoClientes.setText("NO CLIENTES");
 			jButtonNoClientes.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					registrarActividadNoCliente();
@@ -552,7 +552,7 @@ public class PagoView extends JFrame {
 			jButtonFuncionarios.setVerticalTextPosition(SwingConstants.BOTTOM);
 			jButtonFuncionarios.setFont(new Font("Arial", Font.BOLD, 14));
 			jButtonFuncionarios.setMargin(new Insets(2, 84, 2, 14));
-			jButtonFuncionarios.setText("FUNCIONARIOS " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "");
+			jButtonFuncionarios.setText("FUNCIONARIOS");
 			jButtonFuncionarios.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					registrarActividadFuncionario();

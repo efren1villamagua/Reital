@@ -322,13 +322,13 @@ public class FranjaHorariaABMView extends JFrame
 
 			java.awt.GridBagConstraints constraintsDataTablePanel = new java.awt.GridBagConstraints();
 			constraintsDataTablePanel.gridx = 0;
-			constraintsDataTablePanel.gridy = 1;
+			constraintsDataTablePanel.gridy = 0;
 			constraintsDataTablePanel.gridwidth = 2;
 			constraintsDataTablePanel.fill = java.awt.GridBagConstraints.BOTH;
 			constraintsDataTablePanel.weightx = 1.0;
 			constraintsDataTablePanel.weighty = 1.0;
 			constraintsDataTablePanel.ipady = -250;
-			constraintsDataTablePanel.insets = new Insets(5, 5, 5, 5);
+			constraintsDataTablePanel.insets = new Insets(5, 5, 0, 0);
 			ivjJFrameContentPane.add(getDataTablePanel(), constraintsDataTablePanel);
 		}
 		return ivjJFrameContentPane;
