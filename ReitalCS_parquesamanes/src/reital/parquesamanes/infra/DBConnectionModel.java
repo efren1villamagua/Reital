@@ -46,6 +46,8 @@ public class DBConnectionModel {
 
 				SystemLogManager.debug("DB CONNECTION FOR: " + userName + " {" + url + "}");
 
+				new DBInitialization().createTables();
+
 				SystemLogManager.info("USUARIO AUTENTICADO OK: " + userName);
 
 				return true;
@@ -91,6 +93,8 @@ public class DBConnectionModel {
 		Conn.setCon(aCon);
 
 		SystemLogManager.debug("DB CONNECTION FOR: sa {" + url + "}");
+
+		new DBInitialization().createTables();
 	}
 
 }

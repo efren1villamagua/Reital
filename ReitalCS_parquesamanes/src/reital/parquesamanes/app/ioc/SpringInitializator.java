@@ -54,7 +54,9 @@ public class SpringInitializator {
 
 	public LogonController getLogonControllerBean() {
 		try {
-			return SpringInitializator.getSingleton().getContext().getBean(LogonController.class);
+			// return
+			// SpringInitializator.getSingleton().getContext().getBean(LogonController.class);
+			return new LogonController();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
@@ -63,7 +65,9 @@ public class SpringInitializator {
 
 	public FranjaHorariaController getFranjaHorariaControllerBean() {
 		try {
-			return SpringInitializator.getSingleton().getContext().getBean(FranjaHorariaController.class);
+			// return
+			// SpringInitializator.getSingleton().getContext().getBean(FranjaHorariaController.class);
+			return new FranjaHorariaController();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
@@ -72,7 +76,9 @@ public class SpringInitializator {
 
 	public UsuarioController getUsuarioControllerBean() {
 		try {
-			return SpringInitializator.getSingleton().getContext().getBean(UsuarioController.class);
+			// return
+			// SpringInitializator.getSingleton().getContext().getBean(UsuarioController.class);
+			return new UsuarioController();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
@@ -81,7 +87,9 @@ public class SpringInitializator {
 
 	public PagoController getPagoControllerBean() {
 		try {
-			return SpringInitializator.getSingleton().getContext().getBean(PagoController.class);
+			// return
+			// SpringInitializator.getSingleton().getContext().getBean(PagoController.class);
+			return new PagoController();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}

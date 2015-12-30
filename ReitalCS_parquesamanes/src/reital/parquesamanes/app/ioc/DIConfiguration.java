@@ -1,9 +1,5 @@
 package reital.parquesamanes.app.ioc;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-
 import reital.parquesamanes.domain.repos.ActividadRepository;
 import reital.parquesamanes.domain.repos.FranjaHorariaRepository;
 import reital.parquesamanes.domain.repos.LogonRepository;
@@ -15,31 +11,31 @@ import reital.parquesamanes.infra.repos.LogonRepositoryImpl;
 import reital.parquesamanes.infra.repos.ParametroRepositoryImpl;
 import reital.parquesamanes.infra.repos.UsuarioRepositoryImpl;
 
-@Configuration
-@ComponentScan(value = { "reital.parquesamanes.app.controllers" })
+//@Configuration
+//@ComponentScan(value = { "reital.parquesamanes" })
 public class DIConfiguration {
 
-	@Bean
+	// @Bean
 	public ActividadRepository getActividadRepository() {
 		return new ActividadRepositoryImpl();
 	}
 
-	@Bean
+	// @Bean
 	public FranjaHorariaRepository getFranjaHorariaRepository() {
 		return new FranjaHorariaRepositoryImpl();
 	}
 
-	@Bean
+	// @Bean
 	public LogonRepository getLogonRepository() {
 		return new LogonRepositoryImpl();
 	}
 
-	@Bean
+	// @Bean
 	public ParametroRepository getParametroRepository() {
 		return new ParametroRepositoryImpl();
 	}
 
-	@Bean
+	// @Bean
 	public UsuarioRepository getUsuarioRepository() {
 		return new UsuarioRepositoryImpl();
 	}

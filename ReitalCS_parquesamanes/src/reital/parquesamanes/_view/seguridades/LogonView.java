@@ -354,7 +354,9 @@ public class LogonView extends JFrame {
 				SystemLogManager.error(exc);
 			}
 			try {
-				ParqueSamanesConn.getConnection().close();
+				if (ParqueSamanesConn.getConnection() != null) {
+					ParqueSamanesConn.getConnection().close();
+				}
 			} catch (Exception exc) {
 				SystemLogManager.error(exc);
 			}

@@ -2,18 +2,23 @@ package reital.parquesamanes.app.controllers;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
+import reital.parquesamanes.app.ioc.DIConfiguration;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 import reital.parquesamanes.domain.repos.ActividadRepository;
 import reital.parquesamanes.domain.repos.FranjaHorariaRepository;
 import reital.parquesamanes.domain.repos.ParametroRepository;
 
-@Component
+//@Component
 public class PagoController {
+
+	public PagoController() {
+		super();
+		setParametroRepository(new DIConfiguration().getParametroRepository());
+		setFranjaHorariaRepository(new DIConfiguration().getFranjaHorariaRepository());
+		setActividadRepository(new DIConfiguration().getActividadRepository());
+	}
 
 	private ParametroRepository parametroRepository = null;
 
@@ -80,7 +85,7 @@ public class PagoController {
 	 * @param parametroRepository
 	 *            the parametroRepository to set
 	 */
-	@Autowired
+	// @Autowired
 	public void setParametroRepository(ParametroRepository parametroRepository) {
 		this.parametroRepository = parametroRepository;
 	}
@@ -96,7 +101,7 @@ public class PagoController {
 	 * @param franjaHorariaRepository
 	 *            the franjaHorariaRepository to set
 	 */
-	@Autowired
+	// @Autowired
 	public void setFranjaHorariaRepository(FranjaHorariaRepository franjaHorariaRepository) {
 		this.franjaHorariaRepository = franjaHorariaRepository;
 	}
@@ -112,7 +117,7 @@ public class PagoController {
 	 * @param actividadRepository
 	 *            the actividadRepository to set
 	 */
-	@Autowired
+	// @Autowired
 	public void setActividadRepository(ActividadRepository actividadRepository) {
 		this.actividadRepository = actividadRepository;
 	}

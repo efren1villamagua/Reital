@@ -1,20 +1,23 @@
 package reital.parquesamanes.app.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import reital.parquesamanes.app.ioc.DIConfiguration;
 import reital.parquesamanes.domain.repos.LogonRepository;
 
-@Component
+//@Component
 public class LogonController {
 
 	private LogonRepository repository;
+
+	public LogonController() {
+		super();
+		setRepository(new DIConfiguration().getLogonRepository());
+	}
 
 	public LogonRepository getRepository() {
 		return repository;
 	}
 
-	@Autowired
+	// @Autowired
 	public void setRepository(LogonRepository repository) {
 		this.repository = repository;
 	}

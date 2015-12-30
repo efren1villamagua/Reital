@@ -1,11 +1,9 @@
 package reital.parquesamanes.app.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import reital.parquesamanes.app.ioc.DIConfiguration;
 import reital.parquesamanes.domain.repos.FranjaHorariaRepository;
 
-@Component
+//@Component
 public class FranjaHorariaController {
 
 	private FranjaHorariaRepository repository;
@@ -14,7 +12,12 @@ public class FranjaHorariaController {
 		return repository;
 	}
 
-	@Autowired
+	public FranjaHorariaController() {
+		super();
+		setRepository(new DIConfiguration().getFranjaHorariaRepository());
+	}
+
+	// @Autowired
 	public void setRepository(FranjaHorariaRepository repository) {
 		this.repository = repository;
 	}
