@@ -4,12 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.GregorianCalendar;
 
 import efren.util.StringTools;
 import efren.util.SystemLogManager;
 import reital.parquesamanes._view.seguridades.LogonView;
-import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.repos.ActividadRepository;
 import reital.parquesamanes.infra.ParqueSamanesConn;
@@ -17,16 +15,13 @@ import reital.parquesamanes.infra.util.GarbageRecollector;
 
 public class ActividadRepositoryImpl implements ActividadRepository {
 
-	public boolean yaSalio(CadenaPair cp) {
+	public boolean yaSalio(String codigo) {
 
 		Statement st = null;
 
-		// String barraId = cp.getBarraId();
-		GregorianCalendar gc = cp.getCalendar();
 		int count = 0;
 		try {
-			Timestamp tstamp = new Timestamp(gc.getTimeInMillis());
-			String sql = "SELECT COUNT(SALIDA) AS CUANTOS_HAY " + " FROM  ACTIVIDAD " + " WHERE " + " ENTRADA={ ts '" + tstamp.toString() + "'} ";
+			String sql = "SELECT COUNT(CODIGO) AS CUANTOS_HAY FROM  ACTIVIDAD WHERE CODIGO='" + codigo + "' ";
 			st = ParqueSamanesConn.getConnection().createStatement();
 
 			SystemLogManager.debug(sql);
@@ -54,8 +49,9 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 		try {
 			StringBuffer sql = new StringBuffer();
 			sql.append("INSERT INTO  ACTIVIDAD ");
-			sql.append(" (CODIGO, ENTRADA, SALIDA, VALOR, VALOR_HORA_FRACCION, TIPO_CLIENTE, OBSERVACIONES, FRANJA_HORARIA, CANTIDAD_HORAS ) ");
-			sql.append(" VALUES (?,?,?,?,?,?,?,?,?)");
+			sql.append(" (CODIGO, ENTRADA, SALIDA, VALOR, VALOR_HORA_FRACCION, TIPO_CLIENTE, ");
+			sql.append(" OBSERVACIONES, FRANJA_HORARIA, CANTIDAD_HORAS, ESTADO ) ");
+			sql.append(" VALUES (?,?,?,?,?,?,?,?,?,?)");
 			ps = ParqueSamanesConn.getConnection().prepareStatement(sql.toString());
 
 			StringBuffer paramMetaClause = new StringBuffer();
@@ -94,6 +90,9 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 
 			ps.setInt(9, registroActividad.getCantidadHoras());
 			paramMetaClause.append("[9-> " + registroActividad.getCantidadHoras() + "]");
+
+ASDA			ps.setInt(9, registroActividad.getCantidadHoras());
+ASDASD			paramMetaClause.append("[9-> " + registroActividad.getCantidadHoras() + "]");
 
 			paramMetaClause.append("} ");
 			SystemLogManager.debug(sql.toString() + paramMetaClause);

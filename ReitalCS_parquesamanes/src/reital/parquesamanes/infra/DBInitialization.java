@@ -94,7 +94,8 @@ public class DBInitialization {
 			sql.append(" TIPO_CLIENTE VARCHAR(20) NOT NULL,");
 			sql.append(" OBSERVACIONES VARCHAR(1000) NOT NULL,");
 			sql.append(" FRANJA_HORARIA VARCHAR(20) NOT NULL,");
-			sql.append(" CANTIDAD_HORAS INT NOT NULL");
+			sql.append(" CANTIDAD_HORAS INT NOT NULL, ");
+			sql.append(" ESTADO CHAR(1) NOT NULL");
 			sql.append(")");
 
 			SystemLogManager.debug(sql.toString());

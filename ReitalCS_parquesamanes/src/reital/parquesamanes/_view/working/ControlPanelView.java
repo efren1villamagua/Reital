@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
+import reital.parquesamanes.infra.DBConnectionModel;
 
 public class ControlPanelView extends JFrame {
 	/**
@@ -30,10 +31,6 @@ public class ControlPanelView extends JFrame {
 
 	private JPanel jPanel4 = null;
 
-	private JPanel jPanel1 = null;
-
-	private JPanel jPanel2 = null;
-
 	private JToolBar jToolBar = null;
 
 	private JButton jButtonReportes = null;
@@ -41,6 +38,8 @@ public class ControlPanelView extends JFrame {
 	private JButton jButtonFranjasHorarias = null;
 
 	private JButton jButtonMinutosGraciaClientes = null;
+
+	private InformationPanel informationPanel;
 
 	public ControlPanelView() throws HeadlessException {
 		super();
@@ -67,7 +66,7 @@ public class ControlPanelView extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/clock16x16.png")));
 		setTitle("Reital Parking - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "  --  Control Panel - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJPanel4());
-		setSize(595, 194);
+		setSize(595, 230);
 		WindowManager2.centerWindow(this);
 		// setResizable(false);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -90,31 +89,27 @@ public class ControlPanelView extends JFrame {
 	private JPanel getJPanel4() {
 		if (jPanel4 == null) {
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-			gridBagConstraints4.fill = GridBagConstraints.VERTICAL;
-			gridBagConstraints4.gridy = 1;
+			gridBagConstraints4.fill = GridBagConstraints.BOTH;
+			gridBagConstraints4.gridy = 0;
 			gridBagConstraints4.weightx = 1.0;
-			gridBagConstraints4.insets = new Insets(20, 20, 20, 20);
+			gridBagConstraints4.insets = new Insets(5, 5, 5, 5);
 			gridBagConstraints4.weighty = 1.0;
 			gridBagConstraints4.gridwidth = 2;
 			gridBagConstraints4.gridx = 0;
-			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
-			gridBagConstraints6.gridx = 0;
-			gridBagConstraints6.gridwidth = 2;
-			gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
-			gridBagConstraints6.weightx = 1.0;
-			gridBagConstraints6.weighty = 1.0;
-			gridBagConstraints6.gridy = 4;
-			GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
-			gridBagConstraints13.insets = new Insets(0, 0, 5, 0);
-			gridBagConstraints13.gridx = 0;
-			gridBagConstraints13.gridwidth = 2;
-			gridBagConstraints13.gridy = 3;
 			jPanel4 = new JPanel();
-			jPanel4.setLayout(new GridBagLayout());
+			GridBagLayout gbl_jPanel4 = new GridBagLayout();
+			gbl_jPanel4.rowWeights = new double[] { 0.0, 1.0 };
+			gbl_jPanel4.columnWeights = new double[] { 1.0, 0.0 };
+			jPanel4.setLayout(gbl_jPanel4);
 			jPanel4.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
-			jPanel4.add(getJPanel1(), gridBagConstraints13);
-			jPanel4.add(getJPanel2(), gridBagConstraints6);
 			jPanel4.add(getJToolBar(), gridBagConstraints4);
+			GridBagConstraints gbc_informationPanel = new GridBagConstraints();
+			gbc_informationPanel.weightx = 1.0;
+			gbc_informationPanel.insets = new Insets(2, 2, 2, 2);
+			gbc_informationPanel.fill = GridBagConstraints.BOTH;
+			gbc_informationPanel.gridx = 0;
+			gbc_informationPanel.gridy = 1;
+			jPanel4.add(getInformationPanel(), gbc_informationPanel);
 			jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 				}
@@ -131,32 +126,6 @@ public class ControlPanelView extends JFrame {
 			dispose();
 			System.exit(0);
 		}
-	}
-
-	/**
-	 * This method initializes jPanel1
-	 *
-	 * @return javax.swing.JPanel
-	 */
-	private JPanel getJPanel1() {
-		if (jPanel1 == null) {
-			jPanel1 = new JPanel();
-			jPanel1.setLayout(new GridBagLayout());
-		}
-		return jPanel1;
-	}
-
-	/**
-	 * This method initializes jPanel2
-	 *
-	 * @return javax.swing.JPanel
-	 */
-	private JPanel getJPanel2() {
-		if (jPanel2 == null) {
-			jPanel2 = new JPanel();
-			jPanel2.setLayout(new GridBagLayout());
-		}
-		return jPanel2;
 	}
 
 	/**
@@ -268,4 +237,11 @@ public class ControlPanelView extends JFrame {
 		v.toFront();
 	}
 
+	private InformationPanel getInformationPanel() {
+		if (informationPanel == null) {
+			informationPanel = new InformationPanel();
+			this.informationPanel.setValor("<html>Database url: " + DBConnectionModel.getURL_INFO() + "</html>");
+		}
+		return informationPanel;
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"

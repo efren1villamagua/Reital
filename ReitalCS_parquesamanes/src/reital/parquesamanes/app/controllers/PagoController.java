@@ -2,7 +2,6 @@ package reital.parquesamanes.app.controllers;
 
 import java.math.BigDecimal;
 
-import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
 import reital.parquesamanes.app.ioc.DIConfiguration;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
@@ -54,9 +53,9 @@ public class PagoController {
 		return getParametroRepository().seImprimeRecibo();
 	}
 
-	public boolean yaSalio(CadenaPair cp) {
+	public boolean yaSalio(String codigo) {
 
-		return getActividadRepository().yaSalio(cp);
+		return getActividadRepository().yaSalio(codigo);
 	}
 
 	public boolean registrarActividad(ActividadForPagoEntity registroActividad) {

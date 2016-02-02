@@ -49,9 +49,9 @@ public class PagoView extends JFrame {
 
 	private JPanel jPanel4 = null;
 
-	private JLabel jLabelRegistroEntrada = null;
+	private JLabel labelEntradaValue = null;
 
-	private JLabel jLabelRegistroSalida = null;
+	private JLabel labelSalidaValue = null;
 
 	private JPasswordField jPasswordFieldData = null;
 
@@ -75,11 +75,12 @@ public class PagoView extends JFrame {
 
 	private JButton jButtonFuncionarios = null;
 
-	private JToolBar jToolBar1 = null;
-
-	private JButton jButtonAbrirBarrera = null;
-
 	private JLabel jLabelStatus = null;
+
+	private JLabel labelBarId;
+
+	private JLabel labelBarIdValue;
+	private InformationPanel informationPanel;
 
 	public PagoView() throws HeadlessException {
 		super();
@@ -106,7 +107,7 @@ public class PagoView extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/CLOCK_16_hot.png")));
 		setTitle("Reital Parking - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "- [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJPanel4());
-		setSize(703, 464);
+		setSize(703, 494);
 		WindowManager2.centerWindow(this);
 		// setResizable(false);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -125,8 +126,9 @@ public class PagoView extends JFrame {
 		});
 		initializarFoco();
 
-		jLabelRegistroEntrada.setFocusable(false);
-		jLabelRegistroSalida.setFocusable(false);
+		getLabelEntradaValue().setFocusable(false);
+		getLabelSalidaValue().setFocusable(false);
+		getLabelBarIdValue().setFocusable(false);
 		jLabelRegistroEntrada1.setFocusable(false);
 		jLabelRegistroSalida1.setFocusable(false);
 		jPanel4.setFocusable(false);
@@ -138,8 +140,6 @@ public class PagoView extends JFrame {
 		getJButtonClientes().setEnabled(false);
 		getJButtonNoClientes().setEnabled(false);
 		getJButtonFuncionarios().setEnabled(false);
-
-		getJButtonAbrirBarrera().setEnabled(false);
 
 	}
 
@@ -188,14 +188,6 @@ public class PagoView extends JFrame {
 			jLabelStatus.setText("...");
 			jLabelStatus.setForeground(Color.blue);
 			jLabelStatus.setFont(new Font("Arial Black", Font.BOLD, 36));
-			GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
-			gridBagConstraints5.fill = GridBagConstraints.VERTICAL;
-			gridBagConstraints5.gridy = 5;
-			gridBagConstraints5.weightx = 1.0;
-			gridBagConstraints5.gridwidth = 2;
-			gridBagConstraints5.insets = new Insets(30, 30, 30, 30);
-			gridBagConstraints5.weighty = 1.0;
-			gridBagConstraints5.gridx = 0;
 			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
 			gridBagConstraints4.fill = GridBagConstraints.VERTICAL;
 			gridBagConstraints4.gridy = 0;
@@ -237,21 +229,19 @@ public class PagoView extends JFrame {
 			jLabelRegistroEntrada1 = new JLabel();
 			jLabelRegistroEntrada1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			jLabelRegistroEntrada1.setText("Entrada:");
-			jLabelRegistroSalida = new JLabel();
-			jLabelRegistroEntrada = new JLabel();
+
 			GridBagConstraints gridBagConstraints52 = new GridBagConstraints();
 			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
 			jPanel4 = new JPanel();
-			jPanel4.setLayout(new GridBagLayout());
+			GridBagLayout gbl_jPanel4 = new GridBagLayout();
+			gbl_jPanel4.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0};
+			gbl_jPanel4.columnWeights = new double[]{1.0, 0.0};
+			jPanel4.setLayout(gbl_jPanel4);
 			jPanel4.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 			gridBagConstraints52.gridx = 1;
 			gridBagConstraints52.gridy = 2;
-			jLabelRegistroEntrada.setText("...");
-			jLabelRegistroEntrada.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			gridBagConstraints61.gridx = 1;
 			gridBagConstraints61.gridy = 3;
-			jLabelRegistroSalida.setText("...");
-			jLabelRegistroSalida.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			gridBagConstraints52.anchor = 16;
 			gridBagConstraints52.insets = new Insets(2, 1, 5, 0);
 			gridBagConstraints52.fill = 2;
@@ -262,14 +252,36 @@ public class PagoView extends JFrame {
 			gridBagConstraints61.fill = 2;
 			gridBagConstraints61.weightx = 1.0D;
 			gridBagConstraints61.weighty = 1.0D;
-			jPanel4.add(jLabelRegistroEntrada, gridBagConstraints52);
-			jPanel4.add(jLabelRegistroSalida, gridBagConstraints61);
+			GridBagConstraints gbc_labelBarId = new GridBagConstraints();
+			gbc_labelBarId.weightx = 1.0;
+			gbc_labelBarId.anchor = GridBagConstraints.EAST;
+			gbc_labelBarId.insets = new Insets(5, 5, 5, 5);
+			gbc_labelBarId.gridx = 0;
+			gbc_labelBarId.gridy = 1;
+			jPanel4.add(getLabelBarId(), gbc_labelBarId);
+			GridBagConstraints gbc_labelBarIdValue = new GridBagConstraints();
+			gbc_labelBarIdValue.weighty = 1.0;
+			gbc_labelBarIdValue.weightx = 1.0;
+			gbc_labelBarIdValue.anchor = GridBagConstraints.WEST;
+			gbc_labelBarIdValue.insets = new Insets(5, 5, 5, 0);
+			gbc_labelBarIdValue.gridx = 1;
+			gbc_labelBarIdValue.gridy = 1;
+			jPanel4.add(getLabelBarIdValue(), gbc_labelBarIdValue);
+			jPanel4.add(getLabelEntradaValue(), gridBagConstraints52);
+			jPanel4.add(getLabelSalidaValue(), gridBagConstraints61);
 			jPanel4.add(jLabelRegistroEntrada1, gridBagConstraints1);
 			jPanel4.add(jLabelRegistroSalida1, gridBagConstraints2);
+			GridBagConstraints gbc_informationPanel = new GridBagConstraints();
+			gbc_informationPanel.weightx = 1.0;
+			gbc_informationPanel.gridwidth = 2;
+			gbc_informationPanel.insets = new Insets(2, 2, 2, 2);
+			gbc_informationPanel.fill = GridBagConstraints.BOTH;
+			gbc_informationPanel.gridx = 0;
+			gbc_informationPanel.gridy = 8;
+			jPanel4.add(getInformationPanel(), gbc_informationPanel);
 			jPanel4.add(getJPanel1(), gridBagConstraints13);
 			jPanel4.add(getJPanel2(), gridBagConstraints6);
 			jPanel4.add(getJToolBar(), gridBagConstraints4);
-			jPanel4.add(getJToolBar1(), gridBagConstraints5);
 			jPanel4.add(jLabelStatus, gridBagConstraints7);
 			jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -294,8 +306,9 @@ public class PagoView extends JFrame {
 	 *
 	 */
 	protected void limpiarInformacionVisual(boolean limpiarDataField) {
-		jLabelRegistroEntrada.setText("");
-		jLabelRegistroSalida.setText("");
+		getLabelEntradaValue().setText("");
+		getLabelSalidaValue().setText("");
+		getLabelBarIdValue().setText("");
 		if (limpiarDataField) {
 			getJPasswordFieldData().setText("");
 		}
@@ -305,8 +318,6 @@ public class PagoView extends JFrame {
 		getJButtonClientes().setEnabled(false);
 		getJButtonNoClientes().setEnabled(false);
 		getJButtonFuncionarios().setEnabled(false);
-
-		getJButtonAbrirBarrera().setEnabled(false);
 
 		jLabelStatus.setText("...");
 	}
@@ -425,13 +436,15 @@ public class PagoView extends JFrame {
 					secuenciaCaracteres = secuenciaCaracteres + String.valueOf(getJPasswordFieldData().getPassword()[i]);
 				}
 				CadenaPair cp = getPagoHelper().parseSecuenciaCaracteres(secuenciaCaracteres);
+				getLabelBarIdValue().setText(cp.getBarraId());
 				GregorianCalendar gcEntrada = cp.getCalendar();
 				CalendarManager cmEntrada = new CalendarManager(gcEntrada);
-				jLabelRegistroEntrada.setText(cmEntrada.getInternationalDateExpression() + "  hora: " + cmEntrada.getTimeExpression2());
+				getLabelEntradaValue().setText(cmEntrada.getInternationalDateExpression() + "  hora: " + cmEntrada.getTimeExpression2());
 				jLabelStatus.setText("TICKET LEIDO");
 			} catch (Exception exc) {
 				exc.getMessage();
-				jLabelRegistroEntrada.setText("...");
+				getLabelBarIdValue().setText("...");
+				getLabelEntradaValue().setText("...");
 				jLabelStatus.setText("ERROR LECTURA");
 			}
 		}
@@ -572,63 +585,6 @@ public class PagoView extends JFrame {
 	}
 
 	/**
-	 * This method initializes jToolBar1
-	 *
-	 * @return javax.swing.JToolBar
-	 */
-	private JToolBar getJToolBar1() {
-		if (jToolBar1 == null) {
-			jToolBar1 = new JToolBar();
-			jToolBar1.setOpaque(false);
-			jToolBar1.setFloatable(false);
-			jToolBar1.add(getJButtonAbrirBarrera());
-		}
-		return jToolBar1;
-	}
-
-	/**
-	 * This method initializes jButtonAbrirBarrera
-	 *
-	 * @return javax.swing.JButton
-	 */
-	public JButton getJButtonAbrirBarrera() {
-		if (jButtonAbrirBarrera == null) {
-			jButtonAbrirBarrera = new JButton();
-			jButtonAbrirBarrera.setFont(new Font("Arial", Font.BOLD, 14));
-			jButtonAbrirBarrera.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/parking_barrier2.jpg")));
-			jButtonAbrirBarrera.setText("ABRIR BARRERA");
-			jButtonAbrirBarrera.setVerticalTextPosition(SwingConstants.BOTTOM);
-			jButtonAbrirBarrera.setHorizontalTextPosition(SwingConstants.CENTER);
-			jButtonAbrirBarrera.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					abrirBarrera();
-				}
-			});
-			jButtonAbrirBarrera.addMouseListener(new MouseAdapter() {
-				public void mouseEntered(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-
-				public void mouseExited(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			});
-		}
-		return jButtonAbrirBarrera;
-	}
-
-	/**
-	 *
-	 */
-	public void abrirBarrera() {
-		getPagoHelper().enviarSenialAbrirBarrera();
-		/**
-		 * OJO TODO: HAY QUE MARCAR EL REGISTRO DE LA TABLA ACTIVIDAD COMO
-		 * PROCESADO LUEGO DE ABRIR LA BARRERA
-		 */
-	}
-
-	/**
 	 *
 	 */
 	private void registrarActividadCliente() {
@@ -678,12 +634,55 @@ public class PagoView extends JFrame {
 		return jLabelStatus;
 	}
 
-	protected JLabel getJLabelRegistroEntrada() {
-		return jLabelRegistroEntrada;
+	protected JLabel getLabelEntradaValue() {
+		if (labelEntradaValue == null) {
+			labelEntradaValue = new JLabel();
+			labelEntradaValue.setText("...");
+			labelEntradaValue.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return labelEntradaValue;
 	}
 
-	protected JLabel getJLabelRegistroSalida() {
-		return jLabelRegistroSalida;
+	protected JLabel getLabelSalidaValue() {
+		if (labelSalidaValue == null) {
+			labelSalidaValue = new JLabel();
+			labelSalidaValue.setText("...");
+			labelSalidaValue.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return labelSalidaValue;
 	}
 
+	private JLabel getLabelBarId() {
+		if (labelBarId == null) {
+			labelBarId = new JLabel();
+			labelBarId.setText("Barrera:");
+			labelBarId.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			labelBarId.setFocusable(false);
+		}
+		return labelBarId;
+	}
+
+	protected JLabel getLabelBarIdValue() {
+		if (labelBarIdValue == null) {
+			labelBarIdValue = new JLabel();
+			labelBarIdValue.setText("...");
+			labelBarIdValue.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			labelBarIdValue.setFocusable(false);
+		}
+		return labelBarIdValue;
+	}
+
+	public void abrirBarrera() {
+		getPagoHelper().enviarSenialAbrirBarrera();
+		/**
+		 * OJO TODO: HAY QUE MARCAR EL REGISTRO DE LA TABLA ACTIVIDAD COMO
+		 * PROCESADO LUEGO DE ABRIR LA BARRERA
+		 */
+	}
+	private InformationPanel getInformationPanel() {
+		if (informationPanel == null) {
+			informationPanel = new InformationPanel();
+		}
+		return informationPanel;
+	}
 } // @jve:decl-index=0:visual-constraint="10,10"

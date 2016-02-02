@@ -118,10 +118,8 @@ public class PagoHelper {
 		this.pagoView.reinicializarVisual();
 	}
 
-	/**
-	 *
-	 */
-	public void enviarSenialAbrirBarrera() {
+	public void sendSenialAbrirBarrera() {
+		no se debe mostrar nada en la pantalla, solo loguear (todo es desatendido)
 		try {
 			this.serialModel.abrirSalida1();
 			InfoView.showMessageDialog(this.pagoView, "BARRERA ABIERTA !");
@@ -132,12 +130,9 @@ public class PagoHelper {
 		this.pagoView.reinicializarVisual();
 	}
 
-	/**
-	 *
-	 */
 	public boolean yaSalio(String secuenciaCaracteres) {
 
-		return SpringInitializator.getSingleton().getPagoControllerBean().yaSalio(parseSecuenciaCaracteres(secuenciaCaracteres));
+		return SpringInitializator.getSingleton().getPagoControllerBean().yaSalio(secuenciaCaracteres);
 	}
 
 	/**
@@ -490,9 +485,9 @@ public class PagoHelper {
 
 			registrarActividad();
 
-			pagoView.getJLabelRegistroEntrada()
-					.setText(cmEntradaAbsoluta.getInternationalDateExpression() + "  hora: " + cmEntradaAbsoluta.getTimeExpression2());
-			pagoView.getJLabelRegistroSalida().setText(cmSalidaAbsoluta.getInternationalDateExpression() + "  hora: " + cmSalidaAbsoluta.getTimeExpression2());
+			pagoView.getLabelBarIdValue().setText(registroActividad.getBarraId());
+			pagoView.getLabelEntradaValue().setText(cmEntradaAbsoluta.getInternationalDateExpression() + "  hora: " + cmEntradaAbsoluta.getTimeExpression2());
+			pagoView.getLabelSalidaValue().setText(cmSalidaAbsoluta.getInternationalDateExpression() + "  hora: " + cmSalidaAbsoluta.getTimeExpression2());
 
 			switch (tipoCliente) {
 			case CLIENTE_ParqueSamanes:
