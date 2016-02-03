@@ -98,7 +98,7 @@ public class Usuario extends EntityObjectUtil {
 	}
 
 	public Boolean getActivo() {
-		return getEstado() != null && getEstado().trim().equalsIgnoreCase(ParqueSamanesConstantes.USUARIO_ESTADO_Activo);
+		return getEstado() != null && getEstado().trim().equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_ESTADO_Activo);
 	}
 
 	public void setActivo(Boolean b) {
@@ -106,7 +106,7 @@ public class Usuario extends EntityObjectUtil {
 	}
 
 	public Boolean getAdministrador() {
-		return getTipo() != null && getTipo().trim().equalsIgnoreCase(ParqueSamanesConstantes.USUARIO_TIPO_Administrador);
+		return getTipo() != null && getTipo().trim().equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_TIPO_Administrador);
 	}
 
 	public void setAdministrador(Boolean b) {

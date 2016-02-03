@@ -47,8 +47,8 @@ public class LogonRepositoryImpl implements LogonRepository {
 				nombre = rs.getString("NOMBRE").trim();
 				clave_sys = rs.getString("CLAVE");
 
-				administrador = rs.getString("TIPO").trim().equalsIgnoreCase(ParqueSamanesConstantes.USUARIO_TIPO_Administrador);
-				activo = rs.getString("ESTADO").trim().equalsIgnoreCase(ParqueSamanesConstantes.USUARIO_ESTADO_Activo);
+				administrador = rs.getString("TIPO").trim().equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_TIPO_Administrador);
+				activo = rs.getString("ESTADO").trim().equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_ESTADO_Activo);
 
 				registroEncontrado = true;
 

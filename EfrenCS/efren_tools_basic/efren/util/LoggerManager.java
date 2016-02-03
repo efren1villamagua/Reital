@@ -14,6 +14,9 @@ public class LoggerManager {
 	public static final Logger logger = Logger.getLogger("System logs manager");
 
 	public static void init(String name) {
+		if (name != null) {
+			name = name.replaceAll(" ", "_");
+		}
 		// La configuración del logger debe ser por medio de un archivo de
 		// configuración
 		// para de esta manera configurar en runtime la forma en que saldrá el
@@ -58,7 +61,7 @@ public class LoggerManager {
 		// archivo en donde se crea el Log
 		File logsDirectory = new File(Constantes.LOGS_DIR);
 
-		appender.setFile(logsDirectory.getAbsolutePath() + "/"+name+".log");
+		appender.setFile(logsDirectory.getAbsolutePath() + "/" + name + ".log");
 		// se define que el archivo se renueve de nombre cada media noche
 		appender.setDatePattern("'.'yyyy-MM-dd");
 		appender.setAppend(true);

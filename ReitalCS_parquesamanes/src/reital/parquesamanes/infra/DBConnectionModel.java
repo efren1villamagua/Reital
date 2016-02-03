@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Locale;
 
+import org.h2.tools.Server;
+
 import efren.util.Conn;
 import efren.util.SystemLogManager;
 import efren.util.config.Constantes;
@@ -21,7 +23,10 @@ public class DBConnectionModel {
 		try {
 			Locale.setDefault(new Locale("es", "ES"));
 
-			if (userName.equalsIgnoreCase(ParqueSamanesConstantes.ADMIN_USERNAME) && clave.equalsIgnoreCase(ParqueSamanesConstantes.ADMIN_PASSWORD)) {
+			Server h2Server = null;
+
+			if (userName.equalsIgnoreCase(ParqueSamanesConstantes.Security.ADMIN_USERNAME)
+					&& clave.equalsIgnoreCase(ParqueSamanesConstantes.Security.ADMIN_PASSWORD)) {
 
 				/**
 				 * AUTENTICACION CONTRA LA BASE DE DATOS
@@ -39,12 +44,14 @@ public class DBConnectionModel {
 					// ":" + ParqueSamanesConstantes.DataSource.PORT + "/"
 					// + ParqueSamanesConstantes.DataSource.DBNAME;
 					Class.forName("org.h2.Driver");
-					urlTemp = "jdbc:h2:file:" + Constantes.DATA_DIR + "/" + ParqueSamanesConstantes.DataSource.DBNAME + "/"
-							+ ParqueSamanesConstantes.DataSource.DBNAME;
+					// start the TCP Server
+					h2Server = Server.createTcpServer().start();
+					urlTemp = "jdbc:h2:tcp://" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + "/"
+							+ Constantes.DATA_DIR + "/" + ParqueSamanesConstantes.DataSource.DBNAME + "/" + ParqueSamanesConstantes.DataSource.DBNAME;
 				}
 				Connection aCon = DriverManager.getConnection(urlTemp, "sa", "");
 
-				ParqueSamanesConn.setConnection(aCon);
+				ParqueSamanesConn.init(aCon, h2Server);
 				Conn.setCon(aCon);
 
 				SystemLogManager.debug("DB CONNECTION FOR: " + userName + " {" + urlTemp + "}");
@@ -77,6 +84,7 @@ public class DBConnectionModel {
 	public static void setSQLConnection() throws SQLException, ClassNotFoundException {
 		boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
 		String urlTemp = null;
+		Server h2Server = null;
 		if (oracle) {
 			// new OracleDriver();
 			urlTemp = "jdbc:oracle:thin:@" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + ":"
@@ -87,14 +95,31 @@ public class DBConnectionModel {
 			// + ParqueSamanesConstantes.DataSource.PORT + "/"
 			// + ParqueSamanesConstantes.DataSource.DBNAME;
 			Class.forName("org.h2.Driver");
-			urlTemp = "jdbc:h2:file:" + Constantes.DATA_DIR + "/" + ParqueSamanesConstantes.DataSource.DBNAME + "/" + ParqueSamanesConstantes.DataSource.DBNAME;
+			// if (h2Embedded) {
+			// // start the TCP Server
+			// h2Server = Server.createTcpServer().start();
+			// urlTemp = "jdbc:h2:file:" + Constantes.DATA_DIR + "/" +
+			// ParqueSamanesConstantes.DataSource.DBNAME + "/"
+			// + ParqueSamanesConstantes.DataSource.DBNAME;
+			// } else {
+			// urlTemp = "jdbc:h2:tcp://" +
+			// ParqueSamanesConstantes.DataSource.IP + ":" +
+			// ParqueSamanesConstantes.DataSource.PORT + "/" +
+			// Constantes.DATA_DIR
+			// + "/" + ParqueSamanesConstantes.DataSource.DBNAME + "/" +
+			// ParqueSamanesConstantes.DataSource.DBNAME;
+			// }
+			// start the TCP Server
+			h2Server = Server.createTcpServer().start();
+			urlTemp = "jdbc:h2:tcp://" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + "/" + Constantes.DATA_DIR + "/"
+					+ ParqueSamanesConstantes.DataSource.DBNAME + "/" + ParqueSamanesConstantes.DataSource.DBNAME;
 		}
 
 		setURL_INFO(urlTemp);
 
 		Connection aCon = DriverManager.getConnection(getURL_INFO(), "sa", "");
 
-		ParqueSamanesConn.setConnection(aCon);
+		ParqueSamanesConn.init(aCon, h2Server);
 		Conn.setCon(aCon);
 
 		SystemLogManager.debug("DB CONNECTION FOR: sa {" + getURL_INFO() + "}");

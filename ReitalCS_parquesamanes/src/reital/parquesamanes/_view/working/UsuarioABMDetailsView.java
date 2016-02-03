@@ -583,18 +583,20 @@ public class UsuarioABMDetailsView extends JFrame implements efren.util.gui.bars
 				clave = CoderManager.encrypt(clave);
 				resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().create(getTextFieldExtUserName().getValue().trim(),
 						clave, getTextFieldExtNombre().getValue(),
-						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
-								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
-						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
+						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.Security.USUARIO_TIPO_Administrador
+								: ParqueSamanesConstantes.Security.USUARIO_TIPO_Usuario,
+						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.Security.USUARIO_ESTADO_Activo
+								: ParqueSamanesConstantes.Security.USUARIO_ESTADO_Inactivo);
 			}
 			if (getAbmEstado().esModificado()) {
 				String clave = getPasswordFieldExtClave().getValue().trim();
 				clave = CoderManager.encrypt(clave);
 				resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().update(getTextFieldExtUserName().getValue().trim(),
 						clave, getTextFieldExtNombre().getValue(),
-						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.USUARIO_TIPO_Administrador
-								: ParqueSamanesConstantes.USUARIO_TIPO_Usuario,
-						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.USUARIO_ESTADO_Activo : ParqueSamanesConstantes.USUARIO_ESTADO_Inactivo);
+						getJCheckBoxAdministrador().isSelected() ? ParqueSamanesConstantes.Security.USUARIO_TIPO_Administrador
+								: ParqueSamanesConstantes.Security.USUARIO_TIPO_Usuario,
+						getJCheckBoxActivo().isSelected() ? ParqueSamanesConstantes.Security.USUARIO_ESTADO_Activo
+								: ParqueSamanesConstantes.Security.USUARIO_ESTADO_Inactivo);
 			}
 			if (getAbmEstado().esEliminado()) {
 				resultado = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().delete(getTextFieldExtUserName().getValue());

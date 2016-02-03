@@ -4,69 +4,47 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import efren.util.config.Constantes;
 import efren.util.config.SystemProperties;
 
 public class ParqueSamanesConstantes {
-	/**
-	 *
-	 */
-	public static final String SISTEMA_VERSION = "20160203_0220";
 
-	/**
-	 *
-	 */
-	public static final String USUARIO_TIPO_Administrador = "A";
+	public static final String SISTEMA_VERSION = "20160203_1317";
 
-	public static final String USUARIO_TIPO_Usuario = "U";
+	public static final String ARCHIVO_CONFIGURACION = Constantes.CONFIG_DIR + File.separator + "reital_parquesamanes.properties";
 
-	public static final String USUARIO_ESTADO_Activo = "A";
+	public static class System {
+		public static String BARRA_1_COMMAND = null;
+		public static String BARRA_2_COMMAND = null;
+		public static String BARRA_3_COMMAND = null;
+	}
 
-	public static final String USUARIO_ESTADO_Inactivo = "I";
-
-	/**
-	 *
-	 */
-	public static final String ARCHIVO_CONFIGURACION = "c:/reital_parquesamanes.properties";
-
-	/**
-	 *
-	 */
-
-	public static String PUERTO_SERIAL = "COM6";
-
-	public static String PUERTA_1_OPEN = "A";
-
-	public static String PUERTA_1_CLOSE = "B";
-
-	public static String PUERTA_2_OPEN = "2";
-
-	public static String PUERTA_2_CLOSE = "3";
-
-	public static boolean TICKET_BAR_CODE_WITH_BAR_ID = true;
-
-	public static int TICKET_BAR_CODE_LENGTH = 13;
-
-	public static int MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = 10;
-
-	public static String ADMIN_USERNAME = "admin";
-
-	public static String ADMIN_PASSWORD = "admin";
+	public static class Aplicacion {
+		public static boolean TICKET_BAR_CODE_WITH_BAR_ID = true;
+		public static int TICKET_BAR_CODE_LENGTH = 13;
+	}
 
 	public static class LegalInfo {
-
 		public static String SRI_NOMBRE = "_undefined_";
 		public static String SRI_RUC = "_undefined_";
-		public static String NOMBRE_COMERCIAL = "ParqueSamanes";
-
+		public static String NOMBRE_COMERCIAL = "Parque Samanes";
 	}
 
 	public static class DataSource {
-
 		public static String TYPE = "h2";
 		public static String IP = "127.0.0.1";
-		public static String PORT = "50000";
+		public static String PORT = "9092";
 		public static String DBNAME = "ParqueSamanesDB";
+		public static String FILE_PATH = null;
+	}
 
+	public static class Security {
+		public static final String ADMIN_USERNAME = "admin";
+		public static final String ADMIN_PASSWORD = "admin";
+		public static final String USUARIO_TIPO_Administrador = "A";
+		public static final String USUARIO_TIPO_Usuario = "U";
+		public static final String USUARIO_ESTADO_Activo = "A";
+		public static final String USUARIO_ESTADO_Inactivo = "I";
 	}
 
 	/**
@@ -88,60 +66,34 @@ public class ParqueSamanesConstantes {
 			java.util.Properties propiedades = new java.util.Properties();
 			propiedades.load(propertiesFileIS);
 
+			// Aplicacion
 			try {
-				String temp = propiedades.getProperty("TICKET_BAR_CODE_WITH_BAR_ID").trim();
-				ParqueSamanesConstantes.TICKET_BAR_CODE_WITH_BAR_ID = temp.equalsIgnoreCase("SI");
-				if (ParqueSamanesConstantes.TICKET_BAR_CODE_WITH_BAR_ID) {
-					ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH = 13;
+				String temp = propiedades.getProperty("Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID").trim();
+				ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID = temp.equalsIgnoreCase("SI");
+				if (ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID) {
+					ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH = 13;
 				} else {
-					ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH = 12;
+					ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH = 12;
 				}
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
+			// System
 			try {
-				ParqueSamanesConstantes.PUERTO_SERIAL = propiedades.getProperty("PUERTO_SERIAL").trim();
+				ParqueSamanesConstantes.System.BARRA_1_COMMAND = propiedades.getProperty("System.BARRA_1_COMMAND").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
 			try {
-				ParqueSamanesConstantes.PUERTA_1_OPEN = propiedades.getProperty("PUERTA_1_OPEN").trim();
+				ParqueSamanesConstantes.System.BARRA_2_COMMAND = propiedades.getProperty("System.BARRA_2_COMMAND").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
 			try {
-				ParqueSamanesConstantes.PUERTA_1_CLOSE = propiedades.getProperty("PUERTA_1_CLOSE").trim();
+				ParqueSamanesConstantes.System.BARRA_3_COMMAND = propiedades.getProperty("System.BARRA_3_COMMAND").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
-			try {
-				ParqueSamanesConstantes.PUERTA_2_OPEN = propiedades.getProperty("PUERTA_2_OPEN").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
-				ParqueSamanesConstantes.PUERTA_2_CLOSE = propiedades.getProperty("PUERTA_2_CLOSE").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			/*
-			 * try { ParqueSamanesConstantes.
-			 * MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = new
-			 * Integer(propiedades.getProperty(
-			 * "MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes").trim()).intValue();
-			 * } catch (Exception exc) { exc.getMessage(); }
-			 */
-			try {
-				ParqueSamanesConstantes.ADMIN_USERNAME = propiedades.getProperty("ADMIN_USERNAME").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
-				ParqueSamanesConstantes.ADMIN_PASSWORD = propiedades.getProperty("ADMIN_PASSWORD").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-
 			// LegalInfo
 			try {
 				ParqueSamanesConstantes.LegalInfo.SRI_NOMBRE = propiedades.getProperty("LegalInfo.SRI_NOMBRE").trim();
@@ -179,7 +131,11 @@ public class ParqueSamanesConstantes {
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
-
+			try {
+				ParqueSamanesConstantes.DataSource.FILE_PATH = propiedades.getProperty("DataSource.FILE_PATH").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
 			// ...
 			propertiesFileIS.close();
 		} catch (Throwable texc) {

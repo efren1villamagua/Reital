@@ -2,7 +2,6 @@ package reital.parquesamanes._view.working;
 
 import java.awt.Font;
 import java.awt.print.PrinterJob;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
@@ -12,15 +11,11 @@ import java.util.Vector;
 import efren.util.CalendarManager;
 import efren.util.StringTools;
 import efren.util.gui.dialogs.InfoView;
-import gnu.io.PortInUseException;
-import gnu.io.UnsupportedCommOperationException;
 import inetsoft.report.StyleSheet;
 import inetsoft.report.io.Builder;
 import inetsoft.report.j2d.StyleBook;
 import inetsoft.report.j2d.StylePrinter;
 import reital.parquesamanes.app.ioc.SpringInitializator;
-import reital.parquesamanes.app.serialport.util.SerialPortException;
-import reital.parquesamanes.app.serialport.util.SerialPortModel;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoPago;
@@ -69,7 +64,6 @@ public class PagoHelper {
 	 */
 	private ActividadForPagoEntity actividad = null;
 	private PagoView pagoView = null;
-	private SerialPortModel serialModel = null;
 
 	/**
 	 *
@@ -77,10 +71,6 @@ public class PagoHelper {
 	public PagoHelper(PagoView pagoView) {
 		super();
 		setPagoView(pagoView);
-		/**
-		 *
-		 */
-		initSerialPortModel();
 	}
 
 	/**
@@ -128,7 +118,7 @@ public class PagoHelper {
 		int hora = 0;
 		int minuto = 0;
 		int segundo = 0;
-		if (ParqueSamanesConstantes.TICKET_BAR_CODE_WITH_BAR_ID) {
+		if (ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID) {
 			// longitud 13
 			barraId = secuenciaCaracteres.substring(0, 1).trim();
 			dia = new Integer(secuenciaCaracteres.substring(1, 3).trim()).intValue();
@@ -154,33 +144,6 @@ public class PagoHelper {
 		cp.setCalendar(gc);
 
 		return cp;
-	}
-
-	/**
-	 *
-	 */
-	private void initSerialPortModel() {
-		this.serialModel = new SerialPortModel();
-		try {
-			this.serialModel.initializePortModel();
-		} catch (SerialPortException e1) {
-			InfoView.showErrorDialog(getPagoView(), "ERROR AL INICIALIZAR EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
-			// System.exit(-1);
-			e1.printStackTrace(System.out);
-		} catch (PortInUseException e1) {
-			InfoView.showErrorDialog(getPagoView(), "ERROR: EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " ESTA OCUPADO [" + e1.getMessage() + "]");
-			// System.exit(-1);
-			e1.printStackTrace(System.out);
-		} catch (UnsupportedCommOperationException e1) {
-			InfoView.showErrorDialog(getPagoView(),
-					"ERROR: OPERACION NO SOPORTADA POR EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
-			// System.exit(-1);
-			e1.printStackTrace(System.out);
-		} catch (IOException e1) {
-			InfoView.showErrorDialog(getPagoView(), "ERROR DE ESCRITURA EN EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
-			// System.exit(-1);
-			e1.printStackTrace(System.out);
-		}
 	}
 
 	public class CadenaPair {
@@ -255,7 +218,7 @@ public class PagoHelper {
 				return;
 			}
 
-			if (secuenciaCaracteres.trim().length() != ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH) {
+			if (secuenciaCaracteres.trim().length() != ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH) {
 				getPagoView().mostrarError(error1);
 				getPagoView().limpiarInformacionVisual(true);
 				getPagoView().initializarFoco();
@@ -268,9 +231,6 @@ public class PagoHelper {
 				getPagoView().initializarFoco();
 				return;
 			}
-
-			ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
-					.getCantidadMinutosGracia();
 
 			/**
 			 *
@@ -383,8 +343,7 @@ public class PagoHelper {
 
 	private void fillActividadForPagoEntity(ActividadForPagoEntity actividad) throws Exception {
 
-		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
-				.getCantidadMinutosGracia();
+		int minutosGraciaFromDB = SpringInitializator.getSingleton().getPagoControllerBean().getCantidadMinutosGracia();
 
 		CalendarManager cmEntradaAbsoluta = new CalendarManager(actividad.getEntrada());
 		CalendarManager cmSalidaAbsoluta = new CalendarManager(actividad.getSalida());
@@ -392,7 +351,7 @@ public class PagoHelper {
 		int minutosEntradaGlobal = (cmEntradaAbsoluta.getHoraDelDia() * 60) + cmEntradaAbsoluta.getMinutos();
 		int minutosSalidaGlobal = (cmSalidaAbsoluta.getHoraDelDia() * 60) + cmSalidaAbsoluta.getMinutos();
 
-		if (minutosSalidaGlobal - minutosEntradaGlobal <= ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes) {
+		if (minutosSalidaGlobal - minutosEntradaGlobal <= minutosGraciaFromDB) {
 			actividad.setValor(BigDecimal.ZERO);
 			actividad.setEnTiempoGracia(true);
 		} else {
@@ -454,7 +413,7 @@ public class PagoHelper {
 					 * SE 'SALTE' DICHO TIEMPO
 					 */
 					if (!minutosGraciaYaConsiderados) {
-						minutosEntradaAbsolutosTemp = minutosEntradaAbsolutosTemp + ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes;
+						minutosEntradaAbsolutosTemp = minutosEntradaAbsolutosTemp + minutosGraciaFromDB;
 						minutosTemp = minutosEntradaAbsolutosTemp;
 						minutosGraciaYaConsiderados = true;
 					}

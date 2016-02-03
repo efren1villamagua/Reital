@@ -17,7 +17,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.Locale;
 
 import javax.swing.AbstractAction;
@@ -161,10 +160,10 @@ public class ExitView extends JFrame {
 
 		try {
 			DBConnectionModel.setSQLConnection();
-		} catch (ClassNotFoundException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+			InfoView.showErrorDialog(this, "ERROR: " + e1.getMessage());
+			System.exit(1);
 		}
 
 		initializarFoco();
@@ -451,7 +450,7 @@ public class ExitView extends JFrame {
 	 */
 	private void manageEntradaTeclado() {
 		int longitud = getJPasswordFieldData().getPassword().length;
-		if (longitud == ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH) {
+		if (longitud == ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH) {
 			getJPasswordFieldData().setEnabled(false);
 			getJButtonReiniciar().setEnabled(true);
 			/**

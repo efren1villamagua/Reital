@@ -352,6 +352,9 @@ public class LogonToUsuariosView extends JFrame {
 				if (ParqueSamanesConn.getConnection() != null) {
 					ParqueSamanesConn.getConnection().close();
 				}
+				if (ParqueSamanesConn.getH2Server() != null) {
+					ParqueSamanesConn.getH2Server().stop();
+				}
 			} catch (Exception exc) {
 				SystemLogManager.error(exc);
 			}

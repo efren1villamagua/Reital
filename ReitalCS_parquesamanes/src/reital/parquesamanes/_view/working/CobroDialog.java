@@ -25,7 +25,6 @@ import efren.util.gui.dialogs.DialogExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
 import reital.parquesamanes.app.ioc.SpringInitializator;
-import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoPago;
 
@@ -150,9 +149,8 @@ public class CobroDialog extends DialogExt {
 			String tiempoGraciaTextSimple = null;
 			String tiempoGraciaTextHtml = null;
 			if (afpe.isEnTiempoGracia()) {
-				ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
-						.getCantidadMinutosGracia();
-				tiempoGraciaTextSimple = "GRATIS (hasta " + ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes + " min.)";
+				int minutosGraciaFromDB = SpringInitializator.getSingleton().getPagoControllerBean().getCantidadMinutosGracia();
+				tiempoGraciaTextSimple = "GRATIS (hasta " + minutosGraciaFromDB + " min.)";
 				tiempoGraciaTextHtml = "<BR><CENTER><FONT COLOR=red><B>" + tiempoGraciaTextSimple + "</B></FONT></CENTER>";
 			} else {
 				tiempoGraciaTextSimple = "";

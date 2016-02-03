@@ -38,7 +38,6 @@ import efren.util.CalendarManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
-import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class PagoView extends JFrame {
@@ -149,8 +148,6 @@ public class PagoView extends JFrame {
 	 */
 	private void initHelper() {
 		setPagoHelper(new PagoHelper(this));
-		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
-				.getCantidadMinutosGracia();
 	}
 
 	/**
@@ -402,7 +399,7 @@ public class PagoView extends JFrame {
 	 */
 	private void manageEntradaTeclado() {
 		int longitud = getJPasswordFieldData().getPassword().length;
-		if (longitud == ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH) {
+		if (longitud == ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH) {
 			getJPasswordFieldData().setEnabled(false);
 			getJButtonClientes().setEnabled(true);
 			getJButtonPaseLibre().setEnabled(true);
