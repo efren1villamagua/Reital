@@ -19,7 +19,7 @@ public class ReporterSQLClausesFactory {
 
 	public String getSQLClause_OcupacionParqueadero(Date desde, Date hasta, boolean clientes, boolean noClientes, boolean funcionarios) {
 
-		boolean oracle = ParqueSamanesConstantes.DATASOURCE_TYPE.equalsIgnoreCase("oracle");
+		boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
 
 		StringBuffer sql = new StringBuffer();
 
@@ -88,7 +88,7 @@ public class ReporterSQLClausesFactory {
 	 */
 	public String getSQLClause_Funcionarios(Date desde, Date hasta) {
 
-		boolean oracle = ParqueSamanesConstantes.DATASOURCE_TYPE.equalsIgnoreCase("oracle");
+		boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
 
 		StringBuffer sql = new StringBuffer();
 

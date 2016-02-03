@@ -1,6 +1,9 @@
 package reital.parquesamanes._view.working;
 
+import java.awt.Font;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
@@ -11,6 +14,10 @@ import efren.util.StringTools;
 import efren.util.gui.dialogs.InfoView;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import inetsoft.report.StyleSheet;
+import inetsoft.report.io.Builder;
+import inetsoft.report.j2d.StyleBook;
+import inetsoft.report.j2d.StylePrinter;
 import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.serialport.util.SerialPortException;
 import reital.parquesamanes.app.serialport.util.SerialPortModel;
@@ -24,7 +31,7 @@ public class PagoHelper {
 	 */
 	public static enum TIPO_CLIENTE {
 
-		CLIENTE_ParqueSamanes("A"), NO_CLIENTE_ParqueSamanes("B"), FUNCIONARIO_ParqueSamanes("C");
+		CLIENTE("A"), NO_CLIENTE("B"), PASE_LIBRE("C");
 
 		TIPO_CLIENTE(String unValor) {
 			setValor(unValor);
@@ -45,12 +52,7 @@ public class PagoHelper {
 	 *
 	 */
 	private ActividadForPagoEntity actividad = null;
-
-	/**
-	 *
-	 */
 	private PagoView pagoView = null;
-
 	private SerialPortModel serialModel = null;
 
 	/**
@@ -58,7 +60,7 @@ public class PagoHelper {
 	 */
 	public PagoHelper(PagoView pagoView) {
 		super();
-		this.pagoView = pagoView;
+		setPagoView(pagoView);
 		/**
 		 *
 		 */
@@ -84,21 +86,7 @@ public class PagoHelper {
 			getActividad().setBarraId(barraId);
 			getActividad().setEntrada(gcEntrada);
 			getActividad().setSalida(gcSalida);
-			getActividad().setEstado(ActividadForPagoEntity.NO_SALE_TODAVIA);// a
-																				// cambiarse
-																				// en
-																				// el
-																				// instante
-																				// del
-																				// pago
-			getActividad().setObservaciones(observaciones.toUpperCase());// a
-																			// llenarse
-																			// en
-																			// el
-																			// instante
-																			// del
-																			// pago
-
+			getActividad().setObservaciones(observaciones.toUpperCase());
 			getActividad().setTipoCliente(tipoCliente);
 
 			return getActividad();
@@ -113,6 +101,7 @@ public class PagoHelper {
 	 */
 	public void registrarActividad() {
 
+		mjfgtju
 		SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(getActividad());
 
 		this.pagoView.reinicializarVisual();
@@ -182,20 +171,20 @@ public class PagoHelper {
 		try {
 			this.serialModel.initializePortModel();
 		} catch (SerialPortException e1) {
-			InfoView.showErrorDialog(this.pagoView, "ERROR AL INICIALIZAR EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
+			InfoView.showErrorDialog(getPagoView(), "ERROR AL INICIALIZAR EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
 			// System.exit(-1);
 			e1.printStackTrace(System.out);
 		} catch (PortInUseException e1) {
-			InfoView.showErrorDialog(this.pagoView, "ERROR: EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " ESTA OCUPADO [" + e1.getMessage() + "]");
+			InfoView.showErrorDialog(getPagoView(), "ERROR: EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " ESTA OCUPADO [" + e1.getMessage() + "]");
 			// System.exit(-1);
 			e1.printStackTrace(System.out);
 		} catch (UnsupportedCommOperationException e1) {
-			InfoView.showErrorDialog(this.pagoView,
+			InfoView.showErrorDialog(getPagoView(),
 					"ERROR: OPERACION NO SOPORTADA POR EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
 			// System.exit(-1);
 			e1.printStackTrace(System.out);
 		} catch (IOException e1) {
-			InfoView.showErrorDialog(this.pagoView, "ERROR DE ESCRITURA EN EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
+			InfoView.showErrorDialog(getPagoView(), "ERROR DE ESCRITURA EN EL PUERTO " + ParqueSamanesConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
 			// System.exit(-1);
 			e1.printStackTrace(System.out);
 		}
@@ -260,30 +249,30 @@ public class PagoHelper {
 		String error1 = "Error en la lectura del ticket. Vuelva a intentar la operación !";
 		try {
 
-			pagoView.limpiarInformacionVisual(false);
+			getPagoView().limpiarInformacionVisual(false);
 
 			String secuenciaCaracteres = "";
-			for (int i = 0; i < pagoView.getJPasswordFieldData().getPassword().length; i++) {
-				secuenciaCaracteres = secuenciaCaracteres + String.valueOf(pagoView.getJPasswordFieldData().getPassword()[i]);
+			for (int i = 0; i < getPagoView().getJPasswordFieldData().getPassword().length; i++) {
+				secuenciaCaracteres = secuenciaCaracteres + String.valueOf(getPagoView().getJPasswordFieldData().getPassword()[i]);
 			}
 
 			if (secuenciaCaracteres.trim().length() == 0) {
-				pagoView.limpiarInformacionVisual(true);
-				pagoView.initializarFoco();
+				getPagoView().limpiarInformacionVisual(true);
+				getPagoView().initializarFoco();
 				return;
 			}
 
 			if (secuenciaCaracteres.trim().length() != ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH) {
-				pagoView.mostrarError(error1);
-				pagoView.limpiarInformacionVisual(true);
-				pagoView.initializarFoco();
+				getPagoView().mostrarError(error1);
+				getPagoView().limpiarInformacionVisual(true);
+				getPagoView().initializarFoco();
 				return;
 			}
 
 			if (yaSalio(secuenciaCaracteres)) {
-				pagoView.mostrarError("ERROR: este ticket ya fue usado para otro vehículo !");
-				pagoView.limpiarInformacionVisual(true);
-				pagoView.initializarFoco();
+				getPagoView().mostrarError("ERROR: este ticket ya fue usado para otro vehículo !");
+				getPagoView().limpiarInformacionVisual(true);
+				getPagoView().initializarFoco();
 				return;
 			}
 
@@ -302,71 +291,139 @@ public class PagoHelper {
 			 * 172800000 milisegundos
 			 */
 			if (Math.abs(milisSalida - milisEntrada) > 172800000) {
-				pagoView.mostrarError("ERROR: el ticket fue emitido hace más de 48 horas !");
-				pagoView.limpiarInformacionVisual(true);
-				pagoView.initializarFoco();
+				getPagoView().mostrarError("ERROR: el ticket fue emitido hace más de 48 horas !");
+				getPagoView().limpiarInformacionVisual(true);
+				getPagoView().initializarFoco();
 				return;
 			}
 			if (Math.abs(milisSalida - milisEntrada) < 0) {
-				pagoView.mostrarError("ERROR: el ticket no es válido !");
-				pagoView.limpiarInformacionVisual(true);
-				pagoView.initializarFoco();
+				getPagoView().mostrarError("ERROR: el ticket no es válido !");
+				getPagoView().limpiarInformacionVisual(true);
+				getPagoView().initializarFoco();
 				return;
 			}
 
+			/**
+			 *
+			 */
+			fillActividadForPagoEntity(registroActividad);
+
+			/**
+			 *
+			 */
+			getPagoView().getJPasswordFieldData().setText("");
+			getPagoView().getJPasswordFieldData().setEnabled(false);
+
+			getPagoView().getJButtonReiniciar().setEnabled(true);
+
+			getPagoView().getJButtonReiniciar().setFocusable(false);
+
+			registrarActividad();
+
+			getPagoView().getLabelBarIdValue().setText(registroActividad.getBarraId());
+
 			CalendarManager cmSalidaAbsoluta = new CalendarManager(registroActividad.getSalida());
+			CalendarManager cmEntradaAbsoluta = new CalendarManager(registroActividad.getEntrada());
+
+			getPagoView().getLabelEntradaValue()
+					.setText(cmEntradaAbsoluta.getInternationalDateExpression() + "  hora: " + cmEntradaAbsoluta.getTimeExpression2());
+			getPagoView().getLabelSalidaValue().setText(cmSalidaAbsoluta.getInternationalDateExpression() + "  hora: " + cmSalidaAbsoluta.getTimeExpression2());
+
+			switch (tipoCliente) {
+			case CLIENTE_ParqueSamanes:
+				getPagoView().getJLabelStatus().setText("CLIENTE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
+				break;
+			case NO_CLIENTE_ParqueSamanes:
+				getPagoView().getJLabelStatus().setText("NO CLIENTE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
+				break;
+			case FUNCIONARIO_ParqueSamanes:
+				getPagoView().getJLabelStatus().setText("PASE LIBRE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
+				break;
+			default:
+				break;
+			}
+
+			getPagoView().getJButtonAbrirBarrera().setEnabled(true);
+
+			if (tipoCliente == TIPO_CLIENTE.FUNCIONARIO_ParqueSamanes) {
+				getPagoView().abrirBarrera();
+			}
+
+		} catch (Throwable t11) {
+			getPagoView().mostrarError("ERROR: " + t11.getMessage() + " - " + error1);
+			getPagoView().limpiarInformacionVisual(true);
+			System.out.println("ERROR: " + t11.getMessage());
+			getPagoView().getJLabelStatus().setText("ERROR");
+			getPagoView().initializarFoco();
+		}
+	}
+
+	private void fillActividadForPagoEntity(ActividadForPagoEntity actividad) {
+
+		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
+				.getCantidadMinutosGracia();
+
+		CalendarManager cmEntradaAbsoluta = new CalendarManager(actividad.getEntrada());
+		CalendarManager cmSalidaAbsoluta = new CalendarManager(actividad.getSalida());
+
+		int minutosEntradaGlobal = (cmEntradaAbsoluta.getHoraDelDia() * 60) + cmEntradaAbsoluta.getMinutos();
+		int minutosSalidaGlobal = (cmSalidaAbsoluta.getHoraDelDia() * 60) + cmSalidaAbsoluta.getMinutos();
+
+		if (minutosSalidaGlobal - minutosEntradaGlobal <= ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes) {
+			actividad.setValor(BigDecimal.ZERO);
+			actividad.setEnTiempoGracia(true);
+		} else {
+
+			int diaEntrada = cmEntradaAbsoluta.getDayOfMonth();
 			int diaSalida = cmSalidaAbsoluta.getDayOfMonth();
 
-			CalendarManager cmEntradaAbsoluta = new CalendarManager(registroActividad.getEntrada());
-			int diaEntrada = cmEntradaAbsoluta.getDayOfMonth();
-
-			Vector<CMEntradaSalida> cmes_vec = new Vector<CMEntradaSalida>();
+			Vector<Dia> dias = new Vector<Dia>();
 			if (diaSalida == diaEntrada) {
-				CMEntradaSalida cmes = new CMEntradaSalida();
-				cmes.setEntrada(cmEntradaAbsoluta);
-				cmes.setSalida(cmSalidaAbsoluta);
-				cmes_vec.addElement(cmes);
+				Dia dia = new Dia();
+				dia.setEntrada(cmEntradaAbsoluta);
+				dia.setSalida(cmSalidaAbsoluta);
+				dias.addElement(dia);
 			} else {
 				if (diaSalida > diaEntrada) {
 					// por ahora solo esta considerado un dia despues
 					CalendarManager cmSalidaIntermedia = new CalendarManager(new GregorianCalendar(cmEntradaAbsoluta.getYear(),
 							(cmEntradaAbsoluta.getMonth() - 1), cmEntradaAbsoluta.getDayOfMonth(), 23, 59, 59));
-					CMEntradaSalida cmes = new CMEntradaSalida();
-					cmes.setEntrada(cmEntradaAbsoluta);
-					cmes.setSalida(cmSalidaIntermedia);
-					cmes_vec.addElement(cmes);
+					Dia dia = new Dia();
+					dia.setEntrada(cmEntradaAbsoluta);
+					dia.setSalida(cmSalidaIntermedia);
+					dias.addElement(dia);
 					// ...CALCULAMOS EL OFFSET DE MINUTOS A NO TOMARSE EN CUENTA
 					// EN EL PERIODO DEL SIGUIENTE DIA
-					int minutosSalidaIntermedia = (cmSalidaIntermedia.getHoraDelDia() * 60) + cmSalidaIntermedia.getMinutos();
-					int minutosEntradaAbsolutos = (cmEntradaAbsoluta.getHoraDelDia() * 60) + cmEntradaAbsoluta.getMinutos();
-					int minutosOffset = (minutosSalidaIntermedia - minutosEntradaAbsolutos) % 60;
+					int minutosSalidaIntermediaTemp = (cmSalidaIntermedia.getHoraDelDia() * 60) + cmSalidaIntermedia.getMinutos();
+					int minutosEntradaAbsolutosTemp = (cmEntradaAbsoluta.getHoraDelDia() * 60) + cmEntradaAbsoluta.getMinutos();
+					int minutosOffset = (minutosSalidaIntermediaTemp - minutosEntradaAbsolutosTemp) % 60;
 					// ...
 					CalendarManager cmEntradaIntermedia = new CalendarManager(new GregorianCalendar(cmSalidaAbsoluta.getYear(),
 							(cmSalidaAbsoluta.getMonth() - 1), cmSalidaAbsoluta.getDayOfMonth(), 0, (minutosOffset + 1), 0));
-					cmes = new CMEntradaSalida();
-					cmes.setEntrada(cmEntradaIntermedia);
-					cmes.setSalida(cmSalidaAbsoluta);
-					cmes_vec.addElement(cmes);
+					dia = new Dia();
+					dia.setEntrada(cmEntradaIntermedia);
+					dia.setSalida(cmSalidaAbsoluta);
+					dias.addElement(dia);
 				}
 			}
 
 			// ...
-			CMEntradaSalida cmesTemp;
 			boolean minutosGraciaYaConsiderados = false;
 			double valorTotal = 0.00;
 
-			for (int i = 0; i < cmes_vec.size(); i++) {
+			Dia diaTemp;
+			for (int i = 0; i < dias.size(); i++) {
 
-				cmesTemp = cmes_vec.elementAt(i);
+				diaTemp = dias.elementAt(i);
 
-				int minutosSalidaAbsolutos = (cmesTemp.getSalida().getHoraDelDia() * 60) + cmesTemp.getSalida().getMinutos();
-				int minutosEntradaAbsolutos = (cmesTemp.getEntrada().getHoraDelDia() * 60) + cmesTemp.getEntrada().getMinutos();
+				int minutosSalidaAbsolutosTemp = (diaTemp.getSalida().getHoraDelDia() * 60) + diaTemp.getSalida().getMinutos();
+				int minutosEntradaAbsolutosTemp = (diaTemp.getEntrada().getHoraDelDia() * 60) + diaTemp.getEntrada().getMinutos();
 
 				/**
 				 * SE RECORRE EL TIEMPO Y POR CADA HORA SE CALCULA SU VALOR
 				 */
-				int minutosTemp = minutosEntradaAbsolutos;
-				switch (tipoCliente) {
+				int minutosTemp = minutosEntradaAbsolutosTemp;
+				switch (actividad.getTipoCliente()) {
 				case CLIENTE_ParqueSamanes:
 					/**
 					 * LOS CLIENTES DE ParqueSamanes TIENEN MINUTOS DE GRACIA
@@ -374,8 +431,8 @@ public class PagoHelper {
 					 * SE 'SALTE' DICHO TIEMPO
 					 */
 					if (!minutosGraciaYaConsiderados) {
-						minutosEntradaAbsolutos = minutosEntradaAbsolutos + ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes;
-						minutosTemp = minutosEntradaAbsolutos;
+						minutosEntradaAbsolutosTemp = minutosEntradaAbsolutosTemp + ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes;
+						minutosTemp = minutosEntradaAbsolutosTemp;
 						minutosGraciaYaConsiderados = true;
 					}
 					break;
@@ -387,18 +444,18 @@ public class PagoHelper {
 					 * VARIABLE MINUTOS DEBE YA ESTAR EN EL LIMITE SUPERIOR ES
 					 * DECIR NO ENTRAR AL LAZO WHILE
 					 */
-					minutosTemp = minutosSalidaAbsolutos + 1;// AUMENTAMOS 1
-																// SOLAMENTE
-																// PARA QUE NO
-																// SE CUMPLA LA
-																// CONDICION DE
-																// MAS ABAJO
+					// AUMENTAMOS 1 SOLAMENTE PARA QUE NO SE CUMPLA LA CONDICION
+					// DE MAS ABAJO
+					minutosTemp = minutosSalidaAbsolutosTemp + 1;
 					break;
 				default:
 					break;
 				}
 
-				if (tipoCliente != TIPO_CLIENTE.FUNCIONARIO_ParqueSamanes) {
+				switch (actividad.getTipoCliente()) {
+				case CLIENTE_ParqueSamanes:
+				case NO_CLIENTE_ParqueSamanes:
+
 					Hashtable<Integer, BigDecimal> hv = null;
 
 					Vector<FranjaHoraria> franjasPorCobrar = new Vector<FranjaHoraria>();
@@ -410,7 +467,7 @@ public class PagoHelper {
 
 					int remanente = -1;
 
-					while (minutosTemp < minutosSalidaAbsolutos) {
+					while (minutosTemp < minutosSalidaAbsolutosTemp) {
 						try {
 							franjaNueva = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
 							cambioFranja = !franjaNueva.getNombre().equalsIgnoreCase(franjaAnterior.getNombre());
@@ -444,7 +501,7 @@ public class PagoHelper {
 						minutosTemp = minutosTemp + 60;
 						horasCount++;
 
-						remanente = minutosTemp - minutosSalidaAbsolutos;
+						remanente = minutosTemp - minutosSalidaAbsolutosTemp;
 					}
 					// ...
 					if (remanente != 0) {
@@ -459,99 +516,117 @@ public class PagoHelper {
 						franjasPorCobrar.addElement(franjaAnterior);
 						valorTotal = valorTotal + (valorXHora.doubleValue() * (1.00 * horasCount));
 					}
+
+					break;
+				case FUNCIONARIO_ParqueSamanes:
+					valorTotal = 0.00;
+					break;
+				default:
+					valorTotal = 0.00;
+					break;
 				}
 
 			}
 
-			BigDecimal valorTotalBD = new BigDecimal(valorTotal).setScale(2, BigDecimal.ROUND_HALF_UP);
-			registroActividad.setValor(valorTotalBD);
-
-			/**
-			 * VALORES NO NECESARIOS
-			 */
-			registroActividad.setFranjaHoraria("-");
-			registroActividad.setValorHoraOFraccion(new BigDecimal(0.00).setScale(2, BigDecimal.ROUND_HALF_UP));
-			registroActividad.setCantidadHoras(0);
-
-			/**
-			 *
-			 */
-			pagoView.getJPasswordFieldData().setText("");
-			pagoView.getJPasswordFieldData().setEnabled(false);
-
-			pagoView.getJButtonReiniciar().setEnabled(true);
-
-			pagoView.getJButtonReiniciar().setFocusable(false);
-
-			registrarActividad();
-
-			pagoView.getLabelBarIdValue().setText(registroActividad.getBarraId());
-			pagoView.getLabelEntradaValue().setText(cmEntradaAbsoluta.getInternationalDateExpression() + "  hora: " + cmEntradaAbsoluta.getTimeExpression2());
-			pagoView.getLabelSalidaValue().setText(cmSalidaAbsoluta.getInternationalDateExpression() + "  hora: " + cmSalidaAbsoluta.getTimeExpression2());
-
-			switch (tipoCliente) {
-			case CLIENTE_ParqueSamanes:
-				pagoView.getJLabelStatus()
-						.setText("CLIENTE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + ": $ " + StringTools.parseFromNumberToQuantity(valorTotalBD));
-				break;
-			case NO_CLIENTE_ParqueSamanes:
-				pagoView.getJLabelStatus().setText("NO CLIENTE: $ " + StringTools.parseFromNumberToQuantity(valorTotalBD));
-				break;
-			case FUNCIONARIO_ParqueSamanes:
-				pagoView.getJLabelStatus().setText("FUNCIONARIO: $ " + StringTools.parseFromNumberToQuantity(valorTotalBD));
-				break;
-			default:
-				break;
-			}
-
-			pagoView.getJButtonAbrirBarrera().setEnabled(true);
-
-			if (tipoCliente == TIPO_CLIENTE.FUNCIONARIO_ParqueSamanes) {
-				pagoView.abrirBarrera();
-			}
-
-		} catch (Throwable t11) {
-			pagoView.mostrarError("ERROR: " + t11.getMessage() + " - " + error1);
-			pagoView.limpiarInformacionVisual(true);
-			System.out.println("ERROR: " + t11.getMessage());
-			pagoView.getJLabelStatus().setText("ERROR");
-			pagoView.initializarFoco();
+			actividad.setValor(new BigDecimal(valorTotal).setScale(2, BigDecimal.ROUND_HALF_UP));
 		}
-	}
-
-	public class CMEntradaSalida {
-		private CalendarManager entrada = null;
-
-		private CalendarManager salida = null;
 
 		/**
-		 * @return the entrada
+		 * VALORES NO NECESARIOS
 		 */
+		actividad.setFranjaHoraria("-");
+		actividad.setValorHoraOFraccion(new BigDecimal(0.00).setScale(2, BigDecimal.ROUND_HALF_UP));
+		actividad.setCantidadHoras(0);
+	}
+
+	private class Dia {
+
+		private CalendarManager entrada = null;
+		private CalendarManager salida = null;
+
 		public CalendarManager getEntrada() {
 			return entrada;
 		}
 
-		/**
-		 * @param entrada
-		 *            the entrada to set
-		 */
 		public void setEntrada(CalendarManager entrada) {
 			this.entrada = entrada;
 		}
 
-		/**
-		 * @return the salida
-		 */
 		public CalendarManager getSalida() {
 			return salida;
 		}
 
-		/**
-		 * @param salida
-		 *            the salida to set
-		 */
 		public void setSalida(CalendarManager salida) {
 			this.salida = salida;
 		}
 	}
+
+	public void imprimirRecibo(ActividadForPagoEntity afpe) {
+		try {
+			if (afpe == null || afpe.getEntrada() == null || afpe.getSalida() == null) {
+				InfoView.showErrorDialog(getPagoView(), "No se ha impreso ningún recibo todavía");
+				return;
+			}
+
+			InputStream plantilla = getClass().getResourceAsStream("/reital/parquesamanes/resource/templates/TIRA01.srt");
+			Builder builder = Builder.getBuilder(Builder.TEMPLATE, plantilla);
+
+			StyleSheet report = null;
+			report = (StyleSheet) builder.read(".");
+			Font font1 = new Font("Ms sans serif", 0, 9);
+			report.setCurrentFont(font1);
+			report.setCurrentAlignment(2);
+			report.addText(ParqueSamanesConstantes.LegalInfo.SRI_NOMBRE);
+			report.addNewline(1);
+			report.addText("RUC: " + ParqueSamanesConstantes.LegalInfo.SRI_RUC);
+			report.addNewline(2);
+			report.addText(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL);
+			report.addNewline(2);
+			report.setCurrentAlignment(1);
+			report.addText("Código: " + afpe.getCodigo());
+			report.addNewline(1);
+
+			CalendarManager cmTemp = new CalendarManager(afpe.getEntrada());
+			report.addText("Entrada: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
+			report.addNewline(1);
+
+			cmTemp = new CalendarManager(afpe.getSalida());
+			report.addText("Salida: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
+			report.addNewline(1);
+
+			Font font2 = new Font("Ms sans serif", 0, 11);
+			report.setCurrentFont(font2);
+			report.addText("Valor: " + StringTools.parseFromNumberToQuantity(afpe.getValor()));
+
+			report.addNewline(2);
+			report.setCurrentFont(font1);
+			report.setCurrentAlignment(2);
+			report.addText("GRACIAS POR SU VISITA");
+
+			PrinterJob job = StylePrinter.getPrinterJob();
+			StyleBook book = new StyleBook(report, job.defaultPage());
+			job.setPageable(book);
+			job.print();
+
+		} catch (Throwable t) {
+			t.getMessage();
+			InfoView.showErrorDialog(getPagoView(), "ERROR: " + t.getMessage());
+		}
+	}
+
+	/**
+	 * @return the pagoView
+	 */
+	public PagoView getPagoView() {
+		return pagoView;
+	}
+
+	/**
+	 * @param pagoView
+	 *            the pagoView to set
+	 */
+	public void setPagoView(PagoView pagoView) {
+		this.pagoView = pagoView;
+	}
+
 }

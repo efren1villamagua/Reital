@@ -80,7 +80,7 @@ public class SerialPortModel {
 		}
 
 		// initalize serial port
-		this.serialPort = (SerialPort) this.portId.open("ReitalParking" + ParqueSamanesConstantes.EMPRESA_NOMBRE_01, 2000);
+		this.serialPort = (SerialPort) this.portId.open("ReitalParking" + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL, 2000);
 		// CommPort commPort = portId.open(this.getClass().getName(), 2000);
 		/*
 		 * if (commPort instanceof SerialPort) { SerialPort serialPort =

@@ -364,7 +364,7 @@ public class ReporterView extends DialogExt {
 			model.setValueAt(110, 5, 2);
 			model.setValueAt("Tipo usr.", 6, 1);
 			model.setValueAt("Observaciones", 7, 1);
-			ivjDetallesPresentacionPanel1.setTitulo01(ParqueSamanesConstantes.EMPRESA_NOMBRE_01);
+			ivjDetallesPresentacionPanel1.setTitulo01(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL);
 			ivjDetallesPresentacionPanel1.setTitulo02("Ocupación de parqueadero");
 		}
 		return ivjDetallesPresentacionPanel1;
@@ -553,7 +553,7 @@ public class ReporterView extends DialogExt {
 		setName("DataTableReporterView");
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setSize(713, 614);
-		setTitle("Reportes Parking - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setTitle("Reportes Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJFrameContentPane());
 		setResizable(true);
 		setModal(true);
@@ -922,7 +922,7 @@ public class ReporterView extends DialogExt {
 			model.setValueAt(110, 3, 2);
 			model.setValueAt("Tipo usr.", 4, 1);
 			model.setValueAt("Observaciones", 5, 1);
-			ivjDetallesPresentacionPanelFuncionarios.setTitulo01(ParqueSamanesConstantes.EMPRESA_NOMBRE_01);
+			ivjDetallesPresentacionPanelFuncionarios.setTitulo01(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL);
 			ivjDetallesPresentacionPanelFuncionarios.setTitulo02("Funcionarios");
 
 		}

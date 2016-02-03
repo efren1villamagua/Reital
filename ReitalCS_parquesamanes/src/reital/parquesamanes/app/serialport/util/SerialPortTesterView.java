@@ -109,7 +109,7 @@ public class SerialPortTesterView extends JFrame {
 		this.setSize(292, 175);
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setContentPane(getJContentPane());
-		this.setTitle(ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - Serial test");
+		this.setTitle(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - Serial test");
 		/**
 		 *
 		 */

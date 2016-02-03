@@ -64,7 +64,7 @@ public class ControlPanelView extends JFrame {
 	private void initialize() {
 		setDefaultCloseOperation(0);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/clock16x16.png")));
-		setTitle("Reital Parking - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "  --  Control Panel - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setTitle("Reital Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "  --  Control Panel - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJPanel4());
 		setSize(595, 230);
 		WindowManager2.centerWindow(this);

@@ -16,8 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-import org.springframework.stereotype.Controller;
-
+import efren.util.CalendarManager;
 import efren.util.ExceptionManager;
 import efren.util.StringTools;
 import efren.util.WindowManager;
@@ -28,9 +27,12 @@ import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.serialport.util.SerialPortException;
 import reital.parquesamanes.app.serialport.util.SerialPortModel;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
+import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoPago;
 
 public class CobroDialog extends DialogExt {
 	/**
@@ -40,38 +42,23 @@ public class CobroDialog extends DialogExt {
 
 	// ...
 	private BarraAceptarCancelarPanel ivjBarraAceptarCancelarPanel = null;
-
 	protected transient PropertyChangeSupport propertyChange;
-
 	private JPanel ivjJPanel1 = null;
-
 	private LabelExt ivjLabelExt2 = null;
-
 	private TextFieldExt textFieldExtValorPago = null;
-
 	private LabelExt ivjLabelExt1 = null;
-
 	private JLabel jLabelValor = null;
-
 	private JLabel jLabel = null;
-
 	private JLabel jLabelValorCambio = null;
-
 	private JLabel jLabel1 = null;
-
 	private TextFieldExt textFieldExtObservaciones = null;
-
 	private SerialPortModel serialModel = null;
 
 	/**
 	 *
 	 */
-	private RDBDataModel model = null;
-
-	private PagoView pagoView = null;
-
+	private PagoHelper pagoHelper = null;
 	private ActividadForPagoEntity actividadForPago = null;
-
 	private JLabel jLabelTarjetaDetails = null;
 
 	/**
@@ -82,15 +69,14 @@ public class CobroDialog extends DialogExt {
 	/**
 	 *
 	 */
-	public CobroDialog(PagoView pagoView, RDBDataModel dm) {
-		super(pagoView);
+	public CobroDialog(PagoHelper pagoHelper) {
+		super(pagoHelper.getPagoView());
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(final WindowEvent e) {
 				cerrar();
 			}
 		});
-		this.pagoView = pagoView;
-		this.model = dm;
+		setPagoHelper(pagoHelper);
 		initialize();
 	}
 
@@ -100,13 +86,13 @@ public class CobroDialog extends DialogExt {
 	private void registrarPago() {
 		try {
 			if (this.valorPago < getActividadForPago().getValor().doubleValue()) {
-				InfoView.showErrorDialog(this.pagoView, "ERROR: El pago no puede ser menor que el valor del parqueo.");
+				InfoView.showErrorDialog(getPagoHelper().getPagoView(), "ERROR: El pago no puede ser menor que el valor del parqueo.");
 				// getTextFieldExtValorPago().requestFocus();
 				getTextFieldExtValorPago().seleccionar();
 				return;
 			}
 
-			if (!getPago().debePagar() || !getPago().getImprimirRecibo()) {
+			if (!getActividadForPago().isDebePagar() || !getActividadForPago().isImprimirRecibo()) {
 				getActividadForPago().setObservaciones("");
 			} else {
 				String observacionesGenerales = getTextFieldExtObservaciones().getValue().trim();
@@ -116,60 +102,77 @@ public class CobroDialog extends DialogExt {
 				getActividadForPago().setObservaciones(observacionesGenerales.trim());
 			}
 
-			boolean resultado = this.model.guardarPago(this.pago);
+			// esta ventana de cobro solo se debe abrir/crear para cobros
+			// diferentes de cero (con costo)
+			getActividadForPago().setEstadoPago(EstadoPago.PAGADO);
+
+			boolean actividadPersistida = SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(getActividadForPago());
+
 			this.dispose();
 
-			if (getPago().getImprimirRecibo() && !getPago().isTiempoGracia()) {
-				Controller controlador = new Controller(this.pagoView);
-				controlador.imprimirRecibo(pago);
+			if (getActividadForPago().isImprimirRecibo() && !getActividadForPago().isEnTiempoGracia()) {
+				getPagoHelper().imprimirRecibo(getActividadForPago());
 			}
 
-			if (resultado) {
-				if (getPago().debePagar()) {
-					if (!getPago().getImprimirRecibo()) {
-						InfoView.showMessageDialog(this.pagoView, "Tarjeta con pago CERO");
+			if (actividadPersistida) {
+				if (getActividadForPago().isDebePagar()) {
+					if (!getActividadForPago().isImprimirRecibo()) {
+						InfoView.showMessageDialog(getPagoHelper().getPagoView(), "Pago CERO");
 						this.serialModel.abrirSalida1();
 					} else {
-						InfoView.showMessageDialog(this.pagoView,
-								"Pago: " + StringTools.parseFromNumberToQuantity(getPago().getValor().setScale(2, 4)) + " registrado con éxito");
+						InfoView.showMessageDialog(getPagoHelper().getPagoView(),
+								"Pago: " + StringTools.parseFromNumberToQuantity(getActividadForPago().getValor().setScale(2, 4)) + " registrado con éxito");
 						this.serialModel.abrirSalida1();
 					}
 				} else {
-					InfoView.showMessageDialog(this.pagoView, "Tarjeta de CORTESIA");
+					InfoView.showMessageDialog(getPagoHelper().getPagoView(), "Pase libre");
 					this.serialModel.abrirSalida1();
 				}
 			}
 
 		} catch (Throwable t) {
 			t.getMessage();
-			InfoView.showErrorDialog(this.pagoView, t.getMessage());
+			InfoView.showErrorDialog(getPagoHelper().getPagoView(), t.getMessage());
 		}
 	}
 
 	/**
 	 *
 	 */
-	public void initializeValores(Pago unPago) {
-		setPago(unPago);
-		if (unPago == null) {
+	public void initializeValores(ActividadForPagoEntity afpe) {
+		setActividadForPago(afpe);
+		if (afpe == null) {
 			jLabelTarjetaDetails.setText("");
 			jLabelValor.setText("0.00");
 			getTextFieldExtObservaciones().setValue("");
 			getTextFieldExtValorPago().setEditable(false);
 		} else {
-			jLabelTarjetaDetails
-					.setText("<html><B>Tarjeta:</B> " + getPago().getEventoEntrada().getCodigoTarjetaDecimal() + "   "
-							+ getPago().getEventoEntrada().getNombres() + " " + getPago().getEventoEntrada().getApellidos() + "<BR>Entrada: "
-							+ StringTools.parseDateFromISOToDMY(getPago().getEventoEntrada().getFecha()) + "  hora: "
-							+ getPago().getEventoEntrada().getHora().toString() + "<BR>Salida: "
-							+ StringTools.parseDateFromISOToDMY(getPago().getEventoSalida().getFecha()) + "  hora: "
-							+ getPago().getEventoSalida().getHora().toString()
-							+ (getPago().isTiempoGracia()
-									? "<BR><CENTER><FONT COLOR=red><B>GRATIS (hasta " + ApplicationConstantes.MINUTOS_GRACIA + " min.)</B></FONT></CENTER>"
-									: ""));
-			jLabelValor.setText(StringTools.parseFromNumberToQuantity(this.getPago().getValor()));
-			getTextFieldExtObservaciones().setValue(getPago().isTiempoGracia() ? "GRATIS (hasta " + ApplicationConstantes.MINUTOS_GRACIA + " min.)" : "");
-			getTextFieldExtValorPago().setEditable(!getPago().isTiempoGracia());
+			StringBuffer trjDetails = new StringBuffer();
+			trjDetails.append("<html>");
+			trjDetails.append("<B>Id trx.:</B> " + afpe.getCodigo());
+			CalendarManager cmTemp = new CalendarManager(afpe.getEntrada());
+			trjDetails.append("<BR>Entrada: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
+			cmTemp = new CalendarManager(afpe.getSalida());
+			trjDetails.append("<BR>Salida: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
+
+			String tiempoGraciaTextSimple = null;
+			String tiempoGraciaTextHtml = null;
+			if (afpe.isEnTiempoGracia()) {
+				ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
+						.getCantidadMinutosGracia();
+				tiempoGraciaTextSimple = "GRATIS (hasta " + ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes + " min.)";
+				tiempoGraciaTextHtml = "<BR><CENTER><FONT COLOR=red><B>" + tiempoGraciaTextSimple + "</B></FONT></CENTER>";
+			} else {
+				tiempoGraciaTextSimple = "";
+				tiempoGraciaTextHtml = "";
+			}
+			trjDetails.append(tiempoGraciaTextHtml);
+			// ...
+			jLabelTarjetaDetails.setText(trjDetails.toString());
+			jLabelValor.setText(StringTools.parseFromNumberToQuantity(afpe.getValor()));
+			String observaciones = tiempoGraciaTextSimple;
+			getTextFieldExtObservaciones().setValue(observaciones);
+			getTextFieldExtValorPago().setEditable(!afpe.isEnTiempoGracia());
 		}
 		getTextFieldExtValorPago().setValue("0.00");
 		jLabelValorCambio.setText("0.00");
@@ -381,7 +384,7 @@ public class CobroDialog extends DialogExt {
 	 *
 	 */
 	private void calcularCambio() {
-		double valor = this.getPago().getValor().doubleValue();
+		double valor = getActividadForPago().getValor().doubleValue();
 		this.valorPago = new BigDecimal(StringTools.parseFromMoneyToNumber(getTextFieldExtValorPago().getValue().trim())).setScale(2, BigDecimal.ROUND_HALF_UP)
 				.doubleValue();
 		double valorCambio = this.valorPago - valor;
@@ -539,20 +542,24 @@ public class CobroDialog extends DialogExt {
 		try {
 			this.serialModel.initializePortModel();
 		} catch (SerialPortException e1) {
-			InfoView.showErrorDialog(this.pagoView, "ERROR AL INICIALIZAR EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
+			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
+					"ERROR AL INICIALIZAR EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
 			// System.exit(-1);
 		} catch (PortInUseException e1) {
-			InfoView.showErrorDialog(this.pagoView, "ERROR: EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " ESTA OCUPADO [" + e1.getMessage() + "]");
+			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
+					"ERROR: EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " ESTA OCUPADO [" + e1.getMessage() + "]");
 			// System.exit(-1);
 		} catch (UnsupportedCommOperationException e1) {
-			InfoView.showErrorDialog(this.pagoView,
+			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
 					"ERROR: OPERACION NO SOPORTADA POR EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
 			// System.exit(-1);
 		} catch (IOException e1) {
-			InfoView.showErrorDialog(this.pagoView, "ERROR DE ESCRITURA EN EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
+			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
+					"ERROR DE ESCRITURA EN EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
 			// System.exit(-1);
 		} catch (Exception e1) {
-			InfoView.showErrorDialog(this.pagoView, "ERROR DE APERTURA EN EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
+			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
+					"ERROR DE APERTURA EN EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
 			// System.exit(-1);
 		}
 	}
@@ -565,10 +572,26 @@ public class CobroDialog extends DialogExt {
 	}
 
 	/**
-	 * @param actividadForPago the actividadForPago to set
+	 * @param actividadForPago
+	 *            the actividadForPago to set
 	 */
 	public void setActividadForPago(ActividadForPagoEntity actividadForPago) {
 		this.actividadForPago = actividadForPago;
+	}
+
+	/**
+	 * @return the pagoHelper
+	 */
+	public PagoHelper getPagoHelper() {
+		return pagoHelper;
+	}
+
+	/**
+	 * @param pagoHelper
+	 *            the pagoHelper to set
+	 */
+	public void setPagoHelper(PagoHelper pagoHelper) {
+		this.pagoHelper = pagoHelper;
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

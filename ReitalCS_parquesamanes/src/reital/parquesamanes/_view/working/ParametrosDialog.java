@@ -320,7 +320,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 				ivjLabelExt2 = new efren.util.gui.LabelExt();
 				ivjLabelExt2.setName("LabelExt2");
 				ivjLabelExt2.setDisplayedMnemonic('w');
-				ivjLabelExt2.setText("Minutos gracia para CLIENTES " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "");
+				ivjLabelExt2.setText("Minutos gracia para CLIENTES " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "");
 				ivjLabelExt2.setForeground(java.awt.Color.black);
 				ivjLabelExt2.setHorizontalAlignment(SwingConstants.RIGHT);
 				// user code begin {1}

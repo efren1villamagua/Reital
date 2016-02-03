@@ -6,58 +6,33 @@ import java.util.GregorianCalendar;
 import reital.parquesamanes._view.working.PagoHelper;
 
 public class ActividadForPagoEntity {
-	/**
-	 *
-	 */
-	public static final int NO_SALE_TODAVIA = 0;
 
-	public static final int PENDIENTE_DE_SALIDA = 1;
-
-	public static final int YA_SALIO = 2;
-
-	/**
-	 *
-	 */
-	private int estado = NO_SALE_TODAVIA;
-
+	private EstadoSalida estadoSalida;
+	private EstadoPago estadoPago;
 	private String barraId = null;
-
 	private String codigo = null;
-
 	private GregorianCalendar entrada = null;
-
 	private GregorianCalendar salida = null;
-
 	private BigDecimal valor = null;
-
 	private BigDecimal valorHoraOFraccion = null;
-
 	private int cantidadHoras = 0;
-
 	private PagoHelper.TIPO_CLIENTE tipoCliente = null;
-
 	private String observaciones = null;
-
 	private String franjaHoraria = null;
+	private boolean imprimirRecibo = false;
+	private boolean debePagar = false;
+	private boolean enTiempoGracia = false;
 
-	/**
-	 * @return the estado
-	 */
-	public int getEstado() {
-		return estado;
+	public ActividadForPagoEntity() {
+		super();
+		initialize();
 	}
 
-	/**
-	 * @param estado
-	 *            the estado to set
-	 */
-	public void setEstado(int estado) {
-		this.estado = estado;
+	private void initialize() {
+		setEstadoSalida(EstadoSalida.NO_SALE_TODAVIA);
+		setEstadoPago(EstadoPago.PENDIENTE);
 	}
 
-	/**
-	 * @return the barraId
-	 */
 	public String getBarraId() {
 		return barraId;
 	}
@@ -196,6 +171,23 @@ public class ActividadForPagoEntity {
 	 */
 	public void setTipoCliente(PagoHelper.TIPO_CLIENTE tipoCliente) {
 		this.tipoCliente = tipoCliente;
+		if (this.tipoCliente != null) {
+			switch (this.tipoCliente) {
+			case CLIENTE:
+			case NO_CLIENTE:
+				setImprimirRecibo(true);
+				setDebePagar(true);
+				break;
+			case PASE_LIBRE:
+				setImprimirRecibo(false);
+				setDebePagar(false);
+				break;
+			default:
+				setImprimirRecibo(false);
+				setDebePagar(false);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -205,4 +197,118 @@ public class ActividadForPagoEntity {
 		return tipoCliente;
 	}
 
+	/**
+	 * @return the imprimirRecibo
+	 */
+	public boolean isImprimirRecibo() {
+		return imprimirRecibo;
+	}
+
+	/**
+	 * @param imprimirRecibo
+	 *            the imprimirRecibo to set
+	 */
+	private void setImprimirRecibo(boolean imprimirRecibo) {
+		this.imprimirRecibo = imprimirRecibo;
+	}
+
+	/**
+	 * @return the estadoSalida
+	 */
+	public EstadoSalida getEstadoSalida() {
+		return estadoSalida;
+	}
+
+	/**
+	 * @param estadoSalida
+	 *            the estadoSalida to set
+	 */
+	public void setEstadoSalida(EstadoSalida estadoSalida) {
+		this.estadoSalida = estadoSalida;
+	}
+
+	/**
+	 * @return the debePagar
+	 */
+	public boolean isDebePagar() {
+		return debePagar;
+	}
+
+	/**
+	 * @param debePagar
+	 *            the debePagar to set
+	 */
+	private void setDebePagar(boolean debePagar) {
+		this.debePagar = debePagar;
+	}
+
+	public static enum EstadoSalida {
+
+		NO_SALE_TODAVIA(0), PENDIENTE_DE_SALIDA(1), YA_SALIO(2);
+
+		EstadoSalida(int unValor) {
+			setValor(unValor);
+		}
+
+		private int valor;
+
+		public int getValor() {
+			return valor;
+		}
+
+		public void setValor(int valor) {
+			this.valor = valor;
+		}
+
+	}
+
+	public static enum EstadoPago {
+
+		PENDIENTE("P"), PAGADO("G"), PASE_LIBRE("L");
+
+		EstadoPago(String unValor) {
+			setValor(unValor);
+		}
+
+		private String valor;
+
+		public String getValor() {
+			return valor;
+		}
+
+		public void setValor(String valor) {
+			this.valor = valor;
+		}
+
+	}
+
+	/**
+	 * @return the enTiempoGracia
+	 */
+	public boolean isEnTiempoGracia() {
+		return enTiempoGracia;
+	}
+
+	/**
+	 * @param enTiempoGracia
+	 *            the enTiempoGracia to set
+	 */
+	public void setEnTiempoGracia(boolean enTiempoGracia) {
+		this.enTiempoGracia = enTiempoGracia;
+	}
+
+	/**
+	 * @return the estadoPago
+	 */
+	public EstadoPago getEstadoPago() {
+		return estadoPago;
+	}
+
+	/**
+	 * @param estadoPago
+	 *            the estadoPago to set
+	 */
+	public void setEstadoPago(EstadoPago estadoPago) {
+		this.estadoPago = estadoPago;
+	}
 }

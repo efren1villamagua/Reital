@@ -9,6 +9,7 @@ import efren.util.StringTools;
 import efren.util.SystemLogManager;
 import reital.parquesamanes._view.seguridades.LogonView;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
+import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoSalida;
 import reital.parquesamanes.domain.repos.ActividadRepository;
 import reital.parquesamanes.infra.ParqueSamanesConn;
 import reital.parquesamanes.infra.util.GarbageRecollector;
@@ -91,8 +92,8 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 			ps.setInt(9, registroActividad.getCantidadHoras());
 			paramMetaClause.append("[9-> " + registroActividad.getCantidadHoras() + "]");
 
-ASDA			ps.setInt(9, registroActividad.getCantidadHoras());
-ASDASD			paramMetaClause.append("[9-> " + registroActividad.getCantidadHoras() + "]");
+			ps.setString(10, registroActividad.getEstadoPago().getValor());
+			paramMetaClause.append("[10-> " + registroActividad.getEstadoPago().getValor() + "]");
 
 			paramMetaClause.append("} ");
 			SystemLogManager.debug(sql.toString() + paramMetaClause);
@@ -101,7 +102,7 @@ ASDASD			paramMetaClause.append("[9-> " + registroActividad.getCantidadHoras() +
 
 			seRegistro = insertados > 0;
 			if (seRegistro) {
-				registroActividad.setEstado(ActividadForPagoEntity.PENDIENTE_DE_SALIDA);
+				registroActividad.setEstadoSalida(EstadoSalida.PENDIENTE_DE_SALIDA);
 			}
 
 		} catch (Exception exc) {

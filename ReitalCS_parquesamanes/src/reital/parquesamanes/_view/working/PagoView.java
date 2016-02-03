@@ -105,7 +105,7 @@ public class PagoView extends JFrame {
 	private void initialize() {
 		setDefaultCloseOperation(0);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/CLOCK_16_hot.png")));
-		setTitle("Reital Parking - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "- [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setTitle("Reital Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "- [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJPanel4());
 		setSize(703, 494);
 		WindowManager2.centerWindow(this);
@@ -234,8 +234,8 @@ public class PagoView extends JFrame {
 			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
 			jPanel4 = new JPanel();
 			GridBagLayout gbl_jPanel4 = new GridBagLayout();
-			gbl_jPanel4.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0};
-			gbl_jPanel4.columnWeights = new double[]{1.0, 0.0};
+			gbl_jPanel4.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
+			gbl_jPanel4.columnWeights = new double[] { 1.0, 0.0 };
 			jPanel4.setLayout(gbl_jPanel4);
 			jPanel4.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 			gridBagConstraints52.gridx = 1;
@@ -588,31 +588,30 @@ public class PagoView extends JFrame {
 	 *
 	 */
 	private void registrarActividadCliente() {
-		if (InfoView.showConfirmDialog(this, "Está seguro que desea registrar como CLIENTE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " ?",
-				"CLIENTE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
+		if (InfoView.showConfirmDialog(this, "Está seguro que desea registrar como CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?",
+				"CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
 			return;
 		}
-		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.CLIENTE_ParqueSamanes, "-");
+		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.CLIENTE, "-");
 	}
 
 	/**
 	 *
 	 */
 	private void registrarActividadNoCliente() {
-		if (InfoView.showConfirmDialog(this, "Está seguro que desea registrar como NO CLIENTE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " ?",
-				"NO CLIENTE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
+		if (InfoView.showConfirmDialog(this, "Está seguro que desea registrar como NO CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?",
+				"NO CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
 			return;
 		}
-		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.NO_CLIENTE_ParqueSamanes, "-");
+		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.NO_CLIENTE, "-");
 	}
 
 	/**
 	 *
 	 */
 	private void registrarActividadFuncionario() {
-		String observaciones = InfoView.showInputDialog(this,
-				"Ingrese los nombres del FUNCIONARIO o SUPERVISOR DE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " (De 7 a 200 caracteres)",
-				"FUNCIONARIO o SUPERVISOR DE " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "", InfoView.QUESTION_MESSAGE);
+		String observaciones = InfoView.showInputDialog(this, "Ingrese los nombres del \"Pase libre\" (De 7 a 200 caracteres)", "\"Pase libre\"",
+				InfoView.QUESTION_MESSAGE);
 		if (observaciones == null || observaciones.trim().length() == 0) {
 			return;
 		}
@@ -624,7 +623,7 @@ public class PagoView extends JFrame {
 		if (observaciones.length() > 200) {
 			observaciones = observaciones.substring(0, 200);
 		}
-		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.FUNCIONARIO_ParqueSamanes, observaciones);
+		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.PASE_LIBRE, observaciones);
 	}
 
 	/**
@@ -672,13 +671,6 @@ public class PagoView extends JFrame {
 		return labelBarIdValue;
 	}
 
-	public void abrirBarrera() {
-		getPagoHelper().enviarSenialAbrirBarrera();
-		/**
-		 * OJO TODO: HAY QUE MARCAR EL REGISTRO DE LA TABLA ACTIVIDAD COMO
-		 * PROCESADO LUEGO DE ABRIR LA BARRERA
-		 */
-	}
 	private InformationPanel getInformationPanel() {
 		if (informationPanel == null) {
 			informationPanel = new InformationPanel();

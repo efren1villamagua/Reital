@@ -179,7 +179,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 			st = ParqueSamanesConn.getConnection().createStatement();
 
-			boolean oracle = ParqueSamanesConstantes.DATASOURCE_TYPE.equalsIgnoreCase("oracle");
+			boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
 
 			String sql = null;
 

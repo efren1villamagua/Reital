@@ -404,7 +404,7 @@ public class UsuarioABMView extends JFrame
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
 			setSize(629, 506);
-			setTitle("Reital - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - USUARIOS - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+			setTitle("Reital - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - USUARIOS - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 			setContentPane(getJFrameContentPane());
 			initConnections();
 		} catch (java.lang.Throwable ivjExc) {

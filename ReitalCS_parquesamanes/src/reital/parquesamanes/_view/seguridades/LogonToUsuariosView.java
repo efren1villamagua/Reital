@@ -210,7 +210,7 @@ public class LogonToUsuariosView extends JFrame {
 
 	public static void main(String args[]) {
 		try {
-			LoggerManager.init(ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + "_" + LogonToUsuariosView.class.getSimpleName());
+			LoggerManager.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + LogonToUsuariosView.class.getSimpleName());
 			SystemLogManager.setLogger(LoggerManager.logger);
 		} catch (Exception e) {
 			e.getMessage();
@@ -235,7 +235,7 @@ public class LogonToUsuariosView extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
 		setSize(429, 335);
-		setTitle("Reital - " + ParqueSamanesConstantes.EMPRESA_NOMBRE_01 + " - Usuarios - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setTitle("Reital - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - Usuarios - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				cerrarVentana();

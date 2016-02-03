@@ -10,7 +10,7 @@ public class ParqueSamanesConstantes {
 	/**
 	 *
 	 */
-	public static final String SISTEMA_VERSION = "20151228_1014";
+	public static final String SISTEMA_VERSION = "20160203_0220";
 
 	/**
 	 *
@@ -31,13 +31,6 @@ public class ParqueSamanesConstantes {
 	/**
 	 *
 	 */
-	public static String DATASOURCE_TYPE = "h2";
-
-	public static String DATASOURCE_IP = "127.0.0.1";
-
-	public static String DATASOURCE_PORT = "50000";
-
-	public static String DATASOURCE_DBNAME = "ANY_DB";
 
 	public static String PUERTO_SERIAL = "COM6";
 
@@ -53,13 +46,28 @@ public class ParqueSamanesConstantes {
 
 	public static int TICKET_BAR_CODE_LENGTH = 13;
 
-	public static int MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = 60;
+	public static int MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = 10;
 
 	public static String ADMIN_USERNAME = "admin";
 
 	public static String ADMIN_PASSWORD = "admin";
 
-	public static String EMPRESA_NOMBRE_01 = "ParqueSamanes";
+	public static class LegalInfo {
+
+		public static String SRI_NOMBRE = "_undefined_";
+		public static String SRI_RUC = "_undefined_";
+		public static String NOMBRE_COMERCIAL = "ParqueSamanes";
+
+	}
+
+	public static class DataSource {
+
+		public static String TYPE = "h2";
+		public static String IP = "127.0.0.1";
+		public static String PORT = "50000";
+		public static String DBNAME = "ParqueSamanesDB";
+
+	}
 
 	/**
 	 *
@@ -81,26 +89,6 @@ public class ParqueSamanesConstantes {
 			propiedades.load(propertiesFileIS);
 
 			try {
-				ParqueSamanesConstantes.DATASOURCE_TYPE = propiedades.getProperty("DATASOURCE_TYPE").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
-				ParqueSamanesConstantes.DATASOURCE_IP = propiedades.getProperty("DATASOURCE_IP").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
-				ParqueSamanesConstantes.DATASOURCE_PORT = propiedades.getProperty("DATASOURCE_PORT").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
-				ParqueSamanesConstantes.DATASOURCE_DBNAME = propiedades.getProperty("DATASOURCE_DBNAME").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
 				String temp = propiedades.getProperty("TICKET_BAR_CODE_WITH_BAR_ID").trim();
 				ParqueSamanesConstantes.TICKET_BAR_CODE_WITH_BAR_ID = temp.equalsIgnoreCase("SI");
 				if (ParqueSamanesConstantes.TICKET_BAR_CODE_WITH_BAR_ID) {
@@ -116,25 +104,6 @@ public class ParqueSamanesConstantes {
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
-			try {
-				ParqueSamanesConstantes.EMPRESA_NOMBRE_01 = propiedades.getProperty("EMPRESA_NOMBRE_01").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			/*
-			 * try { ParqueSamanesConstantes.EMPRESA_NOMBRE_02 =
-			 * propiedades.getProperty("EMPRESA_NOMBRE_02").trim(); } catch
-			 * (Exception exc) { exc.getMessage(); } try {
-			 * ParqueSamanesConstantes.EMPRESA_RUC =
-			 * propiedades.getProperty("EMPRESA_RUC").trim(); } catch (Exception
-			 * exc) { exc.getMessage(); } try {
-			 * ParqueSamanesConstantes.EMPRESA_DIRECCION =
-			 * propiedades.getProperty("EMPRESA_DIRECCION").trim(); } catch
-			 * (Exception exc) { exc.getMessage(); } try {
-			 * ParqueSamanesConstantes.EMPRESA_TELEFONOS =
-			 * propiedades.getProperty("EMPRESA_TELEFONOS").trim(); } catch
-			 * (Exception exc) { exc.getMessage(); }
-			 */
 			try {
 				ParqueSamanesConstantes.PUERTA_1_OPEN = propiedades.getProperty("PUERTA_1_OPEN").trim();
 			} catch (Exception exc) {
@@ -172,6 +141,45 @@ public class ParqueSamanesConstantes {
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
+
+			// LegalInfo
+			try {
+				ParqueSamanesConstantes.LegalInfo.SRI_NOMBRE = propiedades.getProperty("LegalInfo.SRI_NOMBRE").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			try {
+				ParqueSamanesConstantes.LegalInfo.SRI_RUC = propiedades.getProperty("LegalInfo.SRI_RUC").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			try {
+				ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL = propiedades.getProperty("LegalInfo.NOMBRE_COMERCIAL").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			// DataSource
+			try {
+				ParqueSamanesConstantes.DataSource.TYPE = propiedades.getProperty("DataSource.TYPE").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			try {
+				ParqueSamanesConstantes.DataSource.IP = propiedades.getProperty("DataSource.IP").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			try {
+				ParqueSamanesConstantes.DataSource.PORT = propiedades.getProperty("DataSource.PORT").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			try {
+				ParqueSamanesConstantes.DataSource.DBNAME = propiedades.getProperty("DataSource.DBNAME").trim();
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+
 			// ...
 			propertiesFileIS.close();
 		} catch (Throwable texc) {
