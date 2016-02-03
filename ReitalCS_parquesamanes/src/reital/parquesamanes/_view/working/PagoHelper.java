@@ -366,7 +366,7 @@ public class PagoHelper {
 		}
 	}
 
-	private void fillActividadForPagoEntity(ActividadForPagoEntity actividad) {
+	private void fillActividadForPagoEntity(ActividadForPagoEntity actividad) throws Exception {
 
 		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
 				.getCantidadMinutosGracia();
@@ -465,6 +465,9 @@ public class PagoHelper {
 
 					Vector<FranjaHoraria> franjasPorCobrar = new Vector<FranjaHoraria>();
 					FranjaHoraria franjaAnterior = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
+					if (franjaAnterior == null) {
+						throw new Exception("Error al recuperar información de las franjas horarias");
+					}
 					FranjaHoraria franjaNueva = null;
 					int horasCount = 0;
 
@@ -473,8 +476,14 @@ public class PagoHelper {
 					int remanente = -1;
 
 					while (minutosTemp < minutosSalidaAbsolutosTemp) {
+
+						franjaNueva = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
+						if (franjaNueva == null) {
+							throw new Exception("Error al recuperar información de las franjas horarias");
+						}
+
 						try {
-							franjaNueva = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
+
 							cambioFranja = !franjaNueva.getNombre().equalsIgnoreCase(franjaAnterior.getNombre());
 							if (cambioFranja) {
 								/**

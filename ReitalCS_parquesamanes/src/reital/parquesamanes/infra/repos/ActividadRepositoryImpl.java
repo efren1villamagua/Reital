@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
-import efren.util.StringTools;
 import efren.util.SystemLogManager;
 import reital.parquesamanes._view.seguridades.LogonView;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
@@ -80,9 +79,7 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 			if (observaciones.length() == 0) {
 				observaciones = "---";
 			}
-			observaciones = (LogonView.isAdmin() ? "A" : "U")
-					+ StringTools.rellenar(LogonView.getUsername().trim(), " ", (19 - LogonView.getUsername().trim().length()), StringTools.DIRECCION_DERECHA)
-					+ observaciones;
+			observaciones = (LogonView.isAdmin() ? "[A-" : "[U-") + LogonView.getUsername().trim() + "] " + observaciones;
 			ps.setString(7, observaciones);
 			paramMetaClause.append("[7-> " + observaciones + "]");
 

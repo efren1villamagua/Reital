@@ -25,7 +25,6 @@ import efren.util.gui.dialogs.DialogExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
 import reital.parquesamanes.app.ioc.SpringInitializator;
-import reital.parquesamanes.app.serialport.util.SerialPortModel;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoPago;
@@ -48,7 +47,6 @@ public class CobroDialog extends DialogExt {
 	private JLabel jLabelValorCambio = null;
 	private JLabel jLabel1 = null;
 	private TextFieldExt textFieldExtObservaciones = null;
-	private SerialPortModel serialModel = null;
 
 	/**
 	 *
@@ -115,15 +113,12 @@ public class CobroDialog extends DialogExt {
 				if (getActividadForPago().isDebePagar()) {
 					if (!getActividadForPago().isImprimirRecibo()) {
 						InfoView.showMessageDialog(getPagoHelper().getPagoView(), "Pago CERO");
-						this.serialModel.abrirSalida1();
 					} else {
 						InfoView.showMessageDialog(getPagoHelper().getPagoView(),
 								"Pago: " + StringTools.parseFromNumberToQuantity(getActividadForPago().getValor().setScale(2, 4)) + " registrado con éxito");
-						this.serialModel.abrirSalida1();
 					}
 				} else {
 					InfoView.showMessageDialog(getPagoHelper().getPagoView(), "Pase libre");
-					this.serialModel.abrirSalida1();
 				}
 			}
 
