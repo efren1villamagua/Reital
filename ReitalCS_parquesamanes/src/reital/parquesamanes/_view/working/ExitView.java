@@ -159,7 +159,7 @@ public class ExitView extends JFrame {
 		}
 
 		try {
-			DBConnectionModel.setSQLConnection();
+			DBConnectionModel.setSQLConnection(false);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			InfoView.showErrorDialog(this, "ERROR: " + e1.getMessage());

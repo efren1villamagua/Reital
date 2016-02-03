@@ -81,7 +81,7 @@ public class DBConnectionModel {
 	 * @throws ClassNotFoundException
 	 *
 	 */
-	public static void setSQLConnection() throws SQLException, ClassNotFoundException {
+	public static void setSQLConnection(boolean h2ServerStart) throws SQLException, ClassNotFoundException {
 		boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
 		String urlTemp = null;
 		Server h2Server = null;
@@ -109,8 +109,10 @@ public class DBConnectionModel {
 			// + "/" + ParqueSamanesConstantes.DataSource.DBNAME + "/" +
 			// ParqueSamanesConstantes.DataSource.DBNAME;
 			// }
-			// start the TCP Server
-			h2Server = Server.createTcpServer().start();
+			if (h2ServerStart) {
+				// start the TCP Server
+				h2Server = Server.createTcpServer().start();
+			}
 			urlTemp = "jdbc:h2:tcp://" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + "/" + Constantes.DATA_DIR + "/"
 					+ ParqueSamanesConstantes.DataSource.DBNAME + "/" + ParqueSamanesConstantes.DataSource.DBNAME;
 		}

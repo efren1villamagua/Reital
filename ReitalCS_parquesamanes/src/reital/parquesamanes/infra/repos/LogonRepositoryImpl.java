@@ -24,7 +24,7 @@ public class LogonRepositoryImpl implements LogonRepository {
 
 		try {
 
-			DBConnectionModel.setSQLConnection();
+			DBConnectionModel.setSQLConnection(true);
 
 			StringBuffer sqlClause = new StringBuffer();
 			sqlClause.append("SELECT CLAVE, NOMBRE, TIPO, ESTADO ");
