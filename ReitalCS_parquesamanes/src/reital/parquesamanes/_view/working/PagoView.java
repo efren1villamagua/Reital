@@ -71,9 +71,7 @@ public class PagoView extends JFrame {
 
 	private JButton jButtonClientes = null;
 
-	private JButton jButtonNoClientes = null;
-
-	private JButton jButtonFuncionarios = null;
+	private JButton jButtonPaseLibre = null;
 
 	private JLabel jLabelStatus = null;
 
@@ -138,8 +136,7 @@ public class PagoView extends JFrame {
 		initHelper();
 
 		getJButtonClientes().setEnabled(false);
-		getJButtonNoClientes().setEnabled(false);
-		getJButtonFuncionarios().setEnabled(false);
+		getJButtonPaseLibre().setEnabled(false);
 
 	}
 
@@ -316,8 +313,7 @@ public class PagoView extends JFrame {
 		getJButtonReiniciar().setEnabled(false);
 
 		getJButtonClientes().setEnabled(false);
-		getJButtonNoClientes().setEnabled(false);
-		getJButtonFuncionarios().setEnabled(false);
+		getJButtonPaseLibre().setEnabled(false);
 
 		jLabelStatus.setText("...");
 	}
@@ -424,8 +420,7 @@ public class PagoView extends JFrame {
 		if (longitud == ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH) {
 			getJPasswordFieldData().setEnabled(false);
 			getJButtonClientes().setEnabled(true);
-			getJButtonNoClientes().setEnabled(true);
-			getJButtonFuncionarios().setEnabled(true);
+			getJButtonPaseLibre().setEnabled(true);
 			getJButtonReiniciar().setEnabled(true);
 			/**
 			 *
@@ -498,8 +493,7 @@ public class PagoView extends JFrame {
 			jToolBar.setFloatable(false);
 			jToolBar.setOpaque(false);
 			jToolBar.add(getJButtonClientes());
-			jToolBar.add(getJButtonNoClientes());
-			jToolBar.add(getJButtonFuncionarios());
+			jToolBar.add(getJButtonPaseLibre());
 		}
 		return jToolBar;
 	}
@@ -530,48 +524,21 @@ public class PagoView extends JFrame {
 		return jButtonClientes;
 	}
 
-	private JButton getJButtonNoClientes() {
-		if (jButtonNoClientes == null) {
-			jButtonNoClientes = new JButton();
-			jButtonNoClientes.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/no_clientes.png")));
-			jButtonNoClientes.setHorizontalTextPosition(SwingConstants.CENTER);
-			jButtonNoClientes.setVerticalTextPosition(SwingConstants.BOTTOM);
-			jButtonNoClientes.setFont(new Font("Arial", Font.BOLD, 14));
-			jButtonNoClientes.setMargin(new Insets(2, 44, 2, 14));
-			jButtonNoClientes.setText("NO CLIENTES");
-			jButtonNoClientes.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					registrarActividadNoCliente();
-				}
-			});
-			jButtonNoClientes.addMouseListener(new MouseAdapter() {
-				public void mouseEntered(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-
-				public void mouseExited(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			});
-		}
-		return jButtonNoClientes;
-	}
-
-	private JButton getJButtonFuncionarios() {
-		if (jButtonFuncionarios == null) {
-			jButtonFuncionarios = new JButton();
-			jButtonFuncionarios.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/funcionarios.png")));
-			jButtonFuncionarios.setHorizontalTextPosition(SwingConstants.CENTER);
-			jButtonFuncionarios.setVerticalTextPosition(SwingConstants.BOTTOM);
-			jButtonFuncionarios.setFont(new Font("Arial", Font.BOLD, 14));
-			jButtonFuncionarios.setMargin(new Insets(2, 84, 2, 14));
-			jButtonFuncionarios.setText("FUNCIONARIOS");
-			jButtonFuncionarios.addActionListener(new java.awt.event.ActionListener() {
+	private JButton getJButtonPaseLibre() {
+		if (jButtonPaseLibre == null) {
+			jButtonPaseLibre = new JButton();
+			jButtonPaseLibre.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/funcionarios.png")));
+			jButtonPaseLibre.setHorizontalTextPosition(SwingConstants.CENTER);
+			jButtonPaseLibre.setVerticalTextPosition(SwingConstants.BOTTOM);
+			jButtonPaseLibre.setFont(new Font("Arial", Font.BOLD, 14));
+			jButtonPaseLibre.setMargin(new Insets(2, 84, 2, 14));
+			jButtonPaseLibre.setText("PASE LIBRE");
+			jButtonPaseLibre.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					registrarActividadFuncionario();
 				}
 			});
-			jButtonFuncionarios.addMouseListener(new MouseAdapter() {
+			jButtonPaseLibre.addMouseListener(new MouseAdapter() {
 				public void mouseEntered(MouseEvent e) {
 					((JButton) e.getSource()).setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
@@ -581,7 +548,7 @@ public class PagoView extends JFrame {
 				}
 			});
 		}
-		return jButtonFuncionarios;
+		return jButtonPaseLibre;
 	}
 
 	/**
@@ -593,17 +560,6 @@ public class PagoView extends JFrame {
 			return;
 		}
 		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.CLIENTE, "-");
-	}
-
-	/**
-	 *
-	 */
-	private void registrarActividadNoCliente() {
-		if (InfoView.showConfirmDialog(this, "Está seguro que desea registrar como NO CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?",
-				"NO CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
-			return;
-		}
-		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.NO_CLIENTE, "-");
 	}
 
 	/**

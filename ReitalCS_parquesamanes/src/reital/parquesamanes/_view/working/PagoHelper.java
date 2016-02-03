@@ -23,6 +23,7 @@ import reital.parquesamanes.app.serialport.util.SerialPortException;
 import reital.parquesamanes.app.serialport.util.SerialPortModel;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
+import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoPago;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
 public class PagoHelper {
@@ -31,7 +32,7 @@ public class PagoHelper {
 	 */
 	public static enum TIPO_CLIENTE {
 
-		CLIENTE("A"), NO_CLIENTE("B"), PASE_LIBRE("C");
+		CLIENTE("C"), PASE_LIBRE("L");
 
 		TIPO_CLIENTE(String unValor) {
 			setValor(unValor);
@@ -94,29 +95,6 @@ public class PagoHelper {
 		} catch (Throwable t11) {
 			return null;
 		}
-	}
-
-	/**
-	 *
-	 */
-	public void registrarActividad() {
-
-		mjfgtju
-		SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(getActividad());
-
-		this.pagoView.reinicializarVisual();
-	}
-
-	public void sendSenialAbrirBarrera() {
-		no se debe mostrar nada en la pantalla, solo loguear (todo es desatendido)
-		try {
-			this.serialModel.abrirSalida1();
-			InfoView.showMessageDialog(this.pagoView, "BARRERA ABIERTA !");
-		} catch (Exception e) {
-			e.getMessage();
-			InfoView.showErrorDialog(this.pagoView, "ERROR AL ABRIR LA BARRERA !");
-		}
-		this.pagoView.reinicializarVisual();
 	}
 
 	public boolean yaSalio(String secuenciaCaracteres) {
@@ -318,8 +296,6 @@ public class PagoHelper {
 
 			getPagoView().getJButtonReiniciar().setFocusable(false);
 
-			registrarActividad();
-
 			getPagoView().getLabelBarIdValue().setText(registroActividad.getBarraId());
 
 			CalendarManager cmSalidaAbsoluta = new CalendarManager(registroActividad.getSalida());
@@ -330,30 +306,62 @@ public class PagoHelper {
 			getPagoView().getLabelSalidaValue().setText(cmSalidaAbsoluta.getInternationalDateExpression() + "  hora: " + cmSalidaAbsoluta.getTimeExpression2());
 
 			switch (tipoCliente) {
-			case CLIENTE_ParqueSamanes:
+			case CLIENTE:
 				getPagoView().getJLabelStatus().setText("CLIENTE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
 				break;
-			case NO_CLIENTE_ParqueSamanes:
-				getPagoView().getJLabelStatus().setText("NO CLIENTE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
-				break;
-			case FUNCIONARIO_ParqueSamanes:
+			case PASE_LIBRE:
 				getPagoView().getJLabelStatus().setText("PASE LIBRE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
 				break;
 			default:
 				break;
 			}
 
-			getPagoView().getJButtonAbrirBarrera().setEnabled(true);
+			if (registroActividad.getTipoCliente() == TIPO_CLIENTE.PASE_LIBRE) {
 
-			if (tipoCliente == TIPO_CLIENTE.FUNCIONARIO_ParqueSamanes) {
-				getPagoView().abrirBarrera();
+				registroActividad.setEstadoPago(EstadoPago.PASE_LIBRE);
+
+				boolean actividadPersistida = SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(registroActividad);
+
+				getPagoView().reinicializarVisual();
+
+				if (actividadPersistida) {
+					InfoView.showMessageDialog(getPagoView(), "Pase libre");
+				}
+
+			} else {
+
+				if (registroActividad.isEnTiempoGracia()) {
+
+					registroActividad.setEstadoPago(EstadoPago.TIEMPO_GRACIA);
+
+					boolean actividadPersistida = SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(registroActividad);
+
+					getPagoView().reinicializarVisual();
+
+					if (actividadPersistida) {
+						InfoView.showMessageDialog(getPagoView(), "Tiempo de gracia");
+					}
+
+				} else {
+
+					try {
+
+						CobroDialog cv = new CobroDialog(this);
+						cv.initializeValores(registroActividad);
+						cv.setVisible(true);
+
+					} catch (Exception e) {
+						e.getMessage();
+					}
+
+				}
 			}
 
 		} catch (Throwable t11) {
 			getPagoView().mostrarError("ERROR: " + t11.getMessage() + " - " + error1);
 			getPagoView().limpiarInformacionVisual(true);
 			System.out.println("ERROR: " + t11.getMessage());
-			getPagoView().getJLabelStatus().setText("ERROR");
+			getPagoView().getJLabelStatus().setText("ERROR " + t11.getMessage());
 			getPagoView().initializarFoco();
 		}
 	}
@@ -424,7 +432,7 @@ public class PagoHelper {
 				 */
 				int minutosTemp = minutosEntradaAbsolutosTemp;
 				switch (actividad.getTipoCliente()) {
-				case CLIENTE_ParqueSamanes:
+				case CLIENTE:
 					/**
 					 * LOS CLIENTES DE ParqueSamanes TIENEN MINUTOS DE GRACIA
 					 * POR LO QUE 'AUMENTAMOS' LOS MINUTOS DE ENTRADA PARA QUE
@@ -436,9 +444,7 @@ public class PagoHelper {
 						minutosGraciaYaConsiderados = true;
 					}
 					break;
-				case NO_CLIENTE_ParqueSamanes:
-					break;
-				case FUNCIONARIO_ParqueSamanes:
+				case PASE_LIBRE:
 					/**
 					 * LOS FUNCIONARIOS DE ParqueSamanes NO PAGAN POR LO QUE LA
 					 * VARIABLE MINUTOS DEBE YA ESTAR EN EL LIMITE SUPERIOR ES
@@ -453,8 +459,7 @@ public class PagoHelper {
 				}
 
 				switch (actividad.getTipoCliente()) {
-				case CLIENTE_ParqueSamanes:
-				case NO_CLIENTE_ParqueSamanes:
+				case CLIENTE:
 
 					Hashtable<Integer, BigDecimal> hv = null;
 
@@ -518,7 +523,7 @@ public class PagoHelper {
 					}
 
 					break;
-				case FUNCIONARIO_ParqueSamanes:
+				case PASE_LIBRE:
 					valorTotal = 0.00;
 					break;
 				default:

@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeSupport;
-import java.io.IOException;
 import java.math.BigDecimal;
 
 import javax.swing.JLabel;
@@ -25,10 +24,7 @@ import efren.util.gui.bars.BarraAceptarCancelarPanel;
 import efren.util.gui.dialogs.DialogExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
-import gnu.io.PortInUseException;
-import gnu.io.UnsupportedCommOperationException;
 import reital.parquesamanes.app.ioc.SpringInitializator;
-import reital.parquesamanes.app.serialport.util.SerialPortException;
 import reital.parquesamanes.app.serialport.util.SerialPortModel;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
@@ -108,6 +104,7 @@ public class CobroDialog extends DialogExt {
 
 			boolean actividadPersistida = SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(getActividadForPago());
 
+			getPagoHelper().getPagoView().reinicializarVisual();
 			this.dispose();
 
 			if (getActividadForPago().isImprimirRecibo() && !getActividadForPago().isEnTiempoGracia()) {
@@ -473,11 +470,6 @@ public class CobroDialog extends DialogExt {
 		} catch (java.lang.Throwable ivjExc) {
 			handleException(ivjExc);
 		}
-		try {
-			initSerialPortModel();
-		} catch (Exception exc) {
-			exc.getMessage();
-		}
 	}
 
 	/**
@@ -532,36 +524,6 @@ public class CobroDialog extends DialogExt {
 			});
 		}
 		return textFieldExtObservaciones;
-	}
-
-	/**
-	 *
-	 */
-	private void initSerialPortModel() {
-		this.serialModel = new SerialPortModel();
-		try {
-			this.serialModel.initializePortModel();
-		} catch (SerialPortException e1) {
-			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
-					"ERROR AL INICIALIZAR EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
-			// System.exit(-1);
-		} catch (PortInUseException e1) {
-			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
-					"ERROR: EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " ESTA OCUPADO [" + e1.getMessage() + "]");
-			// System.exit(-1);
-		} catch (UnsupportedCommOperationException e1) {
-			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
-					"ERROR: OPERACION NO SOPORTADA POR EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
-			// System.exit(-1);
-		} catch (IOException e1) {
-			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
-					"ERROR DE ESCRITURA EN EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
-			// System.exit(-1);
-		} catch (Exception e1) {
-			InfoView.showErrorDialog(getPagoHelper().getPagoView(),
-					"ERROR DE APERTURA EN EL PUERTO " + ApplicationConstantes.PUERTO_SERIAL + " [" + e1.getMessage() + "]");
-			// System.exit(-1);
-		}
 	}
 
 	/**

@@ -174,7 +174,6 @@ public class ActividadForPagoEntity {
 		if (this.tipoCliente != null) {
 			switch (this.tipoCliente) {
 			case CLIENTE:
-			case NO_CLIENTE:
 				setImprimirRecibo(true);
 				setDebePagar(true);
 				break;
@@ -264,7 +263,7 @@ public class ActividadForPagoEntity {
 
 	public static enum EstadoPago {
 
-		PENDIENTE("P"), PAGADO("G"), PASE_LIBRE("L");
+		PENDIENTE("P"), PAGADO("G"), TIEMPO_GRACIA("T"), PASE_LIBRE("L");
 
 		EstadoPago(String unValor) {
 			setValor(unValor);
