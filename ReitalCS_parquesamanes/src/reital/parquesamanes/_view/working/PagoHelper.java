@@ -49,6 +49,21 @@ public class PagoHelper {
 		}
 	}
 
+	public static TIPO_CLIENTE getTIPO_CLIENTE_from(String unTipoCliente) {
+		if (unTipoCliente == null) {
+			return null;
+		} else {
+			if (unTipoCliente.equalsIgnoreCase(TIPO_CLIENTE.CLIENTE.getValor())) {
+				return TIPO_CLIENTE.CLIENTE;
+			} else {
+				if (unTipoCliente.equalsIgnoreCase(TIPO_CLIENTE.PASE_LIBRE.getValor())) {
+					return TIPO_CLIENTE.PASE_LIBRE;
+				}
+			}
+		}
+		return null;
+	}
+
 	/**
 	 *
 	 */

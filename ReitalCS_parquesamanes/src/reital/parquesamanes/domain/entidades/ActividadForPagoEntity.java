@@ -281,6 +281,29 @@ public class ActividadForPagoEntity {
 
 	}
 
+	public static EstadoPago getEstadoPago_from(String unEstado) {
+		if (unEstado == null) {
+			return null;
+		} else {
+			if (unEstado.equalsIgnoreCase(EstadoPago.PENDIENTE.getValor())) {
+				return EstadoPago.PENDIENTE;
+			} else {
+				if (unEstado.equalsIgnoreCase(EstadoPago.PAGADO.getValor())) {
+					return EstadoPago.PAGADO;
+				} else {
+					if (unEstado.equalsIgnoreCase(EstadoPago.TIEMPO_GRACIA.getValor())) {
+						return EstadoPago.TIEMPO_GRACIA;
+					} else {
+						if (unEstado.equalsIgnoreCase(EstadoPago.PASE_LIBRE.getValor())) {
+							return EstadoPago.PASE_LIBRE;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * @return the enTiempoGracia
 	 */

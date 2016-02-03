@@ -11,11 +11,13 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -30,22 +32,27 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import efren.util.CalendarManager;
+import efren.util.LoggerManager;
+import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.DIConfiguration;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
+import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
+import reital.parquesamanes.domain.repos.ActividadRepository;
+import reital.parquesamanes.infra.BarreraTools;
 
-public class PagoView extends JFrame {
+public class ExitView extends JFrame {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 2341181348290219259L;
+	private static final long serialVersionUID = 2341181340219259L;
 
 	private JPanel jPanel4 = null;
 	private JLabel labelEntradaValue = null;
@@ -55,32 +62,53 @@ public class PagoView extends JFrame {
 	private JLabel jLabelRegistroSalida1 = null;
 	private JPanel jPanel1 = null;
 	private JButton jButtonReiniciar = null;
-	private PagoHelper pagoHelper = null; // @jve:decl-index=0:
 	private JPanel jPanel2 = null;
-	private JToolBar jToolBar = null;
-	private JButton jButtonClientes = null;
-	private JButton jButtonPaseLibre = null;
 	private JLabel jLabelStatus = null;
 	private JLabel labelBarId;
 	private JLabel labelBarIdValue;
 	private InformationPanel informationPanel;
+	private ActividadRepository actividadRepository;
 
-	public PagoView() throws HeadlessException {
+	public static void main(String args[]) {
+		try {
+			LoggerManager.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + ExitView.class.getSimpleName());
+			SystemLogManager.setLogger(LoggerManager.logger);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		Locale.setDefault(new Locale("es", "ES"));
+		try {
+			UIManager.setLookAndFeel(new WindowsLookAndFeel());
+
+			ExitView ventana = new ExitView();
+
+			ventana.setResizable(false);
+			ventana.setVisible(true);
+			ventana.toFront();
+
+		} catch (Throwable exception) {
+			System.out.println(exception.getMessage());
+			exception.printStackTrace(System.out);
+			System.exit(1);
+		}
+	}
+
+	public ExitView() throws HeadlessException {
 		super();
 		initialize();
 	}
 
-	public PagoView(GraphicsConfiguration gc) {
+	public ExitView(GraphicsConfiguration gc) {
 		super(gc);
 		initialize();
 	}
 
-	public PagoView(String title) throws HeadlessException {
+	public ExitView(String title) throws HeadlessException {
 		super(title);
 		initialize();
 	}
 
-	public PagoView(String title, GraphicsConfiguration gc) {
+	public ExitView(String title, GraphicsConfiguration gc) {
 		super(title, gc);
 		initialize();
 	}
@@ -90,7 +118,7 @@ public class PagoView extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/CLOCK_16_hot.png")));
 		setTitle("Reital Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "- [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJPanel4());
-		setSize(703, 494);
+		setSize(637, 445);
 		WindowManager2.centerWindow(this);
 		// setResizable(false);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -118,11 +146,7 @@ public class PagoView extends JFrame {
 
 		getJButtonReiniciar().setEnabled(false);
 
-		initHelper();
-
-		getJButtonClientes().setEnabled(false);
-		getJButtonPaseLibre().setEnabled(false);
-
+		setActividadRepository(new DIConfiguration().getActividadRepository());
 	}
 
 	/**
@@ -144,47 +168,28 @@ public class PagoView extends JFrame {
 		return rootPane;
 	}
 
-	/**
-	 *
-	 */
-	private void initHelper() {
-		setPagoHelper(new PagoHelper(this));
-		ParqueSamanesConstantes.MINUTOS_GRACIA_PARA_CLIENTES_ParqueSamanes = SpringInitializator.getSingleton().getPagoControllerBean()
-				.getCantidadMinutosGracia();
-	}
-
-	/**
-	 *
-	 */
 	private JPanel getJPanel4() {
 		if (jPanel4 == null) {
 			GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
 			gridBagConstraints7.gridx = 0;
-			gridBagConstraints7.insets = new Insets(1, 5, 5, 0);
+			gridBagConstraints7.insets = new Insets(5, 5, 5, 0);
 			gridBagConstraints7.weightx = 1.0;
 			gridBagConstraints7.weighty = 1.0;
 			gridBagConstraints7.gridwidth = 2;
 			gridBagConstraints7.anchor = GridBagConstraints.NORTH;
-			gridBagConstraints7.gridy = 4;
+			gridBagConstraints7.gridy = 3;
 			jLabelStatus = new JLabel();
 			jLabelStatus.setText("...");
 			jLabelStatus.setForeground(Color.blue);
 			jLabelStatus.setFont(new Font("Arial Black", Font.BOLD, 36));
-			GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-			gridBagConstraints4.fill = GridBagConstraints.VERTICAL;
-			gridBagConstraints4.gridy = 0;
-			gridBagConstraints4.weightx = 1.0;
-			gridBagConstraints4.insets = new Insets(20, 20, 20, 20);
-			gridBagConstraints4.weighty = 1.0;
-			gridBagConstraints4.gridwidth = 2;
-			gridBagConstraints4.gridx = 0;
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
+			gridBagConstraints6.insets = new Insets(5, 5, 5, 0);
 			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.gridwidth = 2;
-			gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
+			gridBagConstraints6.fill = GridBagConstraints.BOTH;
 			gridBagConstraints6.weightx = 1.0;
 			gridBagConstraints6.weighty = 1.0;
-			gridBagConstraints6.gridy = 7;
+			gridBagConstraints6.gridy = 5;
 			GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
 			gridBagConstraints13.gridx = 0;
 			gridBagConstraints13.gridwidth = 2;
@@ -192,13 +197,13 @@ public class PagoView extends JFrame {
 			gridBagConstraints13.weighty = 1.0;
 			gridBagConstraints13.weightx = 1.0;
 			gridBagConstraints13.insets = new Insets(2, 2, 5, 0);
-			gridBagConstraints13.gridy = 6;
+			gridBagConstraints13.gridy = 4;
 			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.anchor = GridBagConstraints.NORTHEAST;
 			gridBagConstraints2.insets = new Insets(2, 5, 5, 5);
 			gridBagConstraints2.weightx = 1.0;
-			gridBagConstraints2.gridy = 3;
+			gridBagConstraints2.gridy = 2;
 			jLabelRegistroSalida1 = new JLabel();
 			jLabelRegistroSalida1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			jLabelRegistroSalida1.setText("Salida:");
@@ -207,7 +212,7 @@ public class PagoView extends JFrame {
 			gridBagConstraints1.anchor = GridBagConstraints.SOUTHEAST;
 			gridBagConstraints1.insets = new Insets(2, 5, 5, 5);
 			gridBagConstraints1.weightx = 1.0;
-			gridBagConstraints1.gridy = 2;
+			gridBagConstraints1.gridy = 1;
 			jLabelRegistroEntrada1 = new JLabel();
 			jLabelRegistroEntrada1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			jLabelRegistroEntrada1.setText("Entrada:");
@@ -216,14 +221,14 @@ public class PagoView extends JFrame {
 			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
 			jPanel4 = new JPanel();
 			GridBagLayout gbl_jPanel4 = new GridBagLayout();
-			gbl_jPanel4.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
+			gbl_jPanel4.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 			gbl_jPanel4.columnWeights = new double[] { 1.0, 0.0 };
 			jPanel4.setLayout(gbl_jPanel4);
 			jPanel4.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 			gridBagConstraints52.gridx = 1;
-			gridBagConstraints52.gridy = 2;
+			gridBagConstraints52.gridy = 1;
 			gridBagConstraints61.gridx = 1;
-			gridBagConstraints61.gridy = 3;
+			gridBagConstraints61.gridy = 2;
 			gridBagConstraints52.anchor = 16;
 			gridBagConstraints52.insets = new Insets(2, 1, 5, 0);
 			gridBagConstraints52.fill = 2;
@@ -239,7 +244,7 @@ public class PagoView extends JFrame {
 			gbc_labelBarId.anchor = GridBagConstraints.EAST;
 			gbc_labelBarId.insets = new Insets(5, 5, 5, 5);
 			gbc_labelBarId.gridx = 0;
-			gbc_labelBarId.gridy = 1;
+			gbc_labelBarId.gridy = 0;
 			jPanel4.add(getLabelBarId(), gbc_labelBarId);
 			GridBagConstraints gbc_labelBarIdValue = new GridBagConstraints();
 			gbc_labelBarIdValue.weighty = 1.0;
@@ -247,7 +252,7 @@ public class PagoView extends JFrame {
 			gbc_labelBarIdValue.anchor = GridBagConstraints.WEST;
 			gbc_labelBarIdValue.insets = new Insets(5, 5, 5, 0);
 			gbc_labelBarIdValue.gridx = 1;
-			gbc_labelBarIdValue.gridy = 1;
+			gbc_labelBarIdValue.gridy = 0;
 			jPanel4.add(getLabelBarIdValue(), gbc_labelBarIdValue);
 			jPanel4.add(getLabelEntradaValue(), gridBagConstraints52);
 			jPanel4.add(getLabelSalidaValue(), gridBagConstraints61);
@@ -259,11 +264,10 @@ public class PagoView extends JFrame {
 			gbc_informationPanel.insets = new Insets(2, 2, 2, 2);
 			gbc_informationPanel.fill = GridBagConstraints.BOTH;
 			gbc_informationPanel.gridx = 0;
-			gbc_informationPanel.gridy = 8;
+			gbc_informationPanel.gridy = 6;
 			jPanel4.add(getInformationPanel(), gbc_informationPanel);
 			jPanel4.add(getJPanel1(), gridBagConstraints13);
 			jPanel4.add(getJPanel2(), gridBagConstraints6);
-			jPanel4.add(getJToolBar(), gridBagConstraints4);
 			jPanel4.add(jLabelStatus, gridBagConstraints7);
 			jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -297,9 +301,6 @@ public class PagoView extends JFrame {
 		getJPasswordFieldData().setEnabled(true);
 		getJButtonReiniciar().setEnabled(false);
 
-		getJButtonClientes().setEnabled(false);
-		getJButtonPaseLibre().setEnabled(false);
-
 		jLabelStatus.setText("...");
 	}
 
@@ -309,6 +310,17 @@ public class PagoView extends JFrame {
 	protected JPasswordField getJPasswordFieldData() {
 		if (jPasswordFieldData == null) {
 			jPasswordFieldData = new JPasswordField();
+			jPasswordFieldData.addFocusListener(new FocusAdapter() {
+				@Override
+				public void focusGained(FocusEvent e) {
+					getJPanel4().setBackground(Color.GREEN);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+					getJPanel4().setBackground(Color.RED);
+				}
+			});
 			jPasswordFieldData.setHorizontalAlignment(JTextField.CENTER);
 			jPasswordFieldData.setFocusCycleRoot(true);
 			jPasswordFieldData.addActionListener(new ActionListener() {
@@ -404,28 +416,108 @@ public class PagoView extends JFrame {
 		int longitud = getJPasswordFieldData().getPassword().length;
 		if (longitud == ParqueSamanesConstantes.TICKET_BAR_CODE_LENGTH) {
 			getJPasswordFieldData().setEnabled(false);
-			getJButtonClientes().setEnabled(true);
-			getJButtonPaseLibre().setEnabled(true);
 			getJButtonReiniciar().setEnabled(true);
 			/**
 			 *
 			 */
+			String barAndCode = null;
+			String barId = null;
+			String entradaStr = null;
+			String salidaStr = null;
+			String salidaMessage = null;
+
+			boolean salidaOk = false;
+
 			try {
 				String secuenciaCaracteres = "";
 				for (int i = 0; i < getJPasswordFieldData().getPassword().length; i++) {
 					secuenciaCaracteres = secuenciaCaracteres + String.valueOf(getJPasswordFieldData().getPassword()[i]);
 				}
-				CadenaPair cp = getPagoHelper().parseSecuenciaCaracteres(secuenciaCaracteres);
-				getLabelBarIdValue().setText(cp.getBarraId());
-				GregorianCalendar gcEntrada = cp.getCalendar();
-				CalendarManager cmEntrada = new CalendarManager(gcEntrada);
-				getLabelEntradaValue().setText(cmEntrada.getInternationalDateExpression() + "  hora: " + cmEntrada.getTimeExpression2());
-				jLabelStatus.setText("TICKET LEIDO");
+
+				ActividadForPagoEntity actividadEntity = getActividadRepository().getActividad(secuenciaCaracteres);
+
+				if (actividadEntity == null) {
+					barAndCode = "ERROR_1";
+					entradaStr = "ERROR_1";
+					salidaStr = "ERROR_1";
+					salidaMessage = "ERROR_1";
+				} else {
+
+					barId = actividadEntity.getBarraId();
+
+					switch (actividadEntity.getEstadoPago()) {
+					case PAGADO:
+					case PASE_LIBRE:
+					case TIEMPO_GRACIA:
+						barAndCode = actividadEntity.getCodigo();
+						CalendarManager cmEntrada = new CalendarManager(actividadEntity.getEntrada());
+						entradaStr = cmEntrada.getInternationalDateExpression() + "  hora: " + cmEntrada.getTimeExpression2();
+						CalendarManager cmSalida = new CalendarManager(actividadEntity.getSalida());
+						salidaStr = cmSalida.getInternationalDateExpression() + "  hora: " + cmSalida.getTimeExpression2();
+						salidaMessage = "SALIDA OK.";
+
+						salidaOk = true;
+
+						break;
+					default:
+						barAndCode = actividadEntity.getCodigo();
+						entradaStr = "ERROR_2";
+						salidaStr = "ERROR_2";
+						salidaMessage = "ERROR_2";
+						break;
+					}
+				}
+
 			} catch (Exception exc) {
-				exc.getMessage();
-				getLabelBarIdValue().setText("...");
-				getLabelEntradaValue().setText("...");
-				jLabelStatus.setText("ERROR LECTURA");
+				String errorMessage = exc.getMessage();
+				barAndCode = "ERROR_3 " + errorMessage;
+				entradaStr = "ERROR_3 " + errorMessage;
+				salidaStr = "ERROR_3 " + errorMessage;
+				salidaMessage = "ERROR_3 " + errorMessage;
+			}
+
+			getLabelBarIdValue().setText(barAndCode);
+			getLabelEntradaValue().setText(entradaStr);
+			getLabelSalidaValue().setText(salidaStr);
+			jLabelStatus.setText(salidaMessage);
+
+			SystemLogManager.debug("[" + barAndCode + "] " + salidaMessage);
+
+			if (salidaOk) {
+				try {
+
+					new BarreraTools().abrirBarrera(barId);
+
+				} catch (Throwable texc) {
+					texc.getMessage();
+				}
+			}
+
+			// esto se debe hacer de manera inmediata
+			getJPasswordFieldData().setText("");
+			getJPasswordFieldData().setEnabled(true);
+			initializarFoco();
+
+			if (salidaOk) {
+				try {
+					new Thread(new Runnable() {
+						public void run() {
+							// esperamos 1 segundo
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							getJButtonReiniciar().setEnabled(false);
+							getLabelEntradaValue().setText("");
+							getLabelSalidaValue().setText("");
+							getLabelBarIdValue().setText("");
+							jLabelStatus.setText("...");
+						}
+					}).start();
+				} catch (Throwable texc) {
+					texc.getMessage();
+				}
 			}
 		}
 	}
@@ -438,133 +530,18 @@ public class PagoView extends JFrame {
 	private JPanel getJPanel2() {
 		if (jPanel2 == null) {
 			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+			gridBagConstraints.fill = GridBagConstraints.BOTH;
 			gridBagConstraints.gridwidth = 2;
 			gridBagConstraints.gridx = 0;
 			gridBagConstraints.gridy = 0;
 			gridBagConstraints.weightx = 1.0;
 			gridBagConstraints.weighty = 1.0;
-			gridBagConstraints.insets = new Insets(2, 1, 2, 0);
+			gridBagConstraints.insets = new Insets(2, 2, 2, 2);
 			jPanel2 = new JPanel();
 			jPanel2.setLayout(new GridBagLayout());
 			jPanel2.add(getJPasswordFieldData(), gridBagConstraints);
 		}
 		return jPanel2;
-	}
-
-	/**
-	 * @return the pagoHelper
-	 */
-	public PagoHelper getPagoHelper() {
-		return pagoHelper;
-	}
-
-	/**
-	 * @param pagoHelper
-	 *            the pagoHelper to set
-	 */
-	public void setPagoHelper(PagoHelper pagoHelper) {
-		this.pagoHelper = pagoHelper;
-	}
-
-	/**
-	 * This method initializes jToolBar
-	 *
-	 * @return javax.swing.JToolBar
-	 */
-	private JToolBar getJToolBar() {
-		if (jToolBar == null) {
-			jToolBar = new JToolBar();
-			jToolBar.setFloatable(false);
-			jToolBar.setOpaque(false);
-			jToolBar.add(getJButtonClientes());
-			jToolBar.add(getJButtonPaseLibre());
-		}
-		return jToolBar;
-	}
-
-	private JButton getJButtonClientes() {
-		if (jButtonClientes == null) {
-			jButtonClientes = new JButton();
-			jButtonClientes.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/clientes.png")));
-			jButtonClientes.setHorizontalTextPosition(SwingConstants.CENTER);
-			jButtonClientes.setVerticalTextPosition(SwingConstants.BOTTOM);
-			jButtonClientes.setFont(new Font("Arial", Font.BOLD, 14));
-			jButtonClientes.setText("CLIENTES");
-			jButtonClientes.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					registrarActividadCliente();
-				}
-			});
-			jButtonClientes.addMouseListener(new MouseAdapter() {
-				public void mouseEntered(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-
-				public void mouseExited(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			});
-		}
-		return jButtonClientes;
-	}
-
-	private JButton getJButtonPaseLibre() {
-		if (jButtonPaseLibre == null) {
-			jButtonPaseLibre = new JButton();
-			jButtonPaseLibre.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/funcionarios.png")));
-			jButtonPaseLibre.setHorizontalTextPosition(SwingConstants.CENTER);
-			jButtonPaseLibre.setVerticalTextPosition(SwingConstants.BOTTOM);
-			jButtonPaseLibre.setFont(new Font("Arial", Font.BOLD, 14));
-			jButtonPaseLibre.setMargin(new Insets(2, 84, 2, 14));
-			jButtonPaseLibre.setText("PASE LIBRE");
-			jButtonPaseLibre.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					registrarActividadFuncionario();
-				}
-			});
-			jButtonPaseLibre.addMouseListener(new MouseAdapter() {
-				public void mouseEntered(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-
-				public void mouseExited(MouseEvent e) {
-					((JButton) e.getSource()).setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			});
-		}
-		return jButtonPaseLibre;
-	}
-
-	/**
-	 *
-	 */
-	private void registrarActividadCliente() {
-		if (InfoView.showConfirmDialog(this, "Está seguro que desea registrar como CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?",
-				"CLIENTE " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " ?", InfoView.YES_NO_OPTION) != InfoView.YES_OPTION) {
-			return;
-		}
-		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.CLIENTE, "-");
-	}
-
-	/**
-	 *
-	 */
-	private void registrarActividadFuncionario() {
-		String observaciones = InfoView.showInputDialog(this, "Ingrese los nombres del \"Pase libre\" (De 7 a 200 caracteres)", "\"Pase libre\"",
-				InfoView.QUESTION_MESSAGE);
-		if (observaciones == null || observaciones.trim().length() == 0) {
-			return;
-		}
-		observaciones = observaciones.trim();
-		if (observaciones.length() < 7) {
-			InfoView.showErrorDialog(this, "ERROR: Ingrese un registro de mímino 7 caracteres !");
-			return;
-		}
-		if (observaciones.length() > 200) {
-			observaciones = observaciones.substring(0, 200);
-		}
-		getPagoHelper().validarYCalcularPago(PagoHelper.TIPO_CLIENTE.PASE_LIBRE, observaciones);
 	}
 
 	/**
@@ -617,5 +594,20 @@ public class PagoView extends JFrame {
 			informationPanel = new InformationPanel();
 		}
 		return informationPanel;
+	}
+
+	/**
+	 * @return the actividadRepository
+	 */
+	public ActividadRepository getActividadRepository() {
+		return actividadRepository;
+	}
+
+	/**
+	 * @param actividadRepository
+	 *            the actividadRepository to set
+	 */
+	public void setActividadRepository(ActividadRepository actividadRepository) {
+		this.actividadRepository = actividadRepository;
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -8,4 +8,6 @@ public interface ActividadRepository {
 
 	boolean registrarActividad(ActividadForPagoEntity registroActividad);
 
+	ActividadForPagoEntity getActividad(String codigo);
+
 }

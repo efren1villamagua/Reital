@@ -1,12 +1,15 @@
 package reital.parquesamanes.infra.repos;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import efren.util.CalendarManager;
 import efren.util.SystemLogManager;
 import reital.parquesamanes._view.seguridades.LogonView;
+import reital.parquesamanes._view.working.PagoHelper;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoSalida;
 import reital.parquesamanes.domain.repos.ActividadRepository;
@@ -109,6 +112,65 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 		GarbageRecollector.closeAndFinalize(null, ps, null);
 
 		return seRegistro;
+	}
+
+	public ActividadForPagoEntity getActividad(String codigo) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		ActividadForPagoEntity entidad = null;
+
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT ");
+			sql.append(" CODIGO, ENTRADA, SALIDA, VALOR, VALOR_HORA_FRACCION, TIPO_CLIENTE, ");
+			sql.append(" OBSERVACIONES, FRANJA_HORARIA, CANTIDAD_HORAS, ESTADO ");
+			sql.append(" FROM ACTIVIDAD ");
+			sql.append(" WHERE CODIGO=? ");
+			ps = ParqueSamanesConn.getConnection().prepareStatement(sql.toString());
+
+			StringBuffer paramMetaClause = new StringBuffer();
+			paramMetaClause.append(" PARAMS{");
+
+			ps.setString(1, codigo.trim());
+			paramMetaClause.append("[1-> " + codigo.trim() + "]");
+
+			paramMetaClause.append("} ");
+			SystemLogManager.debug(sql.toString() + paramMetaClause);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				entidad = new ActividadForPagoEntity();
+
+				entidad.setCodigo(rs.getString("CODIGO").trim());
+				if (entidad.getCodigo() != null) {
+					entidad.setBarraId(entidad.getCodigo().substring(0, 1));
+				}
+				CalendarManager cmTemp = new CalendarManager(rs.getTimestamp("ENTRADA").getTime());
+				entidad.setEntrada(cmTemp.getCalendar());
+				cmTemp = new CalendarManager(rs.getTimestamp("SALIDA").getTime());
+				entidad.setSalida(cmTemp.getCalendar());
+				entidad.setValor(rs.getBigDecimal("VALOR").setScale(2, BigDecimal.ROUND_HALF_UP));
+				entidad.setValorHoraOFraccion(rs.getBigDecimal("VALOR_HORA_FRACCION").setScale(2, BigDecimal.ROUND_HALF_UP));
+				entidad.setObservaciones(rs.getString("OBSERVACIONES").trim());
+				entidad.setFranjaHoraria(rs.getString("FRANJA_HORARIA").trim());
+				entidad.setCantidadHoras(rs.getInt("CANTIDAD_HORAS"));
+				entidad.setTipoCliente(PagoHelper.getTIPO_CLIENTE_from(rs.getString("TIPO_CLIENTE").trim()));
+				entidad.setEstadoPago(ActividadForPagoEntity.getEstadoPago_from(rs.getString("ESTADO").trim()));
+				// ...
+				break;
+			}
+
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
+
+		GarbageRecollector.closeAndFinalize(rs, ps, null);
+
+		return entidad;
 	}
 
 }
