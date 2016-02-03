@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.Locale;
 
 import javax.swing.AbstractAction;
@@ -43,10 +44,13 @@ import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes.app.ioc.DIConfiguration;
+import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.repos.ActividadRepository;
 import reital.parquesamanes.infra.BarreraTools;
+import reital.parquesamanes.infra.DBConnectionModel;
+import reital.parquesamanes.infra.ParqueSamanesConn;
 
 public class ExitView extends JFrame {
 	/**
@@ -147,6 +151,23 @@ public class ExitView extends JFrame {
 		getJButtonReiniciar().setEnabled(false);
 
 		setActividadRepository(new DIConfiguration().getActividadRepository());
+
+		try {
+			ParqueSamanesConstantes.setInitialValues();
+			ParqueSamanesConstantes.cargarPropiedades();
+		} catch (Exception e) {
+			e.getMessage();
+		}
+
+		try {
+			DBConnectionModel.setSQLConnection();
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+
+		initializarFoco();
 	}
 
 	/**
@@ -283,7 +304,23 @@ public class ExitView extends JFrame {
 	 */
 	private void cerrarVentana() {
 		if (InfoView.showConfirmDialog(this, "Desea salir del sistema?") == 0) {
-			dispose();
+			try {
+				dispose();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
+			try {
+				if (ParqueSamanesConn.getConnection() != null) {
+					ParqueSamanesConn.getConnection().close();
+				}
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
+			try {
+				SpringInitializator.getSingleton().destroy();
+			} catch (Exception exc) {
+				SystemLogManager.error(exc);
+			}
 			System.exit(0);
 		}
 	}
