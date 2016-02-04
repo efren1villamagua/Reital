@@ -9,7 +9,7 @@ public class ActividadForPagoEntity {
 
 	private EstadoSalida estadoSalida;
 	private EstadoPago estadoPago;
-	private String barraId = null;
+	private int barraId = 0;
 	private String codigo = null;
 	private GregorianCalendar entrada = null;
 	private GregorianCalendar salida = null;
@@ -31,18 +31,6 @@ public class ActividadForPagoEntity {
 	private void initialize() {
 		setEstadoSalida(EstadoSalida.NO_SALE_TODAVIA);
 		setEstadoPago(EstadoPago.PENDIENTE);
-	}
-
-	public String getBarraId() {
-		return barraId;
-	}
-
-	/**
-	 * @param barraId
-	 *            the barraId to set
-	 */
-	public void setBarraId(String barraId) {
-		this.barraId = barraId;
 	}
 
 	/**
@@ -332,5 +320,13 @@ public class ActividadForPagoEntity {
 	 */
 	public void setEstadoPago(EstadoPago estadoPago) {
 		this.estadoPago = estadoPago;
+	}
+
+	public int getBarraId() {
+		return barraId;
+	}
+
+	public void setBarraId(int barraId) {
+		this.barraId = barraId;
 	}
 }

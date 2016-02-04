@@ -457,7 +457,7 @@ public class ExitView extends JFrame {
 			 *
 			 */
 			String barAndCode = null;
-			String barId = null;
+			int barId = 0;
 			String entradaStr = null;
 			String salidaStr = null;
 			String salidaMessage = null;

@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 
 import efren.util.CalendarManager;
+import efren.util.StringTools;
 import efren.util.SystemLogManager;
 import reital.parquesamanes._view.seguridades.LogonView;
 import reital.parquesamanes._view.working.PagoHelper;
@@ -147,7 +148,7 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 
 				entidad.setCodigo(rs.getString("CODIGO").trim());
 				if (entidad.getCodigo() != null) {
-					entidad.setBarraId(entidad.getCodigo().substring(0, 1));
+					entidad.setBarraId(StringTools.parseFromStringToInteger(entidad.getCodigo().substring(0, 1)));
 				}
 				CalendarManager cmTemp = new CalendarManager(rs.getTimestamp("ENTRADA").getTime());
 				entidad.setEntrada(cmTemp.getCalendar());

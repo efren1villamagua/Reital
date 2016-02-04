@@ -80,7 +80,7 @@ public class PagoHelper {
 		try {
 			CadenaPair cp = parseSecuenciaCaracteres(secuenciaCaracteres);
 
-			String barraId = cp.getBarraId();
+			int barraId = StringTools.parseFromStringToInteger(cp.getBarraId());
 			GregorianCalendar gcEntrada = cp.getCalendar();
 			/**
 			 * PARA LA SALIDA SE TOMA EL TIMESTAMP DE LA BASE DE DATOS
@@ -271,7 +271,7 @@ public class PagoHelper {
 
 			getPagoView().getJButtonReiniciar().setFocusable(false);
 
-			getPagoView().getLabelBarIdValue().setText(registroActividad.getBarraId());
+			getPagoView().getLabelBarIdValue().setText(String.valueOf(registroActividad.getBarraId()));
 
 			CalendarManager cmSalidaAbsoluta = new CalendarManager(registroActividad.getSalida());
 			CalendarManager cmEntradaAbsoluta = new CalendarManager(registroActividad.getEntrada());

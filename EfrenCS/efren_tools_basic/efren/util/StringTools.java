@@ -185,17 +185,16 @@ public class StringTools {
 		return parseOnlyNumbers(s);
 	}
 
-	public static String parseFromNumberToInteger(String arg0) {
+	public static int parseFromStringToInteger(String arg0) {
 
-		String arg1 = parseOnlyNumbers(arg0);
+		int resultado = -1;
+		try {
+			resultado = Integer.parseInt(arg0.trim());
+		} catch (Exception exc) {
+			exc.getMessage();
+		}
 
-		java.math.BigDecimal arg2 = new java.math.BigDecimal(arg1.trim());
-
-		String temp = parseFromNumberToQuantity(arg2);
-		if (temp.indexOf('.') > 0)
-			temp = temp.substring(0, temp.lastIndexOf('.'));
-
-		return temp;
+		return resultado;
 	}
 
 	public static String parse_object_to_money(String arg) {
@@ -377,6 +376,7 @@ public class StringTools {
 			return originalString;
 		}
 	}
+
 	public static String replaceFirstOcurrence(String originalString, String oldValue, String newValue, boolean caseSensitive) {
 		try {
 			int index = 0;
@@ -406,5 +406,18 @@ public class StringTools {
 			t.getMessage();
 			return originalString;
 		}
+	}
+
+	public static String parseFromNumberToInteger(String arg0) {
+
+		String arg1 = parseOnlyNumbers(arg0);
+
+		java.math.BigDecimal arg2 = new java.math.BigDecimal(arg1.trim());
+
+		String temp = parseFromNumberToQuantity(arg2);
+		if (temp.indexOf('.') > 0)
+			temp = temp.substring(0, temp.lastIndexOf('.'));
+
+		return temp;
 	}
 }

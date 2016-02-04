@@ -1,15 +1,28 @@
 package reital.parquesamanes.infra;
 
-import javax.swing.JFrame;
-
-import efren.util.gui.dialogs.InfoView;
+import efren.util.ExecuteShellComand;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class BarreraTools {
 
-	public boolean abrirBarrera(String barId) {
+	public boolean abrirBarrera(int barId) {
 		try {
+			String command = null;
+			switch (barId) {
+			case 1:
+				command = ParqueSamanesConstantes.System.BARRA_1_COMMAND;
+				break;
+			case 2:
+				command = ParqueSamanesConstantes.System.BARRA_2_COMMAND;
+				break;
+			case 3:
+				command = ParqueSamanesConstantes.System.BARRA_3_COMMAND;
+				break;
+			default:
+				break;
+			}
 
-			InfoView.showInformationDialog(new JFrame(), "SALIDA POR LA BARRERA: " + barId);
+			new ExecuteShellComand().executeCommand(command);
 
 		} catch (Throwable texc) {
 			texc.printStackTrace();
