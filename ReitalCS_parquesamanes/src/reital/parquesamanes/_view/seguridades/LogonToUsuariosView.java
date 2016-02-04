@@ -217,7 +217,8 @@ public class LogonToUsuariosView extends JFrame {
 	private void dbInitialize() {
 		if (ParqueSamanesConn.getH2Server() == null) {
 			try {
-				ParqueSamanesConn.setH2Server(Server.createTcpServer().start());
+				String args[] = new String[] { "-tcpAllowOthers" };
+				ParqueSamanesConn.setH2Server(Server.createTcpServer(args).start());
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
