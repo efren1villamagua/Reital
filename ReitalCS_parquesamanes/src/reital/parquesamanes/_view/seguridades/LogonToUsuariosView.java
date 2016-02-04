@@ -66,8 +66,6 @@ public class LogonToUsuariosView extends JFrame {
 
 	private JLabel jLabel3 = null;
 
-	private JButton jButton1 = null;
-
 	public LogonToUsuariosView() throws HeadlessException {
 		super();
 		initialize();
@@ -149,17 +147,9 @@ public class LogonToUsuariosView extends JFrame {
 	 */
 	private JPanel getJPanel() {
 		if (jPanel == null) {
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.anchor = GridBagConstraints.SOUTHEAST;
-			gridBagConstraints.insets = new Insets(1, 1, 1, 1);
-			gridBagConstraints.weightx = 1.0;
-			gridBagConstraints.weighty = 1.0;
-			gridBagConstraints.gridy = 2;
 			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-			gridBagConstraints11.gridwidth = 2;
 			gridBagConstraints11.gridx = 0;
-			gridBagConstraints11.insets = new Insets(5, 5, 5, 5);
+			gridBagConstraints11.insets = new Insets(5, 5, 5, 0);
 			gridBagConstraints11.weightx = 1.0;
 			gridBagConstraints11.weighty = 1.0;
 			gridBagConstraints11.gridy = 0;
@@ -169,7 +159,7 @@ public class LogonToUsuariosView extends JFrame {
 					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/users128x128.png")));
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
 			gridBagConstraints6.gridx = 0;
-			gridBagConstraints6.insets = new Insets(5, 5, 0, 5);
+			gridBagConstraints6.insets = new Insets(5, 5, 0, 0);
 			gridBagConstraints6.weightx = 1.0;
 			gridBagConstraints6.weighty = 1.0;
 			gridBagConstraints6.gridy = 2;
@@ -178,39 +168,8 @@ public class LogonToUsuariosView extends JFrame {
 			jPanel.setBackground(Color.white);
 			jPanel.add(getJContentPane(), gridBagConstraints6);
 			jPanel.add(jLabel3, gridBagConstraints11);
-			jPanel.add(getJButton1(), gridBagConstraints);
 		}
 		return jPanel;
-	}
-
-	/**
-	 * This method initializes jButton1
-	 *
-	 * @return javax.swing.JButton
-	 */
-	private JButton getJButton1() {
-		if (jButton1 == null) {
-			jButton1 = new JButton();
-			jButton1.setMnemonic(KeyEvent.VK_I);
-			jButton1.setText("Encriptador");
-			jButton1.setIcon(
-					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/paquete.png")));
-			jButton1.addMouseListener(new MouseAdapter() {
-				public void mouseEntered(MouseEvent e) {
-					jButton1.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}
-
-				public void mouseExited(MouseEvent e) {
-					jButton1.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				}
-			});
-			jButton1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					mostrarEncriptador();
-				}
-			});
-		}
-		return jButton1;
 	}
 
 	public static void main(String args[]) {
@@ -385,14 +344,5 @@ public class LogonToUsuariosView extends JFrame {
 			}
 			System.exit(0);
 		}
-	}
-
-	/**
-	 *
-	 */
-	private void mostrarEncriptador() {
-		InfoView.showErrorDialog(this, "Opción no disponible");
-		// UTILefrenView ventana = new UTILefrenView(false);
-		// ventana.setVisible(true);
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"
