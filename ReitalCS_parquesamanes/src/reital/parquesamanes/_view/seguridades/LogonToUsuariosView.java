@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
@@ -26,6 +27,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import org.h2.tools.Server;
 
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
@@ -162,7 +165,8 @@ public class LogonToUsuariosView extends JFrame {
 			gridBagConstraints11.gridy = 0;
 			jLabel3 = new JLabel();
 			jLabel3.setText("");
-			jLabel3.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/users128x128.png")));
+			jLabel3.setIcon(
+					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/users128x128.png")));
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
 			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.insets = new Insets(5, 5, 0, 5);
@@ -189,7 +193,8 @@ public class LogonToUsuariosView extends JFrame {
 			jButton1 = new JButton();
 			jButton1.setMnemonic(KeyEvent.VK_I);
 			jButton1.setText("Encriptador");
-			jButton1.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/paquete.png")));
+			jButton1.setIcon(
+					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/paquete.png")));
 			jButton1.addMouseListener(new MouseAdapter() {
 				public void mouseEntered(MouseEvent e) {
 					jButton1.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -210,7 +215,8 @@ public class LogonToUsuariosView extends JFrame {
 
 	public static void main(String args[]) {
 		try {
-			LoggerManager.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + LogonToUsuariosView.class.getSimpleName());
+			LoggerManager.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_"
+					+ LogonToUsuariosView.class.getSimpleName());
 			SystemLogManager.setLogger(LoggerManager.logger);
 		} catch (Exception e) {
 			e.getMessage();
@@ -233,9 +239,11 @@ public class LogonToUsuariosView extends JFrame {
 	private void initialize() {
 		this.setContentPane(getJPanel());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
 		setSize(429, 335);
-		setTitle("Reital - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - Usuarios - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setTitle("Reital - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - Usuarios - ["
+				+ ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				cerrarVentana();
@@ -243,6 +251,18 @@ public class LogonToUsuariosView extends JFrame {
 		});
 		setResizable(false);
 		WindowManager2.centerWindow(this);
+
+		dbInitialize();
+	}
+
+	private void dbInitialize() {
+		if (ParqueSamanesConn.getH2Server() == null) {
+			try {
+				ParqueSamanesConn.setH2Server(Server.createTcpServer().start());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private JPanel getJContentPane() {
@@ -349,8 +369,8 @@ public class LogonToUsuariosView extends JFrame {
 				SystemLogManager.error(exc);
 			}
 			try {
-				if (ParqueSamanesConn.getConnection() != null) {
-					ParqueSamanesConn.getConnection().close();
+				if (ParqueSamanesConn.getDBConnection() != null) {
+					ParqueSamanesConn.getDBConnection().close();
 				}
 				if (ParqueSamanesConn.getH2Server() != null) {
 					ParqueSamanesConn.getH2Server().stop();

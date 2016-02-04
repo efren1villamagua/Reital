@@ -35,7 +35,7 @@ public class ParqueSamanesConstantes {
 		public static String IP = "127.0.0.1";
 		public static String PORT = "9092";
 		public static String DBNAME = "ParqueSamanesDB";
-		public static String FILE_PATH = null;
+		public static String REMOTE_FILE_PATH = null;
 	}
 
 	public static class Security {
@@ -45,6 +45,10 @@ public class ParqueSamanesConstantes {
 		public static final String USUARIO_TIPO_Usuario = "U";
 		public static final String USUARIO_ESTADO_Activo = "A";
 		public static final String USUARIO_ESTADO_Inactivo = "I";
+	}
+
+	public static class Volatile {
+		public static String JDBC_URL = null;
 	}
 
 	/**
@@ -132,7 +136,7 @@ public class ParqueSamanesConstantes {
 				exc.getMessage();
 			}
 			try {
-				ParqueSamanesConstantes.DataSource.FILE_PATH = propiedades.getProperty("DataSource.FILE_PATH").trim();
+				ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH = propiedades.getProperty("DataSource.REMOTE_FILE_PATH").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}

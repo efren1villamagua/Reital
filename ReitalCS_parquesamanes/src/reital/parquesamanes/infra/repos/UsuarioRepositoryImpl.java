@@ -22,7 +22,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
 		try {
 
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 
 			String sql = " SELECT " + " u.USERNAME, u.CLAVE, u.NOMBRE, u.TIPO, u.ESTADO " + " FROM  " + "USUARIO u ";
 			if (orderBy == null) {
@@ -67,7 +67,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 		int afectados = 0;
 		try {
 
-			Connection con = ParqueSamanesConn.getConnection();
+			Connection con = ParqueSamanesConn.getDBConnection();
 			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
@@ -99,7 +99,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 		int afectados = 0;
 		try {
 
-			Connection con = ParqueSamanesConn.getConnection();
+			Connection con = ParqueSamanesConn.getDBConnection();
 			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
@@ -131,7 +131,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 		int afectados = 0;
 		try {
 
-			Connection con = ParqueSamanesConn.getConnection();
+			Connection con = ParqueSamanesConn.getDBConnection();
 			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();

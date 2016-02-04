@@ -26,7 +26,7 @@ public class ParametroRepositoryImpl implements ParametroRepository {
 
 		try {
 			String sql = "SELECT VALOR FROM PARAMETRO WHERE CODIGO='" + VALOR_HORA_FRACCION + "' ";
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 
 			SystemLogManager.debug(sql);
 
@@ -52,7 +52,7 @@ public class ParametroRepositoryImpl implements ParametroRepository {
 		int minutosGracia = -1;
 		try {
 			String sql = "SELECT VALOR FROM PARAMETRO WHERE CODIGO='" + CANTIDAD_MINUTOS_GRACIA + "' ";
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 
 			SystemLogManager.debug(sql);
 
@@ -78,7 +78,7 @@ public class ParametroRepositoryImpl implements ParametroRepository {
 		boolean imprimeRecibo = false;
 		try {
 			String sql = "SELECT VALOR FROM PARAMETRO WHERE CODIGO='" + IMPRIMIR_RECIBO + "' ";
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 
 			SystemLogManager.debug(sql);
 
@@ -104,7 +104,7 @@ public class ParametroRepositoryImpl implements ParametroRepository {
 		boolean seRegistro = false;
 		try {
 			String sql = "UPDATE PARAMETRO SET VALOR=? WHERE CODIGO=? ";
-			ps = ParqueSamanesConn.getConnection().prepareStatement(sql);
+			ps = ParqueSamanesConn.getDBConnection().prepareStatement(sql);
 
 			StringBuffer paramMetaClause = new StringBuffer();
 			paramMetaClause.append(" PARAMS{");

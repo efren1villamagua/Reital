@@ -74,7 +74,8 @@ public class ExitView extends JFrame {
 
 	public static void main(String args[]) {
 		try {
-			LoggerManager.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + ExitView.class.getSimpleName());
+			LoggerManager
+					.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + ExitView.class.getSimpleName());
 			SystemLogManager.setLogger(LoggerManager.logger);
 		} catch (Exception e) {
 			e.getMessage();
@@ -118,8 +119,10 @@ public class ExitView extends JFrame {
 
 	private void initialize() {
 		setDefaultCloseOperation(0);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/CLOCK_16_hot.png")));
-		setTitle("Reital Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "- [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(getClass().getResource("/reital/parquesamanes/resource/images/CLOCK_16_hot.png")));
+		setTitle("Reital Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "- ["
+				+ ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJPanel4());
 		setSize(637, 445);
 		WindowManager2.centerWindow(this);
@@ -159,7 +162,7 @@ public class ExitView extends JFrame {
 		}
 
 		try {
-			DBConnectionModel.setSQLConnection(false);
+			DBConnectionModel.dbConnect(true);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			InfoView.showErrorDialog(this, "ERROR: " + e1.getMessage());
@@ -309,8 +312,8 @@ public class ExitView extends JFrame {
 				SystemLogManager.error(exc);
 			}
 			try {
-				if (ParqueSamanesConn.getConnection() != null) {
-					ParqueSamanesConn.getConnection().close();
+				if (ParqueSamanesConn.getDBConnection() != null) {
+					ParqueSamanesConn.getDBConnection().close();
 				}
 			} catch (Exception exc) {
 				SystemLogManager.error(exc);
@@ -417,7 +420,8 @@ public class ExitView extends JFrame {
 		if (jButtonReiniciar == null) {
 			jButtonReiniciar = new JButton();
 			jButtonReiniciar.setMnemonic(KeyEvent.VK_I);
-			jButtonReiniciar.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/flechamas.gif")));
+			jButtonReiniciar.setIcon(
+					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/flechamas.gif")));
 			jButtonReiniciar.setText("Reiniciar");
 			jButtonReiniciar.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -467,7 +471,8 @@ public class ExitView extends JFrame {
 			try {
 				String secuenciaCaracteres = "";
 				for (int i = 0; i < getJPasswordFieldData().getPassword().length; i++) {
-					secuenciaCaracteres = secuenciaCaracteres + String.valueOf(getJPasswordFieldData().getPassword()[i]);
+					secuenciaCaracteres = secuenciaCaracteres
+							+ String.valueOf(getJPasswordFieldData().getPassword()[i]);
 				}
 
 				ActividadForPagoEntity actividadEntity = getActividadRepository().getActividad(secuenciaCaracteres);
@@ -487,9 +492,11 @@ public class ExitView extends JFrame {
 					case TIEMPO_GRACIA:
 						barAndCode = actividadEntity.getCodigo();
 						CalendarManager cmEntrada = new CalendarManager(actividadEntity.getEntrada());
-						entradaStr = cmEntrada.getInternationalDateExpression() + "  hora: " + cmEntrada.getTimeExpression2();
+						entradaStr = cmEntrada.getInternationalDateExpression() + "  hora: "
+								+ cmEntrada.getTimeExpression2();
 						CalendarManager cmSalida = new CalendarManager(actividadEntity.getSalida());
-						salidaStr = cmSalida.getInternationalDateExpression() + "  hora: " + cmSalida.getTimeExpression2();
+						salidaStr = cmSalida.getInternationalDateExpression() + "  hora: "
+								+ cmSalida.getTimeExpression2();
 						salidaMessage = "SALIDA OK.";
 
 						salidaOk = true;

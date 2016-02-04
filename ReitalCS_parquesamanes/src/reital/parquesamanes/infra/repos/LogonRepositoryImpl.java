@@ -24,7 +24,7 @@ public class LogonRepositoryImpl implements LogonRepository {
 
 		try {
 
-			DBConnectionModel.setSQLConnection(true);
+			DBConnectionModel.dbConnect(false);
 
 			StringBuffer sqlClause = new StringBuffer();
 			sqlClause.append("SELECT CLAVE, NOMBRE, TIPO, ESTADO ");
@@ -32,7 +32,7 @@ public class LogonRepositoryImpl implements LogonRepository {
 			sqlClause.append(" WHERE RTRIM(LTRIM(USERNAME))='" + userName.trim() + "' ");
 			String clave_sys = null;
 
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 
 			SystemLogManager.debug(sqlClause.toString());
 			ResultSet rs = st.executeQuery(sqlClause.toString());
@@ -47,8 +47,10 @@ public class LogonRepositoryImpl implements LogonRepository {
 				nombre = rs.getString("NOMBRE").trim();
 				clave_sys = rs.getString("CLAVE");
 
-				administrador = rs.getString("TIPO").trim().equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_TIPO_Administrador);
-				activo = rs.getString("ESTADO").trim().equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_ESTADO_Activo);
+				administrador = rs.getString("TIPO").trim()
+						.equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_TIPO_Administrador);
+				activo = rs.getString("ESTADO").trim()
+						.equalsIgnoreCase(ParqueSamanesConstantes.Security.USUARIO_ESTADO_Activo);
 
 				registroEncontrado = true;
 

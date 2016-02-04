@@ -21,7 +21,6 @@ import javax.swing.SwingConstants;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
-import reital.parquesamanes.infra.DBConnectionModel;
 
 public class ControlPanelView extends JFrame {
 	/**
@@ -63,8 +62,10 @@ public class ControlPanelView extends JFrame {
 
 	private void initialize() {
 		setDefaultCloseOperation(0);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/clock16x16.png")));
-		setTitle("Reital Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "  --  Control Panel - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(getClass().getResource("/reital/parquesamanes/resource/images/clock16x16.png")));
+		setTitle("Reital Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "  --  Control Panel - ["
+				+ ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJPanel4());
 		setSize(595, 230);
 		WindowManager2.centerWindow(this);
@@ -153,7 +154,8 @@ public class ControlPanelView extends JFrame {
 	private JButton getJButtonReportes() {
 		if (jButtonReportes == null) {
 			jButtonReportes = new JButton();
-			jButtonReportes.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/chart_pie.png")));
+			jButtonReportes.setIcon(
+					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/chart_pie.png")));
 			jButtonReportes.setHorizontalTextPosition(SwingConstants.CENTER);
 			jButtonReportes.setVerticalTextPosition(SwingConstants.BOTTOM);
 			jButtonReportes.setFont(new Font("Arial", Font.BOLD, 14));
@@ -176,7 +178,8 @@ public class ControlPanelView extends JFrame {
 	private JButton getJButtonFranjasHorarias() {
 		if (jButtonFranjasHorarias == null) {
 			jButtonFranjasHorarias = new JButton();
-			jButtonFranjasHorarias.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/calendar.png")));
+			jButtonFranjasHorarias.setIcon(
+					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/calendar.png")));
 			jButtonFranjasHorarias.setHorizontalTextPosition(SwingConstants.CENTER);
 			jButtonFranjasHorarias.setVerticalTextPosition(SwingConstants.BOTTOM);
 			jButtonFranjasHorarias.setFont(new Font("Arial", Font.BOLD, 14));
@@ -204,7 +207,8 @@ public class ControlPanelView extends JFrame {
 		if (jButtonMinutosGraciaClientes == null) {
 			jButtonMinutosGraciaClientes = new JButton();
 			jButtonMinutosGraciaClientes.setFont(new Font("Arial", Font.BOLD, 14));
-			jButtonMinutosGraciaClientes.setIcon(new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/comment_48x48.png")));
+			jButtonMinutosGraciaClientes.setIcon(
+					new ImageIcon(getClass().getResource("/reital/parquesamanes/resource/images/comment_48x48.png")));
 			jButtonMinutosGraciaClientes.setMargin(new Insets(2, 24, 2, 24));
 			jButtonMinutosGraciaClientes.setText("PARAMETROS");
 			jButtonMinutosGraciaClientes.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -240,7 +244,8 @@ public class ControlPanelView extends JFrame {
 	private InformationPanel getInformationPanel() {
 		if (informationPanel == null) {
 			informationPanel = new InformationPanel();
-			this.informationPanel.setValor("<html>Database url: " + DBConnectionModel.getURL_INFO() + "</html>");
+			this.informationPanel
+					.setValor("<html>Database url: " + ParqueSamanesConstantes.Volatile.JDBC_URL + "</html>");
 		}
 		return informationPanel;
 	}

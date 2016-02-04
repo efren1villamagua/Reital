@@ -24,7 +24,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 		try {
 
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 			StringBuffer sql = new StringBuffer();
 			sql.append(" SELECT fh.CODIGO, fh.NOMBRE, fh.HORA_INICIO, fh.HORA_FIN, fh.OBSERVACIONES, fh.HORAS_VALORES ");
 			sql.append(" FROM  FRANJA_HORARIA fh ");
@@ -72,7 +72,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 		int afectados = 0;
 		try {
 
-			Connection con = ParqueSamanesConn.getConnection();
+			Connection con = ParqueSamanesConn.getDBConnection();
 			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
@@ -107,7 +107,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 		int afectados = 0;
 		try {
 
-			Connection con = ParqueSamanesConn.getConnection();
+			Connection con = ParqueSamanesConn.getDBConnection();
 			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
@@ -145,7 +145,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 		int afectados = 0;
 		try {
 
-			Connection con = ParqueSamanesConn.getConnection();
+			Connection con = ParqueSamanesConn.getDBConnection();
 			st = con.createStatement();
 
 			StringBuffer sql = new StringBuffer();
@@ -177,7 +177,7 @@ public class FranjaHorariaRepositoryImpl implements FranjaHorariaRepository {
 
 		try {
 
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 
 			boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
 

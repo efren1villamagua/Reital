@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Locale;
 
-import org.h2.tools.Server;
-
 import efren.util.Conn;
 import efren.util.SystemLogManager;
 import efren.util.config.Constantes;
@@ -14,49 +12,14 @@ import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class DBConnectionModel {
 
-	private static String URL_INFO = "";
-
-	/**
-	 *
-	 */
 	public static boolean autenticar(String userName, String clave) {
 		try {
 			Locale.setDefault(new Locale("es", "ES"));
 
-			Server h2Server = null;
-
 			if (userName.equalsIgnoreCase(ParqueSamanesConstantes.Security.ADMIN_USERNAME)
 					&& clave.equalsIgnoreCase(ParqueSamanesConstantes.Security.ADMIN_PASSWORD)) {
 
-				/**
-				 * AUTENTICACION CONTRA LA BASE DE DATOS
-				 */
-				boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
-				String urlTemp = null;
-				if (oracle) {
-					// new OracleDriver();
-					urlTemp = "jdbc:oracle:thin:@" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + ":"
-							+ ParqueSamanesConstantes.DataSource.DBNAME;
-				} else {
-					// new DB2Driver();
-					// url = "jdbc:db2://" +
-					// ParqueSamanesConstantes.DataSource.IP +
-					// ":" + ParqueSamanesConstantes.DataSource.PORT + "/"
-					// + ParqueSamanesConstantes.DataSource.DBNAME;
-					Class.forName("org.h2.Driver");
-					// start the TCP Server
-					h2Server = Server.createTcpServer().start();
-					urlTemp = "jdbc:h2:tcp://" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + "/"
-							+ Constantes.DATA_DIR + "/" + ParqueSamanesConstantes.DataSource.DBNAME + "/" + ParqueSamanesConstantes.DataSource.DBNAME;
-				}
-				Connection aCon = DriverManager.getConnection(urlTemp, "sa", "");
-
-				ParqueSamanesConn.init(aCon, h2Server);
-				Conn.setCon(aCon);
-
-				SystemLogManager.debug("DB CONNECTION FOR: " + userName + " {" + urlTemp + "}");
-
-				new DBInitialization().createTables();
+				connect(false, userName);
 
 				SystemLogManager.info("USUARIO AUTENTICADO OK: " + userName);
 
@@ -76,72 +39,65 @@ public class DBConnectionModel {
 		}
 	}
 
-	/**
-	 * @throws SQLException
-	 * @throws ClassNotFoundException
-	 *
-	 */
-	public static void setSQLConnection(boolean h2ServerStart) throws SQLException, ClassNotFoundException {
-		boolean oracle = ParqueSamanesConstantes.DataSource.TYPE.equalsIgnoreCase("oracle");
-		String urlTemp = null;
-		Server h2Server = null;
-		if (oracle) {
-			// new OracleDriver();
-			urlTemp = "jdbc:oracle:thin:@" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + ":"
-					+ ParqueSamanesConstantes.DataSource.DBNAME;
-		} else {
-			// new DB2Driver();
-			// url = "jdbc:db2://" + ParqueSamanesConstantes.DataSource.IP + ":"
-			// + ParqueSamanesConstantes.DataSource.PORT + "/"
-			// + ParqueSamanesConstantes.DataSource.DBNAME;
-			Class.forName("org.h2.Driver");
-			// if (h2Embedded) {
-			// // start the TCP Server
-			// h2Server = Server.createTcpServer().start();
-			// urlTemp = "jdbc:h2:file:" + Constantes.DATA_DIR + "/" +
-			// ParqueSamanesConstantes.DataSource.DBNAME + "/"
-			// + ParqueSamanesConstantes.DataSource.DBNAME;
-			// } else {
-			// urlTemp = "jdbc:h2:tcp://" +
-			// ParqueSamanesConstantes.DataSource.IP + ":" +
-			// ParqueSamanesConstantes.DataSource.PORT + "/" +
-			// Constantes.DATA_DIR
-			// + "/" + ParqueSamanesConstantes.DataSource.DBNAME + "/" +
-			// ParqueSamanesConstantes.DataSource.DBNAME;
-			// }
-			if (h2ServerStart) {
-				// start the TCP Server
-				h2Server = Server.createTcpServer().start();
-			}
-			urlTemp = "jdbc:h2:tcp://" + ParqueSamanesConstantes.DataSource.IP + ":" + ParqueSamanesConstantes.DataSource.PORT + "/" + Constantes.DATA_DIR + "/"
-					+ ParqueSamanesConstantes.DataSource.DBNAME + "/" + ParqueSamanesConstantes.DataSource.DBNAME;
-		}
+	public static void dbConnect(boolean remote) throws SQLException, ClassNotFoundException {
 
-		setURL_INFO(urlTemp);
+		connect(remote, null);
+	}
 
-		Connection aCon = DriverManager.getConnection(getURL_INFO(), "sa", "");
+	private static void connect(boolean remote, String appUserName) throws SQLException, ClassNotFoundException {
 
-		ParqueSamanesConn.init(aCon, h2Server);
+		DBProperties dbProp = buildDBProperties(
+				remote ? ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH : Constantes.DATA_DIR, "sa", "");
+
+		Connection aCon = DriverManager.getConnection(dbProp.getUrl(), dbProp.getUserName(), dbProp.getPassword());
+
+		ParqueSamanesConn.setDBConnection(aCon);
 		Conn.setCon(aCon);
 
-		SystemLogManager.debug("DB CONNECTION FOR: sa {" + getURL_INFO() + "}");
+		if (!remote) {
+			SystemLogManager.info(
+					"Ruta a utilizarse en conexiones remotas [DataSource.REMOTE_FILE_PATH]: " + Constantes.DATA_DIR);
+		}
+		SystemLogManager.debug(
+				"DB CONNECTION FOR: " + (appUserName == null ? "sa" : appUserName) + " {" + dbProp.getUrl() + "}");
 
-		new DBInitialization().createTables();
+		new DBInitialization().createTables(remote);
 	}
 
-	/**
-	 * @return the uRL_INFO
-	 */
-	public static String getURL_INFO() {
-		return URL_INFO;
+	private static DBProperties buildDBProperties(String remoteFilePath, String userName, String password)
+			throws ClassNotFoundException {
+		String urlTemp = null;
+		Class.forName("org.h2.Driver");
+		urlTemp = "jdbc:h2:tcp://" + ParqueSamanesConstantes.DataSource.IP + ":"
+				+ ParqueSamanesConstantes.DataSource.PORT + "/" + remoteFilePath + "/"
+				+ ParqueSamanesConstantes.DataSource.DBNAME + "/" + ParqueSamanesConstantes.DataSource.DBNAME;
+		ParqueSamanesConstantes.Volatile.JDBC_URL = urlTemp;
+		return new DBProperties(urlTemp, userName, password);
 	}
 
-	/**
-	 * @param uRL_INFO
-	 *            the uRL_INFO to set
-	 */
-	private static void setURL_INFO(String uRL_INFO) {
-		URL_INFO = uRL_INFO;
-	}
+	private static class DBProperties {
 
+		private String url;
+		private String userName;
+		private String password;
+
+		public DBProperties(String url, String userName, String password) {
+			super();
+			this.url = url;
+			this.userName = userName;
+			this.password = password;
+		}
+
+		public String getUrl() {
+			return url;
+		}
+
+		public String getUserName() {
+			return userName;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+	}
 }

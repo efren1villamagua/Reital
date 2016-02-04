@@ -8,13 +8,17 @@ import reital.parquesamanes.infra.util.GarbageRecollector;
 
 public class DBInitialization {
 
-	public boolean createTables() {
+	public boolean createTables(boolean remoteDB) {
+
+		if (remoteDB) {
+			return false;
+		}
 
 		Statement st = null;
 
 		boolean resultado = true;
 
-		Connection con = ParqueSamanesConn.getConnection();
+		Connection con = ParqueSamanesConn.getDBConnection();
 
 		try {
 			st = con.createStatement();

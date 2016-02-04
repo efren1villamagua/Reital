@@ -26,7 +26,7 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 		int count = 0;
 		try {
 			String sql = "SELECT COUNT(CODIGO) AS CUANTOS_HAY FROM  ACTIVIDAD WHERE CODIGO='" + codigo + "' ";
-			st = ParqueSamanesConn.getConnection().createStatement();
+			st = ParqueSamanesConn.getDBConnection().createStatement();
 
 			SystemLogManager.debug(sql);
 
@@ -56,7 +56,7 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 			sql.append(" (CODIGO, ENTRADA, SALIDA, VALOR, VALOR_HORA_FRACCION, TIPO_CLIENTE, ");
 			sql.append(" OBSERVACIONES, FRANJA_HORARIA, CANTIDAD_HORAS, ESTADO ) ");
 			sql.append(" VALUES (?,?,?,?,?,?,?,?,?,?)");
-			ps = ParqueSamanesConn.getConnection().prepareStatement(sql.toString());
+			ps = ParqueSamanesConn.getDBConnection().prepareStatement(sql.toString());
 
 			StringBuffer paramMetaClause = new StringBuffer();
 			paramMetaClause.append(" PARAMS{");
@@ -129,7 +129,7 @@ public class ActividadRepositoryImpl implements ActividadRepository {
 			sql.append(" OBSERVACIONES, FRANJA_HORARIA, CANTIDAD_HORAS, ESTADO ");
 			sql.append(" FROM ACTIVIDAD ");
 			sql.append(" WHERE CODIGO=? ");
-			ps = ParqueSamanesConn.getConnection().prepareStatement(sql.toString());
+			ps = ParqueSamanesConn.getDBConnection().prepareStatement(sql.toString());
 
 			StringBuffer paramMetaClause = new StringBuffer();
 			paramMetaClause.append(" PARAMS{");

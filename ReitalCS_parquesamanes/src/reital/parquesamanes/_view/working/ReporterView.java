@@ -161,25 +161,29 @@ public class ReporterView extends DialogExt {
 				InfoView.showErrorDialog(this, "Seleccione una fecha hasta");
 				return;
 			}
-			if (!getJCheckBoxClientes().isSelected() && !getJCheckBoxNoClientes().isSelected() && !getJCheckBoxFuncionarios().isSelected()) {
+			if (!getJCheckBoxClientes().isSelected() && !getJCheckBoxNoClientes().isSelected()
+					&& !getJCheckBoxFuncionarios().isSelected()) {
 				InfoView.showErrorDialog(this, "Escoja al menos un tipo de cliente");
 				return;
 			}
 
-			Statement st = ParqueSamanesConn.getConnection().createStatement();
-			String sql = getSqlClausesFactory().getSQLClause_OcupacionParqueadero(getTextDateDesde().getValue(), getTextDateHasta().getValue(),
-					getJCheckBoxClientes().isSelected(), getJCheckBoxNoClientes().isSelected(), getJCheckBoxFuncionarios().isSelected());
+			Statement st = ParqueSamanesConn.getDBConnection().createStatement();
+			String sql = getSqlClausesFactory().getSQLClause_OcupacionParqueadero(getTextDateDesde().getValue(),
+					getTextDateHasta().getValue(), getJCheckBoxClientes().isSelected(),
+					getJCheckBoxNoClientes().isSelected(), getJCheckBoxFuncionarios().isSelected());
 			ResultSet rs = st.executeQuery(sql);
 
 			/**
 			 * construcción del reporte
 			 */
-			StyleSheet reporte = getDetallesPresentacionPanel1()._buildReport(rs, null, null, null, "DESDE: " + desde + "   HASTA: " + hasta, null);
+			StyleSheet reporte = getDetallesPresentacionPanel1()._buildReport(rs, null, null, null,
+					"DESDE: " + desde + "   HASTA: " + hasta, null);
 			/**
 			 * impresión del reporte
 			 */
 			getDetallesImpresionPanel1()._print(reporte, getDetallesPresentacionPanel1().papelSeleccionado(),
-					getDetallesPresentacionPanel1().esOrientacionHorizontal(), getDetallesPresentacionPanel1().getTitulo1().trim());
+					getDetallesPresentacionPanel1().esOrientacionHorizontal(),
+					getDetallesPresentacionPanel1().getTitulo1().trim());
 
 			rs.close();
 			st.close();
@@ -210,20 +214,23 @@ public class ReporterView extends DialogExt {
 				return;
 			}
 
-			Statement st = ParqueSamanesConn.getConnection().createStatement();
-			String sql = getSqlClausesFactory().getSQLClause_Funcionarios(getTextDateDesde().getValue(), getTextDateHasta().getValue());
+			Statement st = ParqueSamanesConn.getDBConnection().createStatement();
+			String sql = getSqlClausesFactory().getSQLClause_Funcionarios(getTextDateDesde().getValue(),
+					getTextDateHasta().getValue());
 			ResultSet rs = st.executeQuery(sql);
 
 			/**
 			 * construcción del reporte
 			 */
-			StyleSheet reporte = getIvjDetallesPresentacionPanelFuncionarios()._buildReport(rs, null, null, null, "DESDE: " + desde + "   HASTA: " + hasta,
-					null);
+			StyleSheet reporte = getIvjDetallesPresentacionPanelFuncionarios()._buildReport(rs, null, null, null,
+					"DESDE: " + desde + "   HASTA: " + hasta, null);
 			/**
 			 * impresión del reporte
 			 */
-			getIvjDetallesImpresionPanelFuncionarios()._print(reporte, getIvjDetallesPresentacionPanelFuncionarios().papelSeleccionado(),
-					getIvjDetallesPresentacionPanelFuncionarios().esOrientacionHorizontal(), getIvjDetallesPresentacionPanelFuncionarios().getTitulo1().trim());
+			getIvjDetallesImpresionPanelFuncionarios()._print(reporte,
+					getIvjDetallesPresentacionPanelFuncionarios().papelSeleccionado(),
+					getIvjDetallesPresentacionPanelFuncionarios().esOrientacionHorizontal(),
+					getIvjDetallesPresentacionPanelFuncionarios().getTitulo1().trim());
 
 			rs.close();
 			st.close();
@@ -337,7 +344,8 @@ public class ReporterView extends DialogExt {
 			ivjDetallesPresentacionPanel1.setScrollPaneTableVisible(true);
 			ivjDetallesPresentacionPanel1.setExpress(false);
 			ivjDetallesPresentacionPanel1.setFuente(new StyleFont(new Font("Arial", Font.PLAIN, 8)));
-			ivjDetallesPresentacionPanel1._refrescarDetallesTabla(getSqlClausesFactory().getSQLClause_OcupacionParqueadero_OnlyHeaders());
+			ivjDetallesPresentacionPanel1
+					._refrescarDetallesTabla(getSqlClausesFactory().getSQLClause_OcupacionParqueadero_OnlyHeaders());
 			TableModel model = ivjDetallesPresentacionPanel1.getTableModel();
 			/**
 			 * COLUMNAS 0: Nombre SQL || 1: Nombre || 2: Ancho || 3: Quiebre ||
@@ -406,10 +414,12 @@ public class ReporterView extends DialogExt {
 			ivjJTabbedPane1.setName("JTabbedPane1");
 			ivjJTabbedPane1.setToolTipText("Reportes personalizados");
 			ivjJTabbedPane1.setFont(new java.awt.Font("Arial", 0, 10));
-			ivjJTabbedPane1.insertTab("(4) Detalles de presentación", new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_4.gif")),
-					getPageDetalles(), null, 0);
-			ivjJTabbedPane1.insertTab("(6) Detalles de impresión", new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_6.gif")),
-					getPageImpresion(), null, 1);
+			ivjJTabbedPane1.insertTab("(4) Detalles de presentación",
+					new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_4.gif")), getPageDetalles(),
+					null, 0);
+			ivjJTabbedPane1.insertTab("(6) Detalles de impresión",
+					new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_6.gif")), getPageImpresion(),
+					null, 1);
 			ivjJTabbedPane1.putClientProperty("pgs.isButtonStyle", Boolean.TRUE);
 		}
 		return ivjJTabbedPane1;
@@ -553,7 +563,8 @@ public class ReporterView extends DialogExt {
 		setName("DataTableReporterView");
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setSize(713, 614);
-		setTitle("Reportes Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+		setTitle("Reportes Parking - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - ["
+				+ ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 		setContentPane(getJFrameContentPane());
 		setResizable(true);
 		setModal(true);
@@ -858,9 +869,11 @@ public class ReporterView extends DialogExt {
 			ivjJTabbedPaneFuncionarios.setFont(new Font("Arial", 0, 10));
 			ivjJTabbedPaneFuncionarios.setToolTipText("Reportes personalizados");
 			ivjJTabbedPaneFuncionarios.setName("JTabbedPane1");
-			ivjJTabbedPaneFuncionarios.addTab("(4) Detalles de presentación", new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_4.gif")),
+			ivjJTabbedPaneFuncionarios.addTab("(4) Detalles de presentación",
+					new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_4.gif")),
 					getIvjPageDetallesFuncionarios(), null);
-			ivjJTabbedPaneFuncionarios.addTab("(6) Detalles de impresión", new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_6.gif")),
+			ivjJTabbedPaneFuncionarios.addTab("(6) Detalles de impresión",
+					new ImageIcon(getClass().getResource("/efren/resources/images/bar_ok_6.gif")),
 					getIvjPageImpresionFuncionarios(), null);
 		}
 		return ivjJTabbedPaneFuncionarios;
@@ -885,7 +898,8 @@ public class ReporterView extends DialogExt {
 			ivjPageDetallesFuncionarios.setLayout(new GridBagLayout());
 			ivjPageDetallesFuncionarios.setFont(new Font("Arial", 0, 10));
 			ivjPageDetallesFuncionarios.setName("PageDetalles");
-			ivjPageDetallesFuncionarios.add(getIvjDetallesPresentacionPanelFuncionarios(), constraintsDetallesPresentacionPanelFuncionarios);
+			ivjPageDetallesFuncionarios.add(getIvjDetallesPresentacionPanelFuncionarios(),
+					constraintsDetallesPresentacionPanelFuncionarios);
 		}
 		return ivjPageDetallesFuncionarios;
 	}
@@ -903,7 +917,8 @@ public class ReporterView extends DialogExt {
 			ivjDetallesPresentacionPanelFuncionarios.setFuente(new StyleFont(new Font("Arial", Font.PLAIN, 8)));
 			ivjDetallesPresentacionPanelFuncionarios.setScrollPaneTableVisible(true);
 
-			ivjDetallesPresentacionPanelFuncionarios._refrescarDetallesTabla(getSqlClausesFactory().getSQLClause_Funcionarios_OnlyHeaders());
+			ivjDetallesPresentacionPanelFuncionarios
+					._refrescarDetallesTabla(getSqlClausesFactory().getSQLClause_Funcionarios_OnlyHeaders());
 			TableModel model = ivjDetallesPresentacionPanelFuncionarios.getTableModel();
 			/**
 			 * COLUMNAS 0: Nombre SQL || 1: Nombre || 2: Ancho || 3: Quiebre ||
@@ -946,7 +961,8 @@ public class ReporterView extends DialogExt {
 			ivjPageImpresionFuncionarios = new JPanel();
 			ivjPageImpresionFuncionarios.setLayout(new GridBagLayout());
 			ivjPageImpresionFuncionarios.setName("PageImpresion");
-			ivjPageImpresionFuncionarios.add(getIvjDetallesImpresionPanelFuncionarios(), constraintsDetallesImpresionPanelFuncionarios);
+			ivjPageImpresionFuncionarios.add(getIvjDetallesImpresionPanelFuncionarios(),
+					constraintsDetallesImpresionPanelFuncionarios);
 		}
 		return ivjPageImpresionFuncionarios;
 	}
@@ -1002,7 +1018,8 @@ public class ReporterView extends DialogExt {
 		if (jButtonImprimirFuncionarios == null) {
 			jButtonImprimirFuncionarios = new JButton();
 			jButtonImprimirFuncionarios.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 2));
-			jButtonImprimirFuncionarios.setIcon(new ImageIcon(getClass().getResource("/efren/resources/images/print.png")));
+			jButtonImprimirFuncionarios
+					.setIcon(new ImageIcon(getClass().getResource("/efren/resources/images/print.png")));
 			jButtonImprimirFuncionarios.setText("Imprimir");
 			jButtonImprimirFuncionarios.setMnemonic(KeyEvent.VK_I);
 			jButtonImprimirFuncionarios.addActionListener(new java.awt.event.ActionListener() {
@@ -1021,8 +1038,10 @@ public class ReporterView extends DialogExt {
 	 */
 	private JPanel getJPanel21() {
 		if (jPanel21 == null) {
-			TitledBorder titledBorder1 = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black), "Criterios de selección",
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213));
+			TitledBorder titledBorder1 = BorderFactory.createTitledBorder(
+					BorderFactory.createMatteBorder(2, 2, 2, 2, Color.black), "Criterios de selección",
+					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
+					new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213));
 			titledBorder1.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 			GridBagConstraints gridBagConstraints41 = new GridBagConstraints();
 			gridBagConstraints41.anchor = GridBagConstraints.WEST;
@@ -1094,8 +1113,9 @@ public class ReporterView extends DialogExt {
 	 */
 	private JPanel getJPanelCriteriosBusquedaOcupacionParqueadero() {
 		if (jPanelCriteriosBusquedaOcupacionParqueadero == null) {
-			TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 5), "Criterios de selección",
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213));
+			TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 5),
+					"Criterios de selección", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
+					new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213));
 			titledBorder.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 			GridBagConstraints gridBagConstraints14 = new GridBagConstraints();
 			gridBagConstraints14.gridx = 0;
