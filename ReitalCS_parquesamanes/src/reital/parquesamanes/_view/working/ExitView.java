@@ -35,8 +35,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
-
 import efren.util.CalendarManager;
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
@@ -82,8 +80,14 @@ public class ExitView extends JFrame {
 		}
 		Locale.setDefault(new Locale("es", "ES"));
 		try {
-			UIManager.setLookAndFeel(new WindowsLookAndFeel());
-
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			} catch (Exception exc11) {
+				try {
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+				} catch (Exception exc12) {
+				}
+			}
 			ExitView ventana = new ExitView();
 
 			ventana.setResizable(false);
