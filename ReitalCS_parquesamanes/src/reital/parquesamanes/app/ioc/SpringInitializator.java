@@ -1,7 +1,5 @@
 package reital.parquesamanes.app.ioc;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import efren.util.SystemLogManager;
 import reital.parquesamanes.app.controllers.FranjaHorariaController;
 import reital.parquesamanes.app.controllers.LogonController;
@@ -12,25 +10,15 @@ public class SpringInitializator {
 
 	private static SpringInitializator singleton;
 
-	private AnnotationConfigApplicationContext context;
-
 	private SpringInitializator() {
 		super();
 		init();
 	}
 
 	private void init() {
-		setContext(new AnnotationConfigApplicationContext(DIConfiguration.class));
 	}
 
 	public void destroy() {
-		try {
-			if (getContext() != null) {
-				getContext().close();
-			}
-		} catch (Exception exc) {
-			SystemLogManager.error(exc);
-		}
 	}
 
 	public static SpringInitializator getSingleton() {
@@ -42,14 +30,6 @@ public class SpringInitializator {
 
 	private static void setSingleton(SpringInitializator singleton) {
 		SpringInitializator.singleton = singleton;
-	}
-
-	public AnnotationConfigApplicationContext getContext() {
-		return context;
-	}
-
-	private void setContext(AnnotationConfigApplicationContext context) {
-		this.context = context;
 	}
 
 	public LogonController getLogonControllerBean() {
