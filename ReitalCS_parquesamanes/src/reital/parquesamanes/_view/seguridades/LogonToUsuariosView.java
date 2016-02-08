@@ -37,7 +37,6 @@ import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes._view.working.UsuarioABMView;
-import reital.parquesamanes.app.ioc.SpringInitializator;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.infra.DBConnectionModel;
 import reital.parquesamanes.infra.ParqueSamanesConn;
@@ -338,11 +337,7 @@ public class LogonToUsuariosView extends JFrame {
 			} catch (Exception exc) {
 				SystemLogManager.error(exc);
 			}
-			try {
-				SpringInitializator.getSingleton().destroy();
-			} catch (Exception exc) {
-				SystemLogManager.error(exc);
-			}
+
 			System.exit(0);
 		}
 	}

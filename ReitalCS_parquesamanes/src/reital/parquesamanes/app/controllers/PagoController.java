@@ -2,7 +2,7 @@ package reital.parquesamanes.app.controllers;
 
 import java.math.BigDecimal;
 
-import reital.parquesamanes.app.ioc.DIConfiguration;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 import reital.parquesamanes.domain.repos.ActividadRepository;
@@ -14,9 +14,9 @@ public class PagoController {
 
 	public PagoController() {
 		super();
-		setParametroRepository(new DIConfiguration().getParametroRepository());
-		setFranjaHorariaRepository(new DIConfiguration().getFranjaHorariaRepository());
-		setActividadRepository(new DIConfiguration().getActividadRepository());
+		setParametroRepository(new Factory().getParametroRepository());
+		setFranjaHorariaRepository(new Factory().getFranjaHorariaRepository());
+		setActividadRepository(new Factory().getActividadRepository());
 	}
 
 	private ParametroRepository parametroRepository = null;

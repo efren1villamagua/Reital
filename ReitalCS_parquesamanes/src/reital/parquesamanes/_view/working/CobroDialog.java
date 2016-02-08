@@ -24,7 +24,7 @@ import efren.util.gui.bars.BarraAceptarCancelarPanel;
 import efren.util.gui.dialogs.DialogExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoPago;
 
@@ -79,7 +79,8 @@ public class CobroDialog extends DialogExt {
 	private void registrarPago() {
 		try {
 			if (this.valorPago < getActividadForPago().getValor().doubleValue()) {
-				InfoView.showErrorDialog(getPagoHelper().getPagoView(), "ERROR: El pago no puede ser menor que el valor del parqueo.");
+				InfoView.showErrorDialog(getPagoHelper().getPagoView(),
+						"ERROR: El pago no puede ser menor que el valor del parqueo.");
 				// getTextFieldExtValorPago().requestFocus();
 				getTextFieldExtValorPago().seleccionar();
 				return;
@@ -99,7 +100,8 @@ public class CobroDialog extends DialogExt {
 			// diferentes de cero (con costo)
 			getActividadForPago().setEstadoPago(EstadoPago.PAGADO);
 
-			boolean actividadPersistida = SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(getActividadForPago());
+			boolean actividadPersistida = new Factory().getPagoControllerBean()
+					.registrarActividad(getActividadForPago());
 
 			getPagoHelper().getPagoView().reinicializarVisual();
 			this.dispose();
@@ -113,8 +115,9 @@ public class CobroDialog extends DialogExt {
 					if (!getActividadForPago().isImprimirRecibo()) {
 						InfoView.showMessageDialog(getPagoHelper().getPagoView(), "Pago CERO");
 					} else {
-						InfoView.showMessageDialog(getPagoHelper().getPagoView(),
-								"Pago: " + StringTools.parseFromNumberToQuantity(getActividadForPago().getValor().setScale(2, 4)) + " registrado con éxito");
+						InfoView.showMessageDialog(getPagoHelper().getPagoView(), "Pago: "
+								+ StringTools.parseFromNumberToQuantity(getActividadForPago().getValor().setScale(2, 4))
+								+ " registrado con éxito");
 					}
 				} else {
 					InfoView.showMessageDialog(getPagoHelper().getPagoView(), "Pase libre");
@@ -142,16 +145,19 @@ public class CobroDialog extends DialogExt {
 			trjDetails.append("<html>");
 			trjDetails.append("<B>Id trx.:</B> " + afpe.getCodigo());
 			CalendarManager cmTemp = new CalendarManager(afpe.getEntrada());
-			trjDetails.append("<BR>Entrada: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
+			trjDetails
+					.append("<BR>Entrada: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
 			cmTemp = new CalendarManager(afpe.getSalida());
-			trjDetails.append("<BR>Salida: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
+			trjDetails
+					.append("<BR>Salida: " + cmTemp.getDMYDateExpression() + "  hora: " + cmTemp.getTimeExpression2());
 
 			String tiempoGraciaTextSimple = null;
 			String tiempoGraciaTextHtml = null;
 			if (afpe.isEnTiempoGracia()) {
-				int minutosGraciaFromDB = SpringInitializator.getSingleton().getPagoControllerBean().getCantidadMinutosGracia();
+				int minutosGraciaFromDB = new Factory().getPagoControllerBean().getCantidadMinutosGracia();
 				tiempoGraciaTextSimple = "GRATIS (hasta " + minutosGraciaFromDB + " min.)";
-				tiempoGraciaTextHtml = "<BR><CENTER><FONT COLOR=red><B>" + tiempoGraciaTextSimple + "</B></FONT></CENTER>";
+				tiempoGraciaTextHtml = "<BR><CENTER><FONT COLOR=red><B>" + tiempoGraciaTextSimple
+						+ "</B></FONT></CENTER>";
 			} else {
 				tiempoGraciaTextSimple = "";
 				tiempoGraciaTextHtml = "";
@@ -214,15 +220,16 @@ public class CobroDialog extends DialogExt {
 			ivjBarraAceptarCancelarPanel.setButtonAceptarText("Registrar pago");
 			ivjBarraAceptarCancelarPanel.setButtonAceptarMnemonic(KeyEvent.VK_P);
 			ivjBarraAceptarCancelarPanel.setButtonCancelarMnemonic(KeyEvent.VK_C);
-			ivjBarraAceptarCancelarPanel.addBarraAceptarCancelarPanelListener(new efren.util.gui.bars.BarraAceptarCancelarPanelListener() {
-				public void aceptarClicked(java.util.EventObject e) {
-					registrarPago();
-				}
+			ivjBarraAceptarCancelarPanel
+					.addBarraAceptarCancelarPanelListener(new efren.util.gui.bars.BarraAceptarCancelarPanelListener() {
+						public void aceptarClicked(java.util.EventObject e) {
+							registrarPago();
+						}
 
-				public void cancelarClicked(java.util.EventObject e) {
-					cerrar();
-				}
-			});
+						public void cancelarClicked(java.util.EventObject e) {
+							cerrar();
+						}
+					});
 		}
 		return ivjBarraAceptarCancelarPanel;
 	}
@@ -375,13 +382,15 @@ public class CobroDialog extends DialogExt {
 	 */
 	private void calcularCambio() {
 		double valor = getActividadForPago().getValor().doubleValue();
-		this.valorPago = new BigDecimal(StringTools.parseFromMoneyToNumber(getTextFieldExtValorPago().getValue().trim())).setScale(2, BigDecimal.ROUND_HALF_UP)
-				.doubleValue();
+		this.valorPago = new BigDecimal(
+				StringTools.parseFromMoneyToNumber(getTextFieldExtValorPago().getValue().trim()))
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorCambio = this.valorPago - valor;
 		if (valorCambio < 0.00) {
 			valorCambio = 0.00;
 		}
-		jLabelValorCambio.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorCambio).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorCambio.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorCambio).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	/**

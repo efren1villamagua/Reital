@@ -19,7 +19,7 @@ import efren.util.gui.dialogs.DialogExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
 import reital.parquesamanes.app.controllers.PagoController.Valores;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarPanelListener, MouseListener {
@@ -75,7 +75,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 	 *
 	 */
 	private void initializeValores() {
-		this.valoresIniciales = SpringInitializator.getSingleton().getPagoControllerBean().getValores();
+		this.valoresIniciales = new Factory().getPagoControllerBean().getValores();
 		// getTextFieldExtValorHoraOFraccion().setValue(StringTools.parseFromNumberToQuantity(this.valoresIniciales.valorHoraOFraccion));
 		getTextFieldExtMinutosGracia().setValue(String.valueOf(this.valoresIniciales.minutosGracia));
 		// getJCheckBoxImprimirRecibo().setSelected(this.valoresIniciales.imprimeRecibo);
@@ -98,7 +98,7 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 		 * valorHoraOFraccion.doubleValue()); }
 		 */
 		if (minutosGracia != this.valoresIniciales.minutosGracia) {
-			SpringInitializator.getSingleton().getPagoControllerBean().actualizarParametro_MinutosGracia(minutosGracia);
+			new Factory().getPagoControllerBean().actualizarParametro_MinutosGracia(minutosGracia);
 		}
 		/*
 		 * if (imprimirRecibo != this.valoresIniciales.imprimeRecibo) { int temp
@@ -320,7 +320,8 @@ public class ParametrosDialog extends DialogExt implements BarraAceptarCancelarP
 				ivjLabelExt2 = new efren.util.gui.LabelExt();
 				ivjLabelExt2.setName("LabelExt2");
 				ivjLabelExt2.setDisplayedMnemonic('w');
-				ivjLabelExt2.setText("Minutos gracia para CLIENTES " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "");
+				ivjLabelExt2.setText(
+						"Minutos gracia para CLIENTES " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "");
 				ivjLabelExt2.setForeground(java.awt.Color.black);
 				ivjLabelExt2.setHorizontalAlignment(SwingConstants.RIGHT);
 				// user code begin {1}

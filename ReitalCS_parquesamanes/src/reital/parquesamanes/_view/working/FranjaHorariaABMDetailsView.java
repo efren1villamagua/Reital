@@ -31,10 +31,11 @@ import efren.util.gui.LabelExt;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.text.TextFieldExt;
 import efren.util.gui.text.TextFieldExtListener;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
-public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
+public class FranjaHorariaABMDetailsView extends JFrame
+		implements efren.util.gui.bars.BarraAceptarCancelarPanelListener {
 	/**
 	 *
 	 */
@@ -678,7 +679,9 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 			if (getAbmEstado().esNuevo()) {
 				for (int i = 1; i <= 24; i++) {
 					try {
-						((TextFieldExt) MethodInvocation.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this)).setValue(i + ".00");
+						((TextFieldExt) MethodInvocation
+								.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this))
+										.setValue(i + ".00");
 					} catch (Exception exc) {
 						exc.getMessage();
 					}
@@ -693,20 +696,25 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 				StringTokenizer stk = new StringTokenizer(horaInicio, ":");
 				int horaIni = Integer.parseInt(stk.nextToken().trim());
 				int minIni = Integer.parseInt(stk.nextToken().trim());
-				String inicio = (horaIni < 10 ? "0" + horaIni : "" + horaIni) + ":" + (minIni < 10 ? "0" + minIni : "" + minIni);
+				String inicio = (horaIni < 10 ? "0" + horaIni : "" + horaIni) + ":"
+						+ (minIni < 10 ? "0" + minIni : "" + minIni);
 				getTextFieldExtHoraInicio().setValue(inicio);
 				String horaFinal = bo.getHoraFin();
 				stk = new StringTokenizer(horaFinal, ":");
 				int horaFin = Integer.parseInt(stk.nextToken().trim());
 				int minFin = Integer.parseInt(stk.nextToken().trim());
-				String fin = (horaFin < 10 ? "0" + horaFin : "" + horaFin) + ":" + (minFin < 10 ? "0" + minFin : "" + minFin);
+				String fin = (horaFin < 10 ? "0" + horaFin : "" + horaFin) + ":"
+						+ (minFin < 10 ? "0" + minFin : "" + minFin);
 				getTextFieldExtHoraFin().setValue(fin);
 				String tempHV = bo.getHorasValores();
 				Hashtable<Integer, BigDecimal> hvht = FranjaHorariaABMDetailsView.getHorasValores(tempHV);
 				for (int i = 1; i <= 24; i++) {
 					try {
-						((TextFieldExt) MethodInvocation.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this)).setValue(
-								StringTools.parseFromNumberToQuantity(new BigDecimal(hvht.get(i).doubleValue() * i).setScale(2, BigDecimal.ROUND_HALF_UP)));
+						((TextFieldExt) MethodInvocation
+								.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this))
+										.setValue(StringTools
+												.parseFromNumberToQuantity(new BigDecimal(hvht.get(i).doubleValue() * i)
+														.setScale(2, BigDecimal.ROUND_HALF_UP)));
 					} catch (Exception exc) {
 						exc.getMessage();
 					}
@@ -724,8 +732,9 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 						getTextFieldExtHoraFin().setEnabled(false);
 						for (int i = 1; i <= 24; i++) {
 							try {
-								((TextFieldExt) MethodInvocation.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this))
-										.setEnabled(false);
+								((TextFieldExt) MethodInvocation
+										.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this))
+												.setEnabled(false);
 							} catch (Exception exc) {
 								exc.getMessage();
 							}
@@ -745,7 +754,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 	private void initialize() {
 		setName("FranjaHorariaABMDetailsView");
 		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/calendar16x16.png")));
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(getClass().getResource("/reital/parquesamanes/resource/images/calendar16x16.png")));
 		// setSize(576, 290);
 		setSize(641, 672);
 		setContentPane(getJFrameContentPane());
@@ -780,7 +790,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 		TextFieldExt tfe;
 		for (int i = 1; i <= 24; i++) {
 			try {
-				tfe = (TextFieldExt) MethodInvocation.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this);
+				tfe = (TextFieldExt) MethodInvocation
+						.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this);
 				tfe.setAllowedKey(TextFieldExt.AllowedKey.AK_NUMEROS_CON_FRACCION);
 				tfe.setKeyMask(TextFieldExt.KeyMask.KM_Numero);
 				tfe.setMaxLength(6);
@@ -797,7 +808,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 			String horasValores = "";
 			for (int i = 1; i <= 24; i++) {
 				try {
-					tfe = (JLabel) MethodInvocation.performMethod("getJLabelValorPorHora" + (i < 10 ? "0" + i : "" + i), this);
+					tfe = (JLabel) MethodInvocation.performMethod("getJLabelValorPorHora" + (i < 10 ? "0" + i : "" + i),
+							this);
 					horasValores = horasValores + i + ";" + StringTools.parseFromQuantityToNumber(tfe.getText());
 					if (i < 24) {
 						horasValores = horasValores + "|";
@@ -810,17 +822,20 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 			boolean resultado = false;
 
 			if (getAbmEstado().esNuevo()) {
-				resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().create(getTextFieldExtCodigo().getValue(),
-						getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(),
+				resultado = new Factory().getFranjaHorariaControllerBean().getRepository().create(
+						getTextFieldExtCodigo().getValue(), getTextFieldExtNombre().getValue(),
+						getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(),
 						getTextFieldExtObservaciones().getValue(), horasValores);
 			}
 			if (getAbmEstado().esModificado()) {
-				resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().update(getTextFieldExtCodigo().getValue(),
-						getTextFieldExtNombre().getValue(), getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(),
+				resultado = new Factory().getFranjaHorariaControllerBean().getRepository().update(
+						getTextFieldExtCodigo().getValue(), getTextFieldExtNombre().getValue(),
+						getTextFieldExtHoraInicio().getValue(), getTextFieldExtHoraFin().getValue(),
 						getTextFieldExtObservaciones().getValue(), horasValores);
 			}
 			if (getAbmEstado().esEliminado()) {
-				resultado = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().delete(getTextFieldExtCodigo().getValue());
+				resultado = new Factory().getFranjaHorariaControllerBean().getRepository()
+						.delete(getTextFieldExtCodigo().getValue());
 			}
 
 			if (resultado) {
@@ -899,7 +914,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 
 	private boolean validar() {
 		if (getAbmEstado().esEliminado()) {
-			if (InfoView.showConfirmDialog(this, "¿ Está seguro de eliminar el registro ?", "Seleccione una opción", InfoView.YES_NO_OPTION) == 0) {
+			if (InfoView.showConfirmDialog(this, "¿ Está seguro de eliminar el registro ?", "Seleccione una opción",
+					InfoView.YES_NO_OPTION) == 0) {
 				return true;
 			} else {
 				return false;
@@ -922,7 +938,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 			TextFieldExt tfe;
 			for (int i = 1; i <= 24; i++) {
 				try {
-					tfe = (TextFieldExt) MethodInvocation.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this);
+					tfe = (TextFieldExt) MethodInvocation
+							.performMethod("getTextFieldExtTotalHoras" + (i < 10 ? "0" + i : "" + i), this);
 					if (tfe.isDataMissing("Ingrese el valor de la hora " + i + " !")) {
 						return false;
 					}
@@ -989,7 +1006,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 		Hashtable<Integer, BigDecimal> hv = new Hashtable<Integer, BigDecimal>();
 		for (int i = 0; i < temp1.size(); i++) {
 			stk = new StringTokenizer(temp1.elementAt(i).trim(), ";");
-			hv.put(new Integer(stk.nextToken().trim()), new BigDecimal(stk.nextToken().trim()).setScale(2, BigDecimal.ROUND_HALF_UP));
+			hv.put(new Integer(stk.nextToken().trim()),
+					new BigDecimal(stk.nextToken().trim()).setScale(2, BigDecimal.ROUND_HALF_UP));
 		}
 		return hv;
 	}
@@ -1774,8 +1792,8 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 			jPanelHoras.add(getTextFieldExtTotalHoras24(), gridBagConstraints5);
 			jPanelHoras.add(jLabel1211, gridBagConstraints6);
 			jPanelHoras.add(jLabel2, gridBagConstraints55);
-			jPanelHoras.add(jLabel21,
-					new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTH, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			jPanelHoras.add(jLabel21, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTH,
+					GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 			jLabel21.setHorizontalAlignment(SwingConstants.RIGHT);
 			jLabel21.setHorizontalTextPosition(SwingConstants.RIGHT);
 			jPanelHoras.add(jLabelValorPorHora01, gridBagConstraints57);
@@ -1826,8 +1844,9 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 	private JScrollPane getJScrollPane() {
 		if (jScrollPane == null) {
 			jScrollPane = new JScrollPane();
-			jScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Tarifario",
-					TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+			jScrollPane.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Tarifario",
+							TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
 			jScrollPane.setViewportView(getJPanelHoras());
 		}
 		return jScrollPane;
@@ -2888,171 +2907,219 @@ public class FranjaHorariaABMDetailsView extends JFrame implements efren.util.gu
 	}
 
 	private void manageTextTotal01() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras01().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras01().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 01.00;
-		jLabelValorPorHora01.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora01.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal02() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras02().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras02().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 02.00;
-		jLabelValorPorHora02.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora02.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal03() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras03().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras03().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 03.00;
-		jLabelValorPorHora03.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora03.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal04() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras04().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras04().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 04.00;
-		jLabelValorPorHora04.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora04.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal05() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras05().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras05().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 05.00;
-		jLabelValorPorHora05.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora05.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal06() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras06().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras06().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 06.00;
-		jLabelValorPorHora06.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora06.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal07() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras07().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras07().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 07.00;
-		jLabelValorPorHora07.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora07.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal08() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras08().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras08().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 08.00;
-		jLabelValorPorHora08.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora08.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal09() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras09().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras09().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 09.00;
-		jLabelValorPorHora09.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora09.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal10() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras10().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras10().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 10.00;
-		jLabelValorPorHora10.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora10.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal11() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras11().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras11().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 11.00;
-		jLabelValorPorHora11.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora11.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal12() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras12().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras12().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 12.00;
-		jLabelValorPorHora12.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora12.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal13() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras13().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras13().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 13.00;
-		jLabelValorPorHora13.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora13.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal14() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras14().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras14().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 14.00;
-		jLabelValorPorHora14.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora14.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal15() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras15().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras15().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 15.00;
-		jLabelValorPorHora15.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora15.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal16() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras16().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras16().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 16.00;
-		jLabelValorPorHora16.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora16.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal17() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras17().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras17().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 17.00;
-		jLabelValorPorHora17.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora17.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal18() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras18().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras18().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 18.00;
-		jLabelValorPorHora18.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora18.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal19() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras19().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras19().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 19.00;
-		jLabelValorPorHora19.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora19.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal20() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras20().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras20().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 20.00;
-		jLabelValorPorHora20.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora20.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal21() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras21().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras21().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 21.00;
-		jLabelValorPorHora21.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora21.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal22() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras22().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras22().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 22.00;
-		jLabelValorPorHora22.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora22.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal23() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras23().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras23().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 23.00;
-		jLabelValorPorHora23.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora23.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 	private void manageTextTotal24() {
-		double valorTotal = new BigDecimal(StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras24().getValue()).trim())
-				.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		double valorTotal = new BigDecimal(
+				StringTools.parseFromQuantityToNumber(getTextFieldExtTotalHoras24().getValue()).trim())
+						.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		double valorXHora = valorTotal / 24.00;
-		jLabelValorPorHora24.setText(StringTools.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
+		jLabelValorPorHora24.setText(StringTools
+				.parseFromNumberToQuantity(new BigDecimal(valorXHora).setScale(2, BigDecimal.ROUND_HALF_UP)));
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

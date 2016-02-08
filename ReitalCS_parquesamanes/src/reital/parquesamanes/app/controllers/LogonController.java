@@ -1,6 +1,6 @@
 package reital.parquesamanes.app.controllers;
 
-import reital.parquesamanes.app.ioc.DIConfiguration;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.domain.repos.LogonRepository;
 
 //@Component
@@ -10,7 +10,7 @@ public class LogonController {
 
 	public LogonController() {
 		super();
-		setRepository(new DIConfiguration().getLogonRepository());
+		setRepository(new Factory().getLogonRepository());
 	}
 
 	public LogonRepository getRepository() {

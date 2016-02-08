@@ -1,6 +1,6 @@
 package reital.parquesamanes.app.controllers;
 
-import reital.parquesamanes.app.ioc.DIConfiguration;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.domain.repos.FranjaHorariaRepository;
 
 //@Component
@@ -14,7 +14,7 @@ public class FranjaHorariaController {
 
 	public FranjaHorariaController() {
 		super();
-		setRepository(new DIConfiguration().getFranjaHorariaRepository());
+		setRepository(new Factory().getFranjaHorariaRepository());
 	}
 
 	// @Autowired

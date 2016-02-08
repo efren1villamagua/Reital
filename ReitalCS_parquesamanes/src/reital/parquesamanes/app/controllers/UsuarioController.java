@@ -1,6 +1,6 @@
 package reital.parquesamanes.app.controllers;
 
-import reital.parquesamanes.app.ioc.DIConfiguration;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.domain.repos.UsuarioRepository;
 
 //@Component
@@ -10,7 +10,7 @@ public class UsuarioController {
 
 	public UsuarioController() {
 		super();
-		setRepository(new DIConfiguration().getUsuarioRepository());
+		setRepository(new Factory().getUsuarioRepository());
 	}
 
 	public UsuarioRepository getRepository() {

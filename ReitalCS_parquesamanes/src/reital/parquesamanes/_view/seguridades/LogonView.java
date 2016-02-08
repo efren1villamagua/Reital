@@ -39,7 +39,7 @@ import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes._view.working.ControlPanelView;
 import reital.parquesamanes._view.working.PagoView;
 import reital.parquesamanes.app.controllers.LogonController;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
 import reital.parquesamanes.infra.ParqueSamanesConn;
@@ -335,7 +335,7 @@ public class LogonView extends JFrame {
 
 	private boolean autenticar(String userName, String key) {
 
-		LogonController controller = SpringInitializator.getSingleton().getLogonControllerBean();
+		LogonController controller = new Factory().getLogonControllerBean();
 
 		AutenticacionRespuesta respuesta = controller.getRepository().autenticar(userName, key);
 
@@ -384,11 +384,7 @@ public class LogonView extends JFrame {
 			} catch (Exception exc) {
 				SystemLogManager.error(exc);
 			}
-			try {
-				SpringInitializator.getSingleton().destroy();
-			} catch (Exception exc) {
-				SystemLogManager.error(exc);
-			}
+
 			System.exit(0);
 		}
 	}

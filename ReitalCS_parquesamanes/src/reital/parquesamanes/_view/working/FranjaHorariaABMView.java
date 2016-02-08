@@ -14,12 +14,12 @@ import efren.util.ExceptionManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.table.DataTableColumn;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.FranjaHoraria;
 
-public class FranjaHorariaABMView extends JFrame
-		implements efren.util.gui.table.DataTablePanelListener, efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
+public class FranjaHorariaABMView extends JFrame implements efren.util.gui.table.DataTablePanelListener,
+		efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
 	/**
 	 *
 	 */
@@ -232,7 +232,7 @@ public class FranjaHorariaABMView extends JFrame
 		getDataTablePanel().clearSelection();
 		getDataTablePanel().removeAll();
 
-		List<FranjaHoraria> bos = SpringInitializator.getSingleton().getFranjaHorariaControllerBean().getRepository().getAll();
+		List<FranjaHoraria> bos = new Factory().getFranjaHorariaControllerBean().getRepository().getAll();
 
 		for (FranjaHoraria franjaHoraria : bos) {
 			getDataTablePanel().add(franjaHoraria);
@@ -254,7 +254,8 @@ public class FranjaHorariaABMView extends JFrame
 		view.setObserverThis(getobserver());
 		view.mainView = this;
 
-		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoEliminado("ELIMINAR franja horaria");
+		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoEliminado(
+				"ELIMINAR franja horaria");
 		view.setAbmEstado(estado);
 
 		FranjaHoraria bo = (FranjaHoraria) getDataTablePanel().getSelectedObject();
@@ -394,7 +395,8 @@ public class FranjaHorariaABMView extends JFrame
 			// user code end
 			setName("FranjaHorariaABMView");
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-			setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/calendar16x16.png")));
+			setIconImage(Toolkit.getDefaultToolkit()
+					.getImage(getClass().getResource("/reital/parquesamanes/resource/images/calendar16x16.png")));
 			setSize(604, 390);
 			setTitle("Franjas Horarias - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 			setContentPane(getJFrameContentPane());
@@ -420,7 +422,8 @@ public class FranjaHorariaABMView extends JFrame
 
 	private void modificar() throws Exception {
 
-		if (!(getDataTablePanel().getOpcionesBarButton01Visible() && getDataTablePanel().getOpcionesBarButton01Enabled()))
+		if (!(getDataTablePanel().getOpcionesBarButton01Visible()
+				&& getDataTablePanel().getOpcionesBarButton01Enabled()))
 			return;
 
 		FranjaHorariaABMDetailsView view = new FranjaHorariaABMDetailsView();
@@ -428,7 +431,8 @@ public class FranjaHorariaABMView extends JFrame
 		view.setObserverThis(getobserver());
 		view.mainView = this;
 
-		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoModificado("MODIFICAR franja horaria");
+		efren.util.abm.estados.ABMEstado estado = new efren.util.abm.estados.ABMEstadoModificado(
+				"MODIFICAR franja horaria");
 		view.setAbmEstado(estado);
 
 		FranjaHoraria bo = (FranjaHoraria) getDataTablePanel().getSelectedObject();

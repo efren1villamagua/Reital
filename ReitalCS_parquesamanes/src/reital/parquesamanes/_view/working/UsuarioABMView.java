@@ -14,12 +14,12 @@ import efren.util.ExceptionManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.gui.table.DataTableColumn;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.Usuario;
 
-public class UsuarioABMView extends JFrame
-		implements efren.util.gui.table.DataTablePanelListener, efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
+public class UsuarioABMView extends JFrame implements efren.util.gui.table.DataTablePanelListener,
+		efren.util.gui.text.TextFieldExtListener, java.beans.PropertyChangeListener {
 	/**
 	 *
 	 */
@@ -240,7 +240,7 @@ public class UsuarioABMView extends JFrame
 			orderBy = getDataTablePanel().SQL_ORDER_BY_text();
 		}
 
-		List<Usuario> bos = SpringInitializator.getSingleton().getUsuarioControllerBean().getRepository().getAll(orderBy);
+		List<Usuario> bos = new Factory().getUsuarioControllerBean().getRepository().getAll(orderBy);
 
 		for (Usuario usuario : bos) {
 			getDataTablePanel().add(usuario);
@@ -402,9 +402,11 @@ public class UsuarioABMView extends JFrame
 			// user code end
 			setName("UsuarioABMView");
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-			setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
+			setIconImage(Toolkit.getDefaultToolkit()
+					.getImage(getClass().getResource("/reital/parquesamanes/resource/images/users16x16.png")));
 			setSize(629, 506);
-			setTitle("Reital - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - USUARIOS - [" + ParqueSamanesConstantes.SISTEMA_VERSION + "]");
+			setTitle("Reital - " + ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + " - USUARIOS - ["
+					+ ParqueSamanesConstantes.SISTEMA_VERSION + "]");
 			setContentPane(getJFrameContentPane());
 			initConnections();
 		} catch (java.lang.Throwable ivjExc) {
@@ -460,7 +462,8 @@ public class UsuarioABMView extends JFrame
 
 	private void modificar() throws Exception {
 
-		if (!(getDataTablePanel().getOpcionesBarButton01Visible() && getDataTablePanel().getOpcionesBarButton01Enabled()))
+		if (!(getDataTablePanel().getOpcionesBarButton01Visible()
+				&& getDataTablePanel().getOpcionesBarButton01Enabled()))
 			return;
 		// manejo de doble click
 

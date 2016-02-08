@@ -40,8 +40,7 @@ import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes.app.ioc.DIConfiguration;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.repos.ActividadRepository;
@@ -156,7 +155,7 @@ public class ExitView extends JFrame {
 
 		getJButtonReiniciar().setEnabled(false);
 
-		setActividadRepository(new DIConfiguration().getActividadRepository());
+		setActividadRepository(new Factory().getActividadRepository());
 
 		try {
 			ParqueSamanesConstantes.setInitialValues();
@@ -322,11 +321,7 @@ public class ExitView extends JFrame {
 			} catch (Exception exc) {
 				SystemLogManager.error(exc);
 			}
-			try {
-				SpringInitializator.getSingleton().destroy();
-			} catch (Exception exc) {
-				SystemLogManager.error(exc);
-			}
+
 			System.exit(0);
 		}
 	}

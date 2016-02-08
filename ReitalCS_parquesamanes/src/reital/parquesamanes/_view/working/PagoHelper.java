@@ -15,7 +15,7 @@ import inetsoft.report.StyleSheet;
 import inetsoft.report.io.Builder;
 import inetsoft.report.j2d.StyleBook;
 import inetsoft.report.j2d.StylePrinter;
-import reital.parquesamanes.app.ioc.SpringInitializator;
+import reital.parquesamanes.app.ioc.Factory;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity.EstadoPago;
@@ -104,7 +104,7 @@ public class PagoHelper {
 
 	public boolean yaSalio(String secuenciaCaracteres) {
 
-		return SpringInitializator.getSingleton().getPagoControllerBean().yaSalio(secuenciaCaracteres);
+		return new Factory().getPagoControllerBean().yaSalio(secuenciaCaracteres);
 	}
 
 	/**
@@ -295,7 +295,7 @@ public class PagoHelper {
 
 				registroActividad.setEstadoPago(EstadoPago.PASE_LIBRE);
 
-				boolean actividadPersistida = SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(registroActividad);
+				boolean actividadPersistida = new Factory().getPagoControllerBean().registrarActividad(registroActividad);
 
 				getPagoView().reinicializarVisual();
 
@@ -309,7 +309,7 @@ public class PagoHelper {
 
 					registroActividad.setEstadoPago(EstadoPago.TIEMPO_GRACIA);
 
-					boolean actividadPersistida = SpringInitializator.getSingleton().getPagoControllerBean().registrarActividad(registroActividad);
+					boolean actividadPersistida = new Factory().getPagoControllerBean().registrarActividad(registroActividad);
 
 					getPagoView().reinicializarVisual();
 
@@ -343,7 +343,7 @@ public class PagoHelper {
 
 	private void fillActividadForPagoEntity(ActividadForPagoEntity actividad) throws Exception {
 
-		int minutosGraciaFromDB = SpringInitializator.getSingleton().getPagoControllerBean().getCantidadMinutosGracia();
+		int minutosGraciaFromDB = new Factory().getPagoControllerBean().getCantidadMinutosGracia();
 
 		CalendarManager cmEntradaAbsoluta = new CalendarManager(actividad.getEntrada());
 		CalendarManager cmSalidaAbsoluta = new CalendarManager(actividad.getSalida());
@@ -438,7 +438,7 @@ public class PagoHelper {
 					Hashtable<Integer, BigDecimal> hv = null;
 
 					Vector<FranjaHoraria> franjasPorCobrar = new Vector<FranjaHoraria>();
-					FranjaHoraria franjaAnterior = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
+					FranjaHoraria franjaAnterior = new Factory().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
 					if (franjaAnterior == null) {
 						throw new Exception("Error al recuperar información de las franjas horarias");
 					}
@@ -451,7 +451,7 @@ public class PagoHelper {
 
 					while (minutosTemp < minutosSalidaAbsolutosTemp) {
 
-						franjaNueva = SpringInitializator.getSingleton().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
+						franjaNueva = new Factory().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
 						if (franjaNueva == null) {
 							throw new Exception("Error al recuperar información de las franjas horarias");
 						}
