@@ -58,12 +58,12 @@ public class ExitView extends JFrame {
 	private JLabel labelEntradaValue = null;
 	private JLabel labelSalidaValue = null;
 	private JPasswordField jPasswordFieldData = null;
-	private JLabel jLabelRegistroEntrada1 = null;
-	private JLabel jLabelRegistroSalida1 = null;
+	private JLabel labelRegistroEntrada1 = null;
+	private JLabel labelRegistroSalida1 = null;
 	private JPanel jPanel1 = null;
 	private JButton jButtonReiniciar = null;
 	private JPanel jPanel2 = null;
-	private JLabel jLabelStatus = null;
+	private JLabel labelStatus = null;
 	private JLabel labelBarId;
 	private JLabel labelBarIdValue;
 	private InformationPanel informationPanel;
@@ -129,7 +129,6 @@ public class ExitView extends JFrame {
 		setContentPane(getJPanel4());
 		setSize(637, 445);
 		WindowManager2.centerWindow(this);
-		// setResizable(false);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowOpened(java.awt.event.WindowEvent e) {
 				initializarFoco();
@@ -149,9 +148,9 @@ public class ExitView extends JFrame {
 		getLabelEntradaValue().setFocusable(false);
 		getLabelSalidaValue().setFocusable(false);
 		getLabelBarIdValue().setFocusable(false);
-		jLabelRegistroEntrada1.setFocusable(false);
-		jLabelRegistroSalida1.setFocusable(false);
-		jPanel4.setFocusable(false);
+		getLabelRegistroEntrada1().setFocusable(false);
+		getLabelRegistroSalida1().setFocusable(false);
+		getJPanel4().setFocusable(false);
 
 		getJButtonReiniciar().setEnabled(false);
 
@@ -198,16 +197,12 @@ public class ExitView extends JFrame {
 		if (jPanel4 == null) {
 			GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
 			gridBagConstraints7.gridx = 0;
-			gridBagConstraints7.insets = new Insets(5, 5, 5, 0);
+			gridBagConstraints7.insets = new Insets(5, 5, 5, 5);
 			gridBagConstraints7.weightx = 1.0;
 			gridBagConstraints7.weighty = 1.0;
 			gridBagConstraints7.gridwidth = 2;
 			gridBagConstraints7.anchor = GridBagConstraints.NORTH;
 			gridBagConstraints7.gridy = 3;
-			jLabelStatus = new JLabel();
-			jLabelStatus.setText("...");
-			jLabelStatus.setForeground(Color.blue);
-			jLabelStatus.setFont(new Font("Arial Black", Font.BOLD, 36));
 			GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
 			gridBagConstraints6.insets = new Insets(5, 5, 5, 0);
 			gridBagConstraints6.gridx = 0;
@@ -228,27 +223,18 @@ public class ExitView extends JFrame {
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.anchor = GridBagConstraints.NORTHEAST;
 			gridBagConstraints2.insets = new Insets(2, 5, 5, 5);
-			gridBagConstraints2.weightx = 1.0;
 			gridBagConstraints2.gridy = 2;
-			jLabelRegistroSalida1 = new JLabel();
-			jLabelRegistroSalida1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			jLabelRegistroSalida1.setText("Salida:");
 			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
 			gridBagConstraints1.gridx = 0;
 			gridBagConstraints1.anchor = GridBagConstraints.SOUTHEAST;
-			gridBagConstraints1.insets = new Insets(2, 5, 5, 5);
-			gridBagConstraints1.weightx = 1.0;
+			gridBagConstraints1.insets = new Insets(5, 5, 2, 5);
 			gridBagConstraints1.gridy = 1;
-			jLabelRegistroEntrada1 = new JLabel();
-			jLabelRegistroEntrada1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			jLabelRegistroEntrada1.setText("Entrada:");
-
 			GridBagConstraints gridBagConstraints52 = new GridBagConstraints();
 			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
 			jPanel4 = new JPanel();
 			GridBagLayout gbl_jPanel4 = new GridBagLayout();
 			gbl_jPanel4.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-			gbl_jPanel4.columnWeights = new double[] { 1.0, 0.0 };
+			gbl_jPanel4.columnWeights = new double[] { 0.0, 0.0 };
 			jPanel4.setLayout(gbl_jPanel4);
 			jPanel4.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 			gridBagConstraints52.gridx = 1;
@@ -256,34 +242,34 @@ public class ExitView extends JFrame {
 			gridBagConstraints61.gridx = 1;
 			gridBagConstraints61.gridy = 2;
 			gridBagConstraints52.anchor = 16;
-			gridBagConstraints52.insets = new Insets(2, 1, 5, 0);
+			gridBagConstraints52.insets = new Insets(5, 5, 5, 5);
 			gridBagConstraints52.fill = 2;
 			gridBagConstraints52.weightx = 1.0D;
 			gridBagConstraints52.weighty = 1.0D;
-			gridBagConstraints61.insets = new Insets(2, 1, 5, 0);
+			gridBagConstraints61.insets = new Insets(5, 5, 5, 5);
 			gridBagConstraints61.anchor = 18;
 			gridBagConstraints61.fill = 2;
 			gridBagConstraints61.weightx = 1.0D;
 			gridBagConstraints61.weighty = 1.0D;
 			GridBagConstraints gbc_labelBarId = new GridBagConstraints();
-			gbc_labelBarId.weightx = 1.0;
 			gbc_labelBarId.anchor = GridBagConstraints.EAST;
 			gbc_labelBarId.insets = new Insets(5, 5, 5, 5);
 			gbc_labelBarId.gridx = 0;
 			gbc_labelBarId.gridy = 0;
 			jPanel4.add(getLabelBarId(), gbc_labelBarId);
 			GridBagConstraints gbc_labelBarIdValue = new GridBagConstraints();
+			gbc_labelBarIdValue.fill = GridBagConstraints.HORIZONTAL;
 			gbc_labelBarIdValue.weighty = 1.0;
 			gbc_labelBarIdValue.weightx = 1.0;
 			gbc_labelBarIdValue.anchor = GridBagConstraints.WEST;
-			gbc_labelBarIdValue.insets = new Insets(5, 5, 5, 0);
+			gbc_labelBarIdValue.insets = new Insets(5, 5, 5, 5);
 			gbc_labelBarIdValue.gridx = 1;
 			gbc_labelBarIdValue.gridy = 0;
 			jPanel4.add(getLabelBarIdValue(), gbc_labelBarIdValue);
 			jPanel4.add(getLabelEntradaValue(), gridBagConstraints52);
 			jPanel4.add(getLabelSalidaValue(), gridBagConstraints61);
-			jPanel4.add(jLabelRegistroEntrada1, gridBagConstraints1);
-			jPanel4.add(jLabelRegistroSalida1, gridBagConstraints2);
+			jPanel4.add(getLabelRegistroEntrada1(), gridBagConstraints1);
+			jPanel4.add(getLabelRegistroSalida1(), gridBagConstraints2);
 			GridBagConstraints gbc_informationPanel = new GridBagConstraints();
 			gbc_informationPanel.weightx = 1.0;
 			gbc_informationPanel.gridwidth = 2;
@@ -294,7 +280,7 @@ public class ExitView extends JFrame {
 			jPanel4.add(getInformationPanel(), gbc_informationPanel);
 			jPanel4.add(getJPanel1(), gridBagConstraints13);
 			jPanel4.add(getJPanel2(), gridBagConstraints6);
-			jPanel4.add(jLabelStatus, gridBagConstraints7);
+			jPanel4.add(getLabelStatus(), gridBagConstraints7);
 			jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					initializarFoco();
@@ -339,7 +325,7 @@ public class ExitView extends JFrame {
 		getJPasswordFieldData().setEnabled(true);
 		getJButtonReiniciar().setEnabled(false);
 
-		jLabelStatus.setText("...");
+		getLabelStatus().setText("...");
 	}
 
 	/**
@@ -459,11 +445,10 @@ public class ExitView extends JFrame {
 			/**
 			 *
 			 */
-			String barAndCode = null;
+
 			int barId = 0;
-			String entradaStr = null;
-			String salidaStr = null;
-			String salidaMessage = null;
+
+			Mensajes msgs = null;
 
 			boolean salidaOk = false;
 
@@ -477,10 +462,8 @@ public class ExitView extends JFrame {
 				ActividadForPagoEntity actividadEntity = getActividadRepository().getActividad(secuenciaCaracteres);
 
 				if (actividadEntity == null) {
-					barAndCode = "ERROR_1";
-					entradaStr = "ERROR_1";
-					salidaStr = "ERROR_1";
-					salidaMessage = "ERROR_1";
+					String msg = "ERROR_1: registro no encontrado";
+					msgs = new Mensajes(msg, msg, msg, msg);
 				} else {
 
 					barId = actividadEntity.getBarraId();
@@ -489,41 +472,34 @@ public class ExitView extends JFrame {
 					case PAGADO:
 					case PASE_LIBRE:
 					case TIEMPO_GRACIA:
-						barAndCode = actividadEntity.getCodigo();
 						CalendarManager cmEntrada = new CalendarManager(actividadEntity.getEntrada());
-						entradaStr = cmEntrada.getInternationalDateExpression() + "  hora: "
+						String entradaStr = cmEntrada.getInternationalDateExpression() + "  hora: "
 								+ cmEntrada.getTimeExpression2();
 						CalendarManager cmSalida = new CalendarManager(actividadEntity.getSalida());
-						salidaStr = cmSalida.getInternationalDateExpression() + "  hora: "
+						String salidaStr = cmSalida.getInternationalDateExpression() + "  hora: "
 								+ cmSalida.getTimeExpression2();
-						salidaMessage = "SALIDA OK.";
-
+						String statusStr = "SALIDA OK.";
+						msgs = new Mensajes(actividadEntity.getCodigo(), entradaStr, salidaStr, statusStr);
 						salidaOk = true;
-
 						break;
 					default:
-						barAndCode = actividadEntity.getCodigo();
-						entradaStr = "ERROR_2";
-						salidaStr = "ERROR_2";
-						salidaMessage = "ERROR_2";
+						String msg = "ERROR_2: pendiente de pago o pase libre";
+						msgs = new Mensajes(actividadEntity.getCodigo(), msg, msg, msg);
 						break;
 					}
 				}
 
 			} catch (Exception exc) {
 				String errorMessage = exc.getMessage();
-				barAndCode = "ERROR_3 " + errorMessage;
-				entradaStr = "ERROR_3 " + errorMessage;
-				salidaStr = "ERROR_3 " + errorMessage;
-				salidaMessage = "ERROR_3 " + errorMessage;
+				msgs = new Mensajes(errorMessage, errorMessage, errorMessage, errorMessage);
 			}
 
-			getLabelBarIdValue().setText(barAndCode);
-			getLabelEntradaValue().setText(entradaStr);
-			getLabelSalidaValue().setText(salidaStr);
-			jLabelStatus.setText(salidaMessage);
+			getLabelBarIdValue().setText(msgs.getCodigo());
+			getLabelEntradaValue().setText(msgs.getEntrada());
+			getLabelSalidaValue().setText(msgs.getSalida());
+			getLabelStatus().setText(msgs.getStatus());
 
-			SystemLogManager.debug("[" + barAndCode + "] " + salidaMessage);
+			SystemLogManager.debug("[" + msgs.getCodigo() + "] " + msgs.getStatus());
 
 			if (salidaOk) {
 				try {
@@ -554,7 +530,7 @@ public class ExitView extends JFrame {
 							getLabelEntradaValue().setText("");
 							getLabelSalidaValue().setText("");
 							getLabelBarIdValue().setText("");
-							jLabelStatus.setText("...");
+							getLabelStatus().setText("...");
 						}
 					}).start();
 				} catch (Throwable texc) {
@@ -589,8 +565,14 @@ public class ExitView extends JFrame {
 	/**
 	 *
 	 */
-	protected JLabel getJLabelStatus() {
-		return jLabelStatus;
+	protected JLabel getLabelStatus() {
+		if (labelStatus == null) {
+			labelStatus = new JLabel();
+			labelStatus.setText("...");
+			labelStatus.setForeground(Color.blue);
+			labelStatus.setFont(new Font("Arial Black", Font.BOLD, 36));
+		}
+		return labelStatus;
 	}
 
 	protected JLabel getLabelEntradaValue() {
@@ -631,6 +613,24 @@ public class ExitView extends JFrame {
 		return labelBarIdValue;
 	}
 
+	protected JLabel getLabelRegistroEntrada1() {
+		if (labelRegistroEntrada1 == null) {
+			labelRegistroEntrada1 = new JLabel();
+			labelRegistroEntrada1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			labelRegistroEntrada1.setText("Entrada:");
+		}
+		return labelRegistroEntrada1;
+	}
+
+	protected JLabel getLabelRegistroSalida1() {
+		if (labelRegistroSalida1 == null) {
+			labelRegistroSalida1 = new JLabel();
+			labelRegistroSalida1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			labelRegistroSalida1.setText("Salida:");
+		}
+		return labelRegistroSalida1;
+	}
+
 	private InformationPanel getInformationPanel() {
 		if (informationPanel == null) {
 			informationPanel = new InformationPanel();
@@ -651,5 +651,53 @@ public class ExitView extends JFrame {
 	 */
 	public void setActividadRepository(ActividadRepository actividadRepository) {
 		this.actividadRepository = actividadRepository;
+	}
+
+	private class Mensajes {
+
+		public Mensajes(String codigo, String entrada, String salida, String status) {
+			super();
+			setCodigo(codigo);
+			setEntrada(entrada);
+			setSalida(salida);
+			setStatus(status);
+		}
+
+		private String codigo;
+		private String entrada;
+		private String salida;
+		private String status;
+
+		public String getCodigo() {
+			return codigo;
+		}
+
+		private void setCodigo(String codigo) {
+			this.codigo = codigo;
+		}
+
+		public String getEntrada() {
+			return entrada;
+		}
+
+		private void setEntrada(String entrada) {
+			this.entrada = entrada;
+		}
+
+		public String getSalida() {
+			return salida;
+		}
+
+		private void setSalida(String salida) {
+			this.salida = salida;
+		}
+
+		public String getStatus() {
+			return status;
+		}
+
+		private void setStatus(String status) {
+			this.status = status;
+		}
 	}
 } // @jve:decl-index=0:visual-constraint="10,10"
