@@ -1,8 +1,5 @@
 package reital.parquesamanes.infra.rxtx;
 
-import gnu.io.PortInUseException;
-import gnu.io.UnsupportedCommOperationException;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -18,20 +15,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
+import efren.util.lookandfeel.LookAndFeelManager;
+import gnu.io.PortInUseException;
+import gnu.io.UnsupportedCommOperationException;
 
-public class SerialPortTesterView extends JFrame {
+public class PuertoSerialTesterView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
 	private JButton jButtonAbrir = null;
-	private SerialPortModel model = null;  //  @jve:decl-index=0:
+	private PuertoSerialController model = null; // @jve:decl-index=0:
 	private JTextField jTextFieldPuertoCOM = null;
 	private JPanel jPanel1 = null;
 	private JLabel jLabel = null;
@@ -40,6 +37,7 @@ public class SerialPortTesterView extends JFrame {
 	private JPanel jPanelCerrar = null;
 	private JButton jButtonCerrar = null;
 	private JTextField jTextFieldCloseChar = null;
+
 	/**
 	 * This method initializes jButtonAbrir
 	 *
@@ -98,7 +96,9 @@ public class SerialPortTesterView extends JFrame {
 			gridBagConstraints.insets = new Insets(5, 5, 5, 1);
 			jPanel1 = new JPanel();
 			jPanel1.setLayout(new GridBagLayout());
-			jPanel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "ABRIR", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213)));
+			jPanel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED),
+					"ABRIR", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
+					new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213)));
 			jPanel1.add(getJButtonAbrir(), gridBagConstraints);
 			jPanel1.add(getJTextFieldOpenChar(), gridBagConstraints41);
 		}
@@ -150,7 +150,9 @@ public class SerialPortTesterView extends JFrame {
 			gridBagConstraints2.insets = new Insets(5, 5, 5, 1);
 			jPanelCerrar = new JPanel();
 			jPanelCerrar.setLayout(new GridBagLayout());
-			jPanelCerrar.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "CERRAR", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213)));
+			jPanelCerrar.setBorder(BorderFactory.createTitledBorder(
+					BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "CERRAR", TitledBorder.DEFAULT_JUSTIFICATION,
+					TitledBorder.DEFAULT_POSITION, new Font("Tahoma", Font.PLAIN, 11), new Color(0, 70, 213)));
 			jPanelCerrar.add(getJButtonCerrar(), gridBagConstraints2);
 			jPanelCerrar.add(getJTextFieldCloseChar(), gridBagConstraints411);
 		}
@@ -197,16 +199,12 @@ public class SerialPortTesterView extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(new NimbusLookAndFeel());
-		} catch (UnsupportedLookAndFeelException exc) {
-			exc.getMessage();
-		}
+		LookAndFeelManager.simpleSetLookAndFeel();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				SerialPortTesterView thisClass = new SerialPortTesterView();
+				PuertoSerialTesterView thisClass = new PuertoSerialTesterView();
 				thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				thisClass.setLocation(100,100);
+				thisClass.setLocation(100, 100);
 				thisClass.setVisible(true);
 			}
 		});
@@ -215,7 +213,7 @@ public class SerialPortTesterView extends JFrame {
 	/**
 	 * This is the default constructor
 	 */
-	public SerialPortTesterView() {
+	public PuertoSerialTesterView() {
 		super();
 		initialize();
 	}
@@ -234,7 +232,7 @@ public class SerialPortTesterView extends JFrame {
 		 *
 		 */
 		try {
-			this.model = new SerialPortModel();
+			this.model = new PuertoSerialController();
 		} catch (Exception exc) {
 			exc.getMessage();
 		}
@@ -289,6 +287,7 @@ public class SerialPortTesterView extends JFrame {
 		}
 		return jContentPane;
 	}
+
 	/**
 	 *
 	 */
@@ -301,7 +300,7 @@ public class SerialPortTesterView extends JFrame {
 			this.model.enviarCaracter(getJTextFieldOpenChar().getText().trim());
 			getJTextFieldPuertoCOM().setEditable(false);
 		} catch (Throwable texc) {
-			JOptionPane.showMessageDialog(this, "Error: "+texc.getMessage());
+			JOptionPane.showMessageDialog(this, "Error: " + texc.getMessage());
 		}
 		try {
 			Thread.sleep(2000);
@@ -309,6 +308,7 @@ public class SerialPortTesterView extends JFrame {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 *
 	 */
@@ -321,7 +321,7 @@ public class SerialPortTesterView extends JFrame {
 			this.model.enviarCaracter(getJTextFieldCloseChar().getText().trim());
 			getJTextFieldPuertoCOM().setEditable(false);
 		} catch (Throwable texc) {
-			JOptionPane.showMessageDialog(this, "Error: "+texc.getMessage());
+			JOptionPane.showMessageDialog(this, "Error: " + texc.getMessage());
 		}
 		try {
 			Thread.sleep(2000);
@@ -336,18 +336,22 @@ public class SerialPortTesterView extends JFrame {
 	private void initPortModel() {
 		try {
 			this.model.initializePortModel(getJTextFieldPuertoCOM().getText().trim());
-		} catch (SerialPortException e1) {
-			JOptionPane.showMessageDialog(this, "ERROR AL INICIALIZAR EL PUERTO "+getJTextFieldPuertoCOM().getText().trim()+" ["+e1.getMessage()+"]");
+		} catch (PuertoSerialException e1) {
+			JOptionPane.showMessageDialog(this, "ERROR AL INICIALIZAR EL PUERTO "
+					+ getJTextFieldPuertoCOM().getText().trim() + " [" + e1.getMessage() + "]");
 			System.exit(-1);
 		} catch (PortInUseException e1) {
-			JOptionPane.showMessageDialog(this, "ERROR: EL PUERTO "+getJTextFieldPuertoCOM().getText().trim()+" ESTA OCUPADO ["+e1.getMessage()+"]");
+			JOptionPane.showMessageDialog(this, "ERROR: EL PUERTO " + getJTextFieldPuertoCOM().getText().trim()
+					+ " ESTA OCUPADO [" + e1.getMessage() + "]");
 			System.exit(-1);
 		} catch (UnsupportedCommOperationException e1) {
-			JOptionPane.showMessageDialog(this, "ERROR: OPERACION NO SOPORTADA POR EL PUERTO "+getJTextFieldPuertoCOM().getText().trim()+" ["+e1.getMessage()+"]");
+			JOptionPane.showMessageDialog(this, "ERROR: OPERACION NO SOPORTADA POR EL PUERTO "
+					+ getJTextFieldPuertoCOM().getText().trim() + " [" + e1.getMessage() + "]");
 			System.exit(-1);
 		} catch (IOException e1) {
-			JOptionPane.showMessageDialog(this, "ERROR DE ESCRITURA EN EL PUERTO "+getJTextFieldPuertoCOM().getText().trim()+" ["+e1.getMessage()+"]");
+			JOptionPane.showMessageDialog(this, "ERROR DE ESCRITURA EN EL PUERTO "
+					+ getJTextFieldPuertoCOM().getText().trim() + " [" + e1.getMessage() + "]");
 			System.exit(-1);
 		}
 	}
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+} // @jve:decl-index=0:visual-constraint="10,10"

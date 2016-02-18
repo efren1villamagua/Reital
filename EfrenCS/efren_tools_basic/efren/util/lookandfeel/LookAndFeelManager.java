@@ -24,12 +24,14 @@ public class LookAndFeelManager {
 	public static void initLookAndFeel() {
 		LookAndFeelManager.initLookAndFeel(null, null);
 	}
+
 	/**
 	 *
 	 */
 	public static void initLookAndFeel(JFrame unaVentana) {
 		LookAndFeelManager.initLookAndFeel(unaVentana, null);
 	}
+
 	/**
 	 *
 	 */
@@ -163,8 +165,9 @@ public class LookAndFeelManager {
 		 * } } catch (Exception exc0) { exc0.getMessage(); }
 		 */
 		try {
-			//InfoNodeLookAndFeelTheme theme = InfoNodeLookAndFeelThemes.getBlueIceTheme();
-			//UIManager.setLookAndFeel(new InfoNodeLookAndFeel(theme));
+			// InfoNodeLookAndFeelTheme theme =
+			// InfoNodeLookAndFeelThemes.getBlueIceTheme();
+			// UIManager.setLookAndFeel(new InfoNodeLookAndFeel(theme));
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
 			if (unaVentana != null) {
 				LookAndFeelManager.primUpdateLAF(unaVentana);
@@ -208,6 +211,17 @@ public class LookAndFeelManager {
 			// "Su versión de JRE no soporta esta Apariencia: " + t.getMessage()
 			// );
 			// t.printStackTrace(System.out);
+		}
+	}
+
+	public static void simpleSetLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception exc11) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+			} catch (Exception exc12) {
+			}
 		}
 	}
 

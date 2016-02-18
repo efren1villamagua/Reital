@@ -1,13 +1,13 @@
 package reital.parquesamanes.infra.rxtx;
 
-public class SerialPortException extends Exception {
+public class PuertoSerialException extends Exception {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -5434577668711779183L;
 
-	public SerialPortException(String message) {
+	public PuertoSerialException(String message) {
 		super(message);
 	}
 

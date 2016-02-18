@@ -26,16 +26,14 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.h2.tools.Server;
-
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
+import efren.util.lookandfeel.LookAndFeelManager;
 import reital.parquesamanes._view.working.UsuarioABMView;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.infra.DBConnectionModel;
@@ -172,6 +170,9 @@ public class LogonToUsuariosView extends JFrame {
 	}
 
 	public static void main(String args[]) {
+
+		LookAndFeelManager.simpleSetLookAndFeel();
+
 		try {
 			LoggerManager.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_"
 					+ LogonToUsuariosView.class.getSimpleName());
@@ -180,10 +181,7 @@ public class LogonToUsuariosView extends JFrame {
 			e.getMessage();
 		}
 		Locale.setDefault(new Locale("es", "ES"));
-		try {
-			UIManager.setLookAndFeel(new WindowsLookAndFeel());
-		} catch (Throwable exception) {
-		}
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				LogonToUsuariosView thisClass = new LogonToUsuariosView();

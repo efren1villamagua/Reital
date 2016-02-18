@@ -25,17 +25,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
 import org.h2.tools.Server;
-
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.config.SystemProperties;
 import efren.util.gui.dialogs.InfoView;
+import efren.util.lookandfeel.LookAndFeelManager;
 import reital.parquesamanes._view.working.ControlPanelView;
 import reital.parquesamanes._view.working.PagoView;
 import reital.parquesamanes.app.controllers.LogonController;
@@ -183,6 +181,7 @@ public class LogonView extends JFrame {
 	}
 
 	public static void main(String args[]) {
+		LookAndFeelManager.simpleSetLookAndFeel();
 		try {
 			LoggerManager
 					.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + LogonView.class.getSimpleName());
@@ -192,8 +191,6 @@ public class LogonView extends JFrame {
 		}
 		Locale.setDefault(new Locale("es", "ES"));
 		try {
-			UIManager.setLookAndFeel(new WindowsLookAndFeel());
-
 			LogonView ventana = new LogonView();
 
 			ventana.setResizable(false);
