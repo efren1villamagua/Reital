@@ -78,7 +78,7 @@ public class PuertoSerialController {
 					case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
 						break;
 					case SerialPortEvent.DATA_AVAILABLE:
-						byte[] readBuffer = new byte[20];
+						byte[] readBuffer = new byte[1024];
 						try {
 							InputStream is = getPuertoSerial().getInputStream();
 							int numBytes = 0;
@@ -100,6 +100,7 @@ public class PuertoSerialController {
 					}
 				}
 			});
+			getPuertoSerial().getSerialPort().notifyOnDataAvailable(true);
 			ok = true;
 		} catch (PuertoSerialException e1) {
 			System.out.println("ERROR AL INICIALIZAR EL PUERTO " + idPuerto + " [" + e1.getMessage() + "]");
