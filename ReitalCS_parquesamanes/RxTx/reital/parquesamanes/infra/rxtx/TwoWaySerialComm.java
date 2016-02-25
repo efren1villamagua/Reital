@@ -21,6 +21,9 @@ public class TwoWaySerialComm {
 				serialPort.setSerialPortParams(57600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
 						SerialPort.PARITY_NONE);
 
+				serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
+				serialPort.enableReceiveTimeout(500);
+
 				InputStream in = serialPort.getInputStream();
 				OutputStream out = serialPort.getOutputStream();
 
@@ -76,7 +79,7 @@ public class TwoWaySerialComm {
 
 	public static void main(String[] args) {
 		try {
-			(new TwoWaySerialComm()).connect("COM1");
+			(new TwoWaySerialComm()).connect(args[0]);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

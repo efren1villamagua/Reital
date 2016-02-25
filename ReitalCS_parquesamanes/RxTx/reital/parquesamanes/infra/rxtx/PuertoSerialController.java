@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -23,10 +24,11 @@ public class PuertoSerialController {
 	private JTextArea textAreaLogEnvio;
 	private JTextArea textAreaLogRecepcion;
 	private String requestingAppName;
+	private JFrame mainView;
 	private boolean primerEnvio = true;
 
 	public PuertoSerialController(String requestingAppName, JTextField cajaTextoIdPuerto, JButton botonEnvio,
-			JTextField cajaTextoEnvio, JTextArea textAreaLogEnvio, JTextArea textAreaLogRecepcion) {
+			JTextField cajaTextoEnvio, JTextArea textAreaLogEnvio, JTextArea textAreaLogRecepcion, JFrame mainView) {
 		super();
 		setPrimerEnvio(true);
 		setCajaTextoIdPuerto(cajaTextoIdPuerto);
@@ -35,6 +37,7 @@ public class PuertoSerialController {
 		setTextAreaLogEnvio(textAreaLogEnvio);
 		setTextAreaLogRecepcion(textAreaLogRecepcion);
 		setRequestingAppName(requestingAppName);
+		setMainView(mainView);
 		initialize();
 	}
 
@@ -60,10 +63,11 @@ public class PuertoSerialController {
 		}
 	}
 
-	private boolean initializeSerialPort(String idPuerto, JTextArea logArea) {
+	private boolean initializeSerialPort(String idPuerto, JTextArea logArea, JFrame mainView) {
 		boolean ok = false;
 		try {
 			getPuertoSerial().initialize(idPuerto, getRequestingAppName(), logArea);
+			getPuertoSerial().getSerialPort().notifyOnDataAvailable(true);
 			getPuertoSerial().getSerialPort().addEventListener(new SerialPortEventListener() {
 				public void serialEvent(SerialPortEvent event) {
 					switch (event.getEventType()) {
@@ -100,7 +104,7 @@ public class PuertoSerialController {
 					}
 				}
 			});
-			getPuertoSerial().getSerialPort().notifyOnDataAvailable(true);
+			mainView.setTitle(idPuerto + " - " + mainView.getTitle());
 			ok = true;
 		} catch (PuertoSerialException e1) {
 			System.out.println("ERROR AL INICIALIZAR EL PUERTO " + idPuerto + " [" + e1.getMessage() + "]");
@@ -135,7 +139,7 @@ public class PuertoSerialController {
 		try {
 			if (texto != null && texto.trim().length() > 0) {
 				if (isPrimerEnvio()) {
-					if (initializeSerialPort(getCajaTextoIdPuerto().getText(), getTextAreaLogEnvio())) {
+					if (initializeSerialPort(getCajaTextoIdPuerto().getText(), getTextAreaLogEnvio(), getMainView())) {
 						getCajaTextoIdPuerto().setEditable(false);
 						getCajaTextoEnvio().requestFocus();
 						setPrimerEnvio(false);
@@ -238,5 +242,13 @@ public class PuertoSerialController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public JFrame getMainView() {
+		return mainView;
+	}
+
+	private void setMainView(JFrame mainView) {
+		this.mainView = mainView;
 	}
 }

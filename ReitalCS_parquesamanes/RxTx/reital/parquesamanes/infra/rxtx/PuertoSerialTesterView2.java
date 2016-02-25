@@ -161,7 +161,7 @@ public class PuertoSerialTesterView2 extends JFrame {
 		this.setTitle("SerialPortTesterView2 [" + PuertoSerialTesterConstantes.SISTEMA_VERSION + "]");
 		try {
 			setController(new PuertoSerialController(getClass().getSimpleName(), getTextFieldIdPuerto(),
-					getButtonEnviar(), getTextFieldEnvio(), getTextAreaLogEnvio(), getTextAreaLogRecepcion()));
+					getButtonEnviar(), getTextFieldEnvio(), getTextAreaLogEnvio(), getTextAreaLogRecepcion(), this));
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}

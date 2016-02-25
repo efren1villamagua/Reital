@@ -83,6 +83,7 @@ public class PuertoSerial {
 		try {
 			// activate the OUTPUT_BUFFER_EMPTY notifier
 			getSerialPort().notifyOnOutputEmpty(true);
+			getSerialPort().notifyOnDataAvailable(true);
 		} catch (Exception e) {
 			String mensaje = "ERROR setting event notification : " + e.getMessage();
 			System.out.println(mensaje);
