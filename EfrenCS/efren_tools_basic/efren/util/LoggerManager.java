@@ -32,8 +32,8 @@ public class LoggerManager {
 		PatternLayout layout = new PatternLayout();
 		// definición del formato del log
 		boolean timestamp = true;
-		boolean claseJava = true;
-		boolean metodoJava = true;
+		boolean claseJava = false;
+		boolean metodoJava = false;
 
 		String patternStr = "%-5p ";
 		if (timestamp) {

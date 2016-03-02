@@ -19,12 +19,15 @@ public class RepeaterDelegated {
 	private String requestingAppName;
 	private String idPuerto_IN;
 	private String idPuerto_INOUT;
+	private BarreraManager barManager;
 
-	public RepeaterDelegated(String requestingAppName, String idPuerto_IN, String idPuerto_INOUT) {
+	public RepeaterDelegated(String requestingAppName, String idPuerto_IN, String idPuerto_INOUT,
+			String osCommandToOpenBar) {
 		super();
 		setRequestingAppName(requestingAppName);
 		setIdPuerto_IN(idPuerto_IN);
 		setIdPuerto_INOUT(idPuerto_INOUT);
+		setBarManager(new BarreraManager(osCommandToOpenBar));
 		initialize();
 	}
 
@@ -68,7 +71,12 @@ public class RepeaterDelegated {
 							}
 
 							if (getPuertoSerialINOUT() != null) {
-								getPuertoSerialINOUT().write(new String(readBuffer));
+								String texto = new String(readBuffer);
+								SystemLogManager.info("Puerto \"" + getPuertoSerialIN().getSerialPort().getName()
+										+ "\" - lectura desde la barrera: " + texto);
+								getPuertoSerialINOUT().write(texto);
+								SystemLogManager.info("Puerto \"" + getPuertoSerialINOUT().getSerialPort().getName()
+										+ "\" - envio a matriz: " + texto);
 							}
 
 						} catch (IOException exc1) {
@@ -128,9 +136,10 @@ public class RepeaterDelegated {
 							new Thread(new Runnable() {
 								public void run() {
 									String respuestaDesdeMatriz = new String(readBufferTemp);
-									// CON LA RESPUESTA DESDE MATRIZ HAY QUE
-									// HACERLE SPLIT Y VERIFICAR SI SE DEBE O NO
-									// ABRIR LA BARRERA
+									SystemLogManager.info("Puerto \"" + getPuertoSerialINOUT().getSerialPort().getName()
+											+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
+									System.out.println(respuestaDesdeMatriz);
+									getBarManager().manage(respuestaDesdeMatriz);
 								}
 							}).start();
 						} catch (IOException exc1) {
@@ -206,6 +215,14 @@ public class RepeaterDelegated {
 
 	public void setIdPuerto_INOUT(String idPuerto_INOUT) {
 		this.idPuerto_INOUT = idPuerto_INOUT;
+	}
+
+	public BarreraManager getBarManager() {
+		return barManager;
+	}
+
+	public void setBarManager(BarreraManager barManager) {
+		this.barManager = barManager;
 	}
 
 }

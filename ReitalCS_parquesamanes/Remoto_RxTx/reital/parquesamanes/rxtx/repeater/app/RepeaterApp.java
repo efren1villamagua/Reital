@@ -34,15 +34,28 @@ public class RepeaterApp {
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
+		String osCommandToOpenBar = null;
+		try {
+			osCommandToOpenBar = args[2].trim();
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
 
-		new RepeaterApp(idPuerto_IN, idPuerto_INOUT);
+		new RepeaterApp(idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar);
 	}
 
 	private RepeaterDelegated delegated;
 
-	public RepeaterApp(String idPuerto_IN, String idPuerto_INOUT) {
+	public RepeaterApp(String idPuerto_IN, String idPuerto_INOUT, String osCommandToOpenBar) {
 		super();
-		setDelegated(new RepeaterDelegated(getClass().getSimpleName(), idPuerto_IN, idPuerto_INOUT));
+		initialize(idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar);
+	}
+
+	private void initialize(String idPuerto_IN, String idPuerto_INOUT, String osCommandToOpenBar) {
+		SystemLogManager.info("Inicializacion de \"" + getClass().getSimpleName() + "\": idPuerto_IN=\"" + idPuerto_IN
+				+ "\" idPuerto_INOUT=\"" + idPuerto_INOUT + "\" osCommandToOpenBar=\"" + osCommandToOpenBar + "\"");
+		setDelegated(
+				new RepeaterDelegated(getClass().getSimpleName(), idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar));
 	}
 
 	public RepeaterDelegated getDelegated() {
