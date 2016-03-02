@@ -52,8 +52,10 @@ public class RepeaterApp {
 	}
 
 	private void initialize(String idPuerto_IN, String idPuerto_INOUT, String osCommandToOpenBar) {
-		SystemLogManager.info("Inicializacion de \"" + getClass().getSimpleName() + "\": idPuerto_IN=\"" + idPuerto_IN
-				+ "\" idPuerto_INOUT=\"" + idPuerto_INOUT + "\" osCommandToOpenBar=\"" + osCommandToOpenBar + "\"");
+		String mensaje = "Inicializacion de \"" + getClass().getSimpleName() + "\": idPuerto_IN=\"" + idPuerto_IN
+				+ "\" idPuerto_INOUT=\"" + idPuerto_INOUT + "\" osCommandToOpenBar=\"" + osCommandToOpenBar + "\"";
+		SystemLogManager.info(mensaje);
+		System.out.println(mensaje);
 		setDelegated(
 				new RepeaterDelegated(getClass().getSimpleName(), idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar));
 	}

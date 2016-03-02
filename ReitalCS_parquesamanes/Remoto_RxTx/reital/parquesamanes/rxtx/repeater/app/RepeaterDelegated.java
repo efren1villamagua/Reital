@@ -71,7 +71,7 @@ public class RepeaterDelegated {
 							}
 
 							if (getPuertoSerialINOUT() != null) {
-								String texto = new String(readBuffer);
+								String texto = new String(readBuffer).trim();
 								SystemLogManager.info("Puerto \"" + getPuertoSerialIN().getSerialPort().getName()
 										+ "\" - lectura desde la barrera: " + texto);
 								getPuertoSerialINOUT().write(texto);
@@ -131,11 +131,12 @@ public class RepeaterDelegated {
 							while (is.available() > 0) {
 								numBytes = is.read(readBuffer);
 							}
+							@SuppressWarnings("unused")
 							final int numBytesTemp = numBytes;
 							final byte[] readBufferTemp = readBuffer;
 							new Thread(new Runnable() {
 								public void run() {
-									String respuestaDesdeMatriz = new String(readBufferTemp);
+									String respuestaDesdeMatriz = new String(readBufferTemp).trim();
 									SystemLogManager.info("Puerto \"" + getPuertoSerialINOUT().getSerialPort().getName()
 											+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
 									System.out.println(respuestaDesdeMatriz);
