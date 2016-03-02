@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra.rxtx;
+package reital.parquesamanes.rxtx.tester.app;
 
 public class PuertoSerialTesterConstantes {
 

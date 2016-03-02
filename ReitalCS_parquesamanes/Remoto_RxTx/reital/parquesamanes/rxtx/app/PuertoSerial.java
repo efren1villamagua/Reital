@@ -1,51 +1,43 @@
-package reital.parquesamanes.infra.rxtx;
+package reital.parquesamanes.rxtx.app;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-import javax.swing.JTextArea;
-
+import efren.util.SystemLogManager;
 import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
+import reital.parquesamanes.rxtx.app.Resultado.Status;
 
-public class PuertoSerial {
+public abstract class PuertoSerial {
 
+	public static enum Tipo {
+		IN, OUT, IN_OUT;
+	}
+
+	private Tipo tipo;
 	private SerialPort serialPort = null;
 	private OutputStream outputStream = null;
 	private InputStream inputStream = null;
 
-	public void initialize(String idPuerto, String requestingAppName, JTextArea logArea)
+	public PuertoSerial(Tipo tipo) {
+		super();
+		setTipo(tipo);
+	}
+
+	public Resultado initialize(String idPuerto, String requestingAppName)
 			throws PuertoSerialException, PortInUseException, UnsupportedCommOperationException, IOException {
+
+		Resultado resultado = new Resultado();
 
 		boolean portFound = false;
 
-		OSType os = OSType.getOS();
-
-		switch (os) {
-		case WINDOWS:
-			// es el mismo id que viene como parametro
-			break;
-		case UNIX_LINUX:
-			idPuerto = "/dev/ttyS0";
-			break;
-		case MAC_OS:
-		case SOLARIS:
-			idPuerto = "?????";
-			break;
-		default:
-			idPuerto = "?????";
-			String mensaje = "ERROR: Sistema operativo no soportado.";
-			System.out.println(mensaje);
-			logArea.append(mensaje + System.lineSeparator());
-			throw new PuertoSerialException(mensaje);
-		}
-
-		System.out.println("Set default port to " + idPuerto);
-		logArea.append("Set default port to " + idPuerto + System.lineSeparator());
+		String mensaje = "Puerto configurado en: \"" + idPuerto + "\".";
+		SystemLogManager.info(mensaje);
+		resultado.appendMensaje(mensaje + System.lineSeparator());
 
 		// parse ports and if the default port is found, initialized the reader
 		@SuppressWarnings("unchecked")
@@ -57,17 +49,18 @@ public class PuertoSerial {
 			portIdTemp = portList.nextElement();
 			if (portIdTemp.getPortType() == CommPortIdentifier.PORT_SERIAL) {
 				if (portIdTemp.getName().equals(idPuerto)) {
-					System.out.println("Found port: " + idPuerto);
-					logArea.append("Found port: " + idPuerto + System.lineSeparator());
+					mensaje = "Puerto encontrado: \"" + idPuerto + "\".";
+					SystemLogManager.info(mensaje);
+					resultado.appendMensaje(mensaje + System.lineSeparator());
 					portFound = true;
 					break;
 				}
 			}
 		}
 		if (!portFound) {
-			String mensaje = "ERROR: El puerto " + idPuerto + " no se ha encontrado.";
-			System.out.println(mensaje);
-			logArea.append(mensaje + System.lineSeparator());
+			mensaje = "ERROR: El puerto \"" + idPuerto + "\" no se ha encontrado.";
+			SystemLogManager.info(mensaje);
+			resultado.appendMensaje(mensaje + System.lineSeparator());
 			throw new PuertoSerialException(mensaje);
 		}
 
@@ -76,28 +69,37 @@ public class PuertoSerial {
 
 		getSerialPort().setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
-		setOutputStream(getSerialPort().getOutputStream());
+		if (getTipo() != null) {
+			switch (getTipo()) {
+			case IN:
+				setInputStream(getSerialPort().getInputStream());
+				break;
+			case OUT:
+				setOutputStream(getSerialPort().getOutputStream());
+				break;
+			case IN_OUT:
+				setInputStream(getSerialPort().getInputStream());
+				setOutputStream(getSerialPort().getOutputStream());
+				break;
+			default:
+				break;
+			}
 
-		setInputStream(getSerialPort().getInputStream());
-
+		}
 		try {
 			// activate the OUTPUT_BUFFER_EMPTY notifier
 			getSerialPort().notifyOnOutputEmpty(true);
 			getSerialPort().notifyOnDataAvailable(true);
 		} catch (Exception e) {
-			String mensaje = "ERROR setting event notification : " + e.getMessage();
-			System.out.println(mensaje);
-			logArea.append(mensaje + System.lineSeparator());
+			mensaje = "ERROR setting event notification : " + e.getMessage();
+			SystemLogManager.info(mensaje);
+			resultado.appendMensaje(mensaje + System.lineSeparator());
 			throw new PuertoSerialException(mensaje);
 		}
 
-	}
+		resultado.setStatus(Status.EXITO);
 
-	public void writeToPort(String text) throws IOException {
-		if (text != null && getOutputStream() != null) {
-			getOutputStream().write(text.getBytes());
-			getOutputStream().flush();
-		}
+		return resultado;
 	}
 
 	public void close() {
@@ -143,6 +145,14 @@ public class PuertoSerial {
 
 	private void setInputStream(InputStream inputStream) {
 		this.inputStream = inputStream;
+	}
+
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	private void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 
 }

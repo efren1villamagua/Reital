@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra.rxtx;
+package reital.parquesamanes.rxtx.tester.app;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -22,13 +22,14 @@ import javax.swing.border.TitledBorder;
 import efren.util.lookandfeel.LookAndFeelManager;
 import gnu.io.PortInUseException;
 import gnu.io.UnsupportedCommOperationException;
+import reital.parquesamanes.rxtx.app.PuertoSerialException;
 
 public class PuertoSerialTesterView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
 	private JButton jButtonAbrir = null;
-	private PuertoSerialController model = null; // @jve:decl-index=0:
+	private PuertoSerialTesterController model = null; // @jve:decl-index=0:
 	private JTextField jTextFieldPuertoCOM = null;
 	private JPanel jPanel1 = null;
 	private JLabel jLabel = null;
@@ -232,7 +233,7 @@ public class PuertoSerialTesterView extends JFrame {
 		 *
 		 */
 		try {
-			this.model = new PuertoSerialController();
+			this.model = new PuertoSerialTesterController();
 		} catch (Exception exc) {
 			exc.getMessage();
 		}

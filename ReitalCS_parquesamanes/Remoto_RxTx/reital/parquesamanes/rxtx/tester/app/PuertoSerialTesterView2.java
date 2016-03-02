@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra.rxtx;
+package reital.parquesamanes.rxtx.tester.app;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -36,7 +36,7 @@ public class PuertoSerialTesterView2 extends JFrame {
 	private JPanel jPanelRecibir = null;
 	private JTextArea textAreaLogEnvio;
 	private JTextArea textAreaLogRecepcion;
-	private PuertoSerialController controller;
+	private PuertoSerialTesterController controller;
 	private JScrollPane scrollPaneEnviar;
 	private JScrollPane scrollPaneRecibir;
 
@@ -160,7 +160,7 @@ public class PuertoSerialTesterView2 extends JFrame {
 		this.setContentPane(getJContentPane());
 		this.setTitle("SerialPortTesterView2 [" + PuertoSerialTesterConstantes.SISTEMA_VERSION + "]");
 		try {
-			setController(new PuertoSerialController(getClass().getSimpleName(), getTextFieldIdPuerto(),
+			setController(new PuertoSerialTesterController(getClass().getSimpleName(), getTextFieldIdPuerto(),
 					getButtonEnviar(), getTextFieldEnvio(), getTextAreaLogEnvio(), getTextAreaLogRecepcion(), this));
 		} catch (Exception exc) {
 			exc.printStackTrace();
@@ -229,11 +229,11 @@ public class PuertoSerialTesterView2 extends JFrame {
 		return textAreaLogRecepcion;
 	}
 
-	public PuertoSerialController getController() {
+	public PuertoSerialTesterController getController() {
 		return controller;
 	}
 
-	public void setController(PuertoSerialController controller) {
+	public void setController(PuertoSerialTesterController controller) {
 		this.controller = controller;
 	}
 

@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra.rxtx;
+package reital.parquesamanes.rxtx.app;
 
 public enum OSType {
 

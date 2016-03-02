@@ -1,4 +1,4 @@
-package reital.parquesamanes.infra.rxtx;
+package reital.parquesamanes.rxtx.tester.app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +14,10 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
+import reital.parquesamanes.rxtx.app.PuertoSerial;
+import reital.parquesamanes.rxtx.app.PuertoSerialException;
 
-public class PuertoSerialController {
+public class PuertoSerialTesterController {
 
 	private PuertoSerial puertoSerial = null;
 	private JTextField cajaTextoIdPuerto;
@@ -27,7 +29,7 @@ public class PuertoSerialController {
 	private JFrame mainView;
 	private boolean primerEnvio = true;
 
-	public PuertoSerialController(String requestingAppName, JTextField cajaTextoIdPuerto, JButton botonEnvio,
+	public PuertoSerialTesterController(String requestingAppName, JTextField cajaTextoIdPuerto, JButton botonEnvio,
 			JTextField cajaTextoEnvio, JTextArea textAreaLogEnvio, JTextArea textAreaLogRecepcion, JFrame mainView) {
 		super();
 		setPrimerEnvio(true);
