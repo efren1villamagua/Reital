@@ -32,8 +32,33 @@ public class RepeaterDelegated {
 	}
 
 	private void initialize() {
-		initializeIN(getIdPuerto_IN());
-		initializeINOUT(getIdPuerto_INOUT());
+
+		boolean ok = initializeIN(getIdPuerto_IN());
+		ok = ok || initializeINOUT(getIdPuerto_INOUT());
+
+		if (ok) {
+			String mensaje = "Sistema trabajando...";
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
+		} else {
+			String mensaje = "ERROR: no hay procesos activos de entrada o salida desde los puertos seriales. Revise logs. Saliendo del sistema.";
+			SystemLogManager.error(mensaje);
+			System.out.println(mensaje);
+			System.exit(1);
+		}
+
+		// int i = 0;
+		// while (true) {
+		// System.out.println((i++) + " - " + System.currentTimeMillis());
+		// try {
+		// Thread.sleep(700);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		// if (i == 21) {
+		// break;
+		// }
+		// }
 	}
 
 	private boolean initializeIN(String idPuerto) {
