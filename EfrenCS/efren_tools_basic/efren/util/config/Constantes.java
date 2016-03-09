@@ -6,13 +6,13 @@ public class Constantes {
 	/**
 	 *
 	 */
-	public static final String TEMP_DIR = System.getProperty("user.dir") + File.separator + "temp";
+	public static final String TEMP_DIR = System.getProperty("efren.util.config.basedir") + File.separator + "temp";
 
-	public static final String LOGS_DIR = System.getProperty("user.dir") + File.separator + "logs";
+	public static final String LOGS_DIR = System.getProperty("efren.util.config.basedir") + File.separator + "logs";
 
-	public static final String CONFIG_DIR = System.getProperty("user.dir") + File.separator + "config";
+	public static final String CONFIG_DIR = System.getProperty("efren.util.config.basedir") + File.separator + "config";
 
-	public static final String DATA_DIR = System.getProperty("user.dir") + File.separator + "data";
+	public static final String DATA_DIR = System.getProperty("efren.util.config.basedir") + File.separator + "data";
 
 	/**
 	 *

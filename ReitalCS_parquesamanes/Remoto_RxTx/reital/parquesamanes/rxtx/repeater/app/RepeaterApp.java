@@ -10,6 +10,17 @@ public class RepeaterApp {
 
 	public static void main(String[] args) {
 
+		String baseDir = null;
+		try {
+			if (args.length >= 4) {
+				baseDir = args[3];
+			}
+			System.setProperty("efren.util.config.basedir", ((baseDir == null || baseDir.trim().length() == 0)
+					? System.getProperty("user.dir") : baseDir.trim()));
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
+
 		try {
 			LoggerManager
 					.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + RepeaterApp.class.getSimpleName());
@@ -53,6 +64,8 @@ public class RepeaterApp {
 				+ "\" idPuerto_INOUT=\"" + idPuerto_INOUT + "\" osCommandToOpenBar=\"" + osCommandToOpenBar + "\"";
 		SystemLogManager.info(mensaje);
 		System.out.println(mensaje);
+		idPuerto_IN = idPuerto_IN.equalsIgnoreCase("null") ? null : idPuerto_IN;
+		idPuerto_INOUT = idPuerto_INOUT.equalsIgnoreCase("null") ? null : idPuerto_INOUT;
 		setDelegated(
 				new RepeaterDelegated(getClass().getSimpleName(), idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar));
 	}

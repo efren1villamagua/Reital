@@ -8,6 +8,7 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.rxtx.app.PuertoSerialException;
 import reital.parquesamanes.rxtx.app.PuertoSerialIN;
 import reital.parquesamanes.rxtx.app.PuertoSerialINOUT;
@@ -33,11 +34,29 @@ public class RepeaterDelegated {
 
 	private void initialize() {
 
-		boolean ok = initializeIN(getIdPuerto_IN());
-		ok = ok || initializeINOUT(getIdPuerto_INOUT());
+		// boolean ok1 = false;
+		// if (getIdPuerto_IN() == null) {
+		// ok1 = true;
+		// } else {
+		// ok1 = initializeIN_fromMatriz(getIdPuerto_IN());
+		// }
+		// boolean ok2 = true;
 
-		if (ok) {
-			String mensaje = "Sistema trabajando...";
+		boolean ok1 = false;
+		if (getIdPuerto_IN() == null) {
+			ok1 = true;
+		} else {
+			ok1 = initializeIN(getIdPuerto_IN());
+		}
+		boolean ok2 = false;
+		if (getIdPuerto_INOUT() == null) {
+			ok2 = true;
+		} else {
+			ok2 = initializeINOUT(getIdPuerto_INOUT());
+		}
+
+		if (ok1 && ok2) {
+			String mensaje = "Sistema " + ParqueSamanesConstantes.SISTEMA_VERSION + " trabajando...";
 			SystemLogManager.info(mensaje);
 			System.out.println(mensaje);
 		} else {
@@ -47,18 +66,6 @@ public class RepeaterDelegated {
 			System.exit(1);
 		}
 
-		// int i = 0;
-		// while (true) {
-		// System.out.println((i++) + " - " + System.currentTimeMillis());
-		// try {
-		// Thread.sleep(700);
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
-		// if (i == 21) {
-		// break;
-		// }
-		// }
 	}
 
 	private boolean initializeIN(String idPuerto) {
@@ -71,6 +78,10 @@ public class RepeaterDelegated {
 		try {
 			getPuertoSerialIN().initialize(idPuerto, getRequestingAppName());
 			getPuertoSerialIN().getSerialPort().notifyOnDataAvailable(true);
+
+			String mensaje = idPuerto + " inicializado ok.";
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
 
 			getPuertoSerialIN().getSerialPort().addEventListener(new SerialPortEventListener() {
 				public void serialEvent(SerialPortEvent event) {
@@ -135,6 +146,10 @@ public class RepeaterDelegated {
 			getPuertoSerialINOUT().initialize(idPuerto, getRequestingAppName());
 			getPuertoSerialINOUT().getSerialPort().notifyOnDataAvailable(true);
 
+			String mensaje = idPuerto + " inicializado ok.";
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
+
 			getPuertoSerialINOUT().getSerialPort().addEventListener(new SerialPortEventListener() {
 				public void serialEvent(SerialPortEvent event) {
 					switch (event.getEventType()) {
@@ -169,12 +184,72 @@ public class RepeaterDelegated {
 								}
 							}).start();
 						} catch (IOException exc1) {
+							exc1.printStackTrace();
 						}
 						break;
 					}
 				}
 			});
 			ok = true;
+		} catch (PuertoSerialException exc) {
+			SystemLogManager.error("ERROR AL INICIALIZAR EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		} catch (PortInUseException exc) {
+			SystemLogManager.error("ERROR: EL PUERTO " + idPuerto + " ESTA OCUPADO [" + exc.getMessage() + "]", exc);
+		} catch (UnsupportedCommOperationException exc) {
+			SystemLogManager.error(
+					"ERROR: OPERACION NO SOPORTADA POR EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		} catch (IOException exc) {
+			SystemLogManager.error("ERROR DE ESCRITURA EN EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		} catch (Exception exc) {
+			SystemLogManager.error("ERROR GENERAL EN EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		}
+		return ok;
+	}
+
+	private boolean initializeIN_fromMatriz(String idPuerto) {
+
+		// LECTURA DEL PUERTO QUE ESTA CONECTADO A LA BARRERA
+
+		setPuertoSerialIN(new PuertoSerialIN());
+
+		boolean ok = false;
+		try {
+			getPuertoSerialIN().initialize(idPuerto, getRequestingAppName());
+			getPuertoSerialIN().getSerialPort().notifyOnDataAvailable(true);
+
+			String mensaje = idPuerto + " inicializado ok.";
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
+
+			while (true) {
+				try {
+					byte[] readBuffer = new byte[1024];
+					try {
+						InputStream is = getPuertoSerialIN().getInputStream();
+						int numBytes = 0;
+						while (is.available() > 0) {
+							numBytes = is.read(readBuffer);
+						}
+						@SuppressWarnings("unused")
+						final int numBytesTemp = numBytes;
+						final byte[] readBufferTemp = readBuffer;
+						new Thread(new Runnable() {
+							public void run() {
+								String respuestaDesdeMatriz = new String(readBufferTemp).trim();
+								SystemLogManager.info("Puerto \"" + getPuertoSerialIN().getSerialPort().getName()
+										+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
+								System.out.println(respuestaDesdeMatriz);
+								// getBarManager().manage(respuestaDesdeMatriz);
+							}
+						}).start();
+					} catch (IOException exc1) {
+						exc1.printStackTrace();
+					}
+				} catch (Exception exc) {
+					exc.getMessage();
+				}
+			}
+			// ok = true;
 		} catch (PuertoSerialException exc) {
 			SystemLogManager.error("ERROR AL INICIALIZAR EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
 		} catch (PortInUseException exc) {
