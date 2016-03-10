@@ -61,7 +61,8 @@ public class ValidatorDelegated {
 		}
 
 		if (ok1 && ok2) {
-			String mensaje = "Sistema " + ParqueSamanesConstantes.SISTEMA_VERSION + " trabajando...";
+			String mensaje = ValidatorApp.class.getName() + " " + ParqueSamanesConstantes.SISTEMA_VERSION
+					+ " trabajando...";
 			SystemLogManager.info(mensaje);
 			System.out.println(mensaje);
 		} else {

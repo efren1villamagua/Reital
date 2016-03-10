@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
+import reital.parquesamanes.app.util.H2ServerManager;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ValidatorApp {
@@ -25,6 +26,12 @@ public class ValidatorApp {
 			LoggerManager.init(
 					ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + ValidatorApp.class.getSimpleName());
 			SystemLogManager.setLogger(LoggerManager.logger);
+
+			String mensaje = ValidatorApp.class.getName() + " " + ParqueSamanesConstantes.SISTEMA_VERSION
+					+ " iniciando...";
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
+
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -36,6 +43,8 @@ public class ValidatorApp {
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
+
+		H2ServerManager.h2ServerStart();
 
 		new ValidatorApp(idPuerto_INOUT);
 	}

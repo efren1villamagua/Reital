@@ -15,6 +15,7 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 import reital.parquesamanes.rxtx.app.PuertoSerial;
+import reital.parquesamanes.rxtx.app.PuertoSerial.Tipo;
 import reital.parquesamanes.rxtx.app.PuertoSerialException;
 
 public class PuertoSerialTesterController {
@@ -59,7 +60,8 @@ public class PuertoSerialTesterController {
 					}
 				});
 			}
-			setPuertoSerial(new PuertoSerial());
+			setPuertoSerial(new PuertoSerial(Tipo.IN_OUT) {
+			});
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}

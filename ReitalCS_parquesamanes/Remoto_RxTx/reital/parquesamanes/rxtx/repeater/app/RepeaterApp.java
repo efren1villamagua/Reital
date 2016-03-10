@@ -25,6 +25,12 @@ public class RepeaterApp {
 			LoggerManager
 					.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + RepeaterApp.class.getSimpleName());
 			SystemLogManager.setLogger(LoggerManager.logger);
+
+			String mensaje = RepeaterApp.class.getName() + " " + ParqueSamanesConstantes.SISTEMA_VERSION
+					+ " iniciando...";
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
+
 		} catch (Exception e) {
 			e.getMessage();
 		}
