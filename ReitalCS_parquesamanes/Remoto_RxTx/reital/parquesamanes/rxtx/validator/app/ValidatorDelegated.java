@@ -46,6 +46,9 @@ public class ValidatorDelegated {
 			DBConnectionModel.dbConnect(true);
 		} catch (Exception e1) {
 			e1.printStackTrace();
+			String mensaje = "ERROR: (" + e1.getClass().getSimpleName() + "): " + e1.getMessage();
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
 			System.exit(1);
 		}
 

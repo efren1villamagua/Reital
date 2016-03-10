@@ -15,7 +15,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
@@ -25,8 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import org.h2.tools.Server;
 
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
@@ -181,6 +178,18 @@ public class LogonView extends JFrame {
 	}
 
 	public static void main(String args[]) {
+
+		String baseDir = null;
+		try {
+			if (args.length >= 1) {
+				baseDir = args[0];
+			}
+			System.setProperty("efren.util.config.basedir", ((baseDir == null || baseDir.trim().length() == 0)
+					? System.getProperty("user.dir") : baseDir.trim()));
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
+
 		LookAndFeelManager.simpleSetLookAndFeel();
 		try {
 			LoggerManager
@@ -220,19 +229,6 @@ public class LogonView extends JFrame {
 		});
 		setResizable(false);
 		WindowManager2.centerWindow(this);
-
-		dbInitialize();
-	}
-
-	private void dbInitialize() {
-		if (ParqueSamanesConn.getH2Server() == null) {
-			try {
-				String args[] = new String[] { "-tcpAllowOthers" };
-				ParqueSamanesConn.setH2Server(Server.createTcpServer(args).start());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private JPanel getJContentPane() {
