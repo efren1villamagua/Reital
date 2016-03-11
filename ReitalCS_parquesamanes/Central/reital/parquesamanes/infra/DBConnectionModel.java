@@ -46,8 +46,10 @@ public class DBConnectionModel {
 
 	private static void connect(boolean remote, String appUserName) throws SQLException, ClassNotFoundException {
 
-		DBProperties dbProp = buildDBProperties(
-				remote ? ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH : Constantes.DATA_DIR, "sa", "");
+		// DBProperties dbProp = buildDBProperties(
+		// remote ? ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH :
+		// Constantes.DATA_DIR, "sa", "");
+		DBProperties dbProp = buildDBProperties(Constantes.DATA_DIR, "sa", "");
 
 		Connection aCon = DriverManager.getConnection(dbProp.getUrl(), dbProp.getUserName(), dbProp.getPassword());
 

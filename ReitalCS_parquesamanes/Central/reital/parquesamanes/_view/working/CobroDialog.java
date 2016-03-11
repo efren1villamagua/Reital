@@ -485,6 +485,7 @@ public class CobroDialog extends DialogExt {
 	 *
 	 */
 	private void cerrar() {
+		getPagoHelper().getPagoView().reinicializarVisual();
 		dispose();
 	}
 

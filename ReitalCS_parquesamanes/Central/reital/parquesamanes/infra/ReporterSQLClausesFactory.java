@@ -51,8 +51,8 @@ public class ReporterSQLClausesFactory {
 			sql.append(" ORDER BY TIPO_CLIENTE, FECHA, HORA_ENTRADA");
 		} else {
 			sql.append("SELECT ");
-			sql.append(" CASE WHEN a.TIPO_CLIENTE = 'A' THEN 'CLIENTE' WHEN a.TIPO_CLIENTE = 'B' THEN 'NO CLIENTE' ");
-			sql.append("  WHEN a.TIPO_CLIENTE = 'C' THEN 'FUNCIONARIO' ELSE '' END AS TIPO_CLIENTE, ");
+			sql.append(" CASE WHEN a.TIPO_CLIENTE = 'C' THEN 'CLIENTE' WHEN a.TIPO_CLIENTE = 'L' THEN 'PASE LIBRE' ");
+			sql.append("  ELSE '' END AS TIPO_CLIENTE, ");
 			sql.append(" FORMATDATETIME(ENTRADA, 'yyyy-MM-dd') AS FECHA, ");
 			sql.append(" FORMATDATETIME(ENTRADA, 'HH:mm:ss') AS HORA_ENTRADA, ");
 			sql.append(" FORMATDATETIME(SALIDA, 'HH:mm:ss') AS HORA_SALIDA, ");
@@ -65,15 +65,17 @@ public class ReporterSQLClausesFactory {
 			sql.append(" WHERE FORMATDATETIME(ENTRADA, 'yyyy-MM-dd')>={ d '" + desde + "'} ");
 			sql.append(" AND FORMATDATETIME(SALIDA, 'yyyy-MM-dd')<={ d '" + hasta + "'} ");
 			sql.append(" AND (1=2 ");
-			if (clientes) {
-				sql.append(" OR a.TIPO_CLIENTE='A' ");
-			}
-			if (noClientes) {
-				sql.append(" OR a.TIPO_CLIENTE='B' ");
-			}
-			if (funcionarios) {
-				sql.append(" OR a.TIPO_CLIENTE='C' ");
-			}
+			// if (clientes) {
+			// sql.append(" OR a.TIPO_CLIENTE='C' ");
+			// }
+			// if (noClientes) {
+			// sql.append(" OR a.TIPO_CLIENTE='L' ");
+			// }
+			// if (funcionarios) {
+			// sql.append(" OR a.TIPO_CLIENTE='C' ");
+			// }
+			sql.append(" OR a.TIPO_CLIENTE='C' ");
+			sql.append(" OR a.TIPO_CLIENTE='L' ");
 			sql.append(" ) ");
 			sql.append(" ORDER BY TIPO_CLIENTE, FECHA, HORA_ENTRADA");
 		}

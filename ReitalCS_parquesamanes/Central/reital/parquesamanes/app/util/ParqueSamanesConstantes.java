@@ -9,7 +9,7 @@ import efren.util.config.SystemProperties;
 
 public class ParqueSamanesConstantes {
 
-	public static final String SISTEMA_VERSION = "20160311_0032";
+	public static final String SISTEMA_VERSION = "20160311_0113";
 
 	public static final String ARCHIVO_CONFIGURACION = Constantes.CONFIG_DIR + File.separator
 			+ "reital_parquesamanes.properties";
@@ -32,7 +32,7 @@ public class ParqueSamanesConstantes {
 		public static String IP = "127.0.0.1";
 		public static String PORT = "9092";
 		public static String DBNAME = "ParqueSamanesDB";
-		public static String REMOTE_FILE_PATH = null;
+		// public static String REMOTE_FILE_PATH = null;
 	}
 
 	public static class Security {
@@ -117,12 +117,12 @@ public class ParqueSamanesConstantes {
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
-			try {
-				ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH = propiedades
-						.getProperty("DataSource.REMOTE_FILE_PATH").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
+			// try {
+			// ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH = propiedades
+			// .getProperty("DataSource.REMOTE_FILE_PATH").trim();
+			// } catch (Exception exc) {
+			// exc.getMessage();
+			// }
 			// ...
 			propertiesFileIS.close();
 		} catch (Throwable texc) {
