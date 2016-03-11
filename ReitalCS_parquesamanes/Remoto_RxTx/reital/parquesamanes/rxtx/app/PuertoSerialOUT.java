@@ -15,4 +15,11 @@ public class PuertoSerialOUT extends PuertoSerial {
 		}
 	}
 
+	public void write(char c) throws IOException {
+		if (getOutputStream() != null) {
+			getOutputStream().write(c);
+			getOutputStream().flush();
+		}
+	}
+
 }

@@ -2,6 +2,7 @@ package reital.parquesamanes.rxtx.repeater.app;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.StringTokenizer;
 
 import efren.util.SystemLogManager;
 import gnu.io.PortInUseException;
@@ -182,8 +183,8 @@ public class RepeaterDelegated {
 												.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
 														+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
 										System.out.println(respuestaDesdeMatriz);
-										getPuertoSerial_ARDUINO().write(respuestaDesdeMatriz);
-									} catch (IOException e) {
+										evaluarYEscribirRespuestaArduino(respuestaDesdeMatriz);
+									} catch (Exception e) {
 										e.printStackTrace();
 									}
 								}
@@ -211,6 +212,20 @@ public class RepeaterDelegated {
 		return ok;
 	}
 
+	private void evaluarYEscribirRespuestaArduino(String respuestaDesdeMatriz) {
+
+		try {
+			StringTokenizer stk = new StringTokenizer(respuestaDesdeMatriz, "|");
+			@SuppressWarnings("unused")
+			String ticket = stk.nextToken();
+			boolean resultado = Boolean.parseBoolean(stk.nextToken().trim().toLowerCase());
+			getPuertoSerial_ARDUINO().write(resultado ? ParqueSamanesConstantes.ARDUINO_OPEN_CHAR : 'x');
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+
+	}
+
 	private boolean initializeARDUINO(String idPuerto) {
 
 		setPuertoSerial_ARDUINO(new PuertoSerialOUT());
@@ -218,7 +233,6 @@ public class RepeaterDelegated {
 		boolean ok = false;
 		try {
 			getPuertoSerial_ARDUINO().initialize(idPuerto, getRequestingAppName());
-			getPuertoSerial_ARDUINO().getSerialPort().notifyOnDataAvailable(true);
 
 			String mensaje = idPuerto + " inicializado ok.";
 			SystemLogManager.info(mensaje);

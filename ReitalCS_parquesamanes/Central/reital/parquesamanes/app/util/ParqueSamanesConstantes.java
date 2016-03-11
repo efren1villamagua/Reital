@@ -14,6 +14,8 @@ public class ParqueSamanesConstantes {
 	public static final String ARCHIVO_CONFIGURACION = Constantes.CONFIG_DIR + File.separator
 			+ "reital_parquesamanes.properties";
 
+	public static final char ARDUINO_OPEN_CHAR = 'a';
+
 	public static class Aplicacion {
 		public static boolean TICKET_BAR_CODE_WITH_BAR_ID = true;
 		public static int TICKET_BAR_CODE_LENGTH = 13;

@@ -86,15 +86,25 @@ public abstract class PuertoSerial {
 			}
 
 		}
-		try {
-			// activate the OUTPUT_BUFFER_EMPTY notifier
-			getSerialPort().notifyOnOutputEmpty(true);
-			getSerialPort().notifyOnDataAvailable(true);
-		} catch (Exception e) {
-			mensaje = "ERROR setting event notification : " + e.getMessage();
-			SystemLogManager.info(mensaje);
-			resultado.appendMensaje(mensaje + System.lineSeparator());
-			throw new PuertoSerialException(mensaje);
+
+		if (getTipo() != null) {
+			switch (getTipo()) {
+			case IN:
+			case IN_OUT:
+				try {
+					// activate the OUTPUT_BUFFER_EMPTY notifier
+					getSerialPort().notifyOnOutputEmpty(true);
+					getSerialPort().notifyOnDataAvailable(true);
+				} catch (Exception e) {
+					mensaje = "ERROR setting event notification : " + e.getMessage();
+					SystemLogManager.info(mensaje);
+					resultado.appendMensaje(mensaje + System.lineSeparator());
+					throw new PuertoSerialException(mensaje);
+				}
+				break;
+			default:
+				break;
+			}
 		}
 
 		resultado.setStatus(Status.EXITO);
