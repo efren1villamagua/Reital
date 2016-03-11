@@ -108,11 +108,15 @@ public class RepeaterDelegated {
 
 							if (getPuertoSerial_SERVER() != null) {
 								String texto = new String(readBuffer).trim();
-								SystemLogManager.info("Puerto \"" + getPuertoSerial_BARRERA().getSerialPort().getName()
-										+ "\" - lectura desde la barrera: " + texto);
-								getPuertoSerial_SERVER().write(texto);
-								SystemLogManager.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
-										+ "\" - envio a matriz: " + texto);
+								if (texto.trim().length() > 0) {
+									SystemLogManager
+											.info("Puerto \"" + getPuertoSerial_BARRERA().getSerialPort().getName()
+													+ "\" - lectura desde la barrera: " + texto);
+									getPuertoSerial_SERVER().write(texto);
+									SystemLogManager
+											.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
+													+ "\" - envio a matriz: " + texto);
+								}
 							}
 
 						} catch (IOException exc1) {
@@ -183,7 +187,7 @@ public class RepeaterDelegated {
 												.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
 														+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
 										System.out.println(respuestaDesdeMatriz);
-										evaluarYEscribirRespuestaArduino(respuestaDesdeMatriz);
+										evaluarYEscribirRespuestaArduino2(respuestaDesdeMatriz.charAt(0));
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
@@ -212,14 +216,25 @@ public class RepeaterDelegated {
 		return ok;
 	}
 
-	private void evaluarYEscribirRespuestaArduino(String respuestaDesdeMatriz) {
+	@SuppressWarnings("unused")
+	private void evaluarYEscribirRespuestaArduino1(String respuestaDesdeMatriz) {
 
 		try {
 			StringTokenizer stk = new StringTokenizer(respuestaDesdeMatriz, "|");
-			@SuppressWarnings("unused")
+			// @SuppressWarnings("unused")
 			String ticket = stk.nextToken();
 			boolean resultado = Boolean.parseBoolean(stk.nextToken().trim().toLowerCase());
 			getPuertoSerial_ARDUINO().write(resultado ? ParqueSamanesConstantes.ARDUINO_OPEN_CHAR : 'x');
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+
+	}
+
+	private void evaluarYEscribirRespuestaArduino2(char c) {
+
+		try {
+			getPuertoSerial_ARDUINO().write(c);
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}

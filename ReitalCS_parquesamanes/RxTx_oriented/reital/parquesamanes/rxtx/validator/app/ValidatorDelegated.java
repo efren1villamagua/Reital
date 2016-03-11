@@ -116,10 +116,17 @@ public class ValidatorDelegated {
 									try {
 										String ticket = new String(readBufferTemp).trim();
 										boolean resultado = validarTicket(ticket);
-										getPuertoSerialINOUT().write(ticket + "|" + resultado);
+										// getPuertoSerialINOUT().write(ticket +
+										// "|" + resultado);
 										String mensaje = "Ticket validation: (" + ticket + "|" + resultado + ")";
 										SystemLogManager.info(mensaje);
 										System.out.println(mensaje);
+										// debido a ciertos problemas de los
+										// puertos, solamente escribimos al
+										// puerto cuando haya sido validado el
+										// ticket
+										getPuertoSerialINOUT()
+												.write(resultado ? ParqueSamanesConstantes.ARDUINO_OPEN_CHAR : 'x');
 									} catch (IOException exc) {
 										exc.printStackTrace();
 									}
