@@ -176,12 +176,16 @@ public class RepeaterDelegated {
 							final byte[] readBufferTemp = readBuffer;
 							new Thread(new Runnable() {
 								public void run() {
-									String respuestaDesdeMatriz = new String(readBufferTemp).trim();
-									SystemLogManager
-											.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
-													+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
-									System.out.println(respuestaDesdeMatriz);
-									getBarManager().manage(respuestaDesdeMatriz);
+									try {
+										String respuestaDesdeMatriz = new String(readBufferTemp).trim();
+										SystemLogManager
+												.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
+														+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
+										System.out.println(respuestaDesdeMatriz);
+										getPuertoSerial_ARDUINO().write(respuestaDesdeMatriz);
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
 								}
 							}).start();
 						} catch (IOException exc1) {
@@ -207,6 +211,36 @@ public class RepeaterDelegated {
 		return ok;
 	}
 
+	private boolean initializeARDUINO(String idPuerto) {
+
+		setPuertoSerial_ARDUINO(new PuertoSerialOUT());
+
+		boolean ok = false;
+		try {
+			getPuertoSerial_ARDUINO().initialize(idPuerto, getRequestingAppName());
+			getPuertoSerial_ARDUINO().getSerialPort().notifyOnDataAvailable(true);
+
+			String mensaje = idPuerto + " inicializado ok.";
+			SystemLogManager.info(mensaje);
+			System.out.println(mensaje);
+
+			ok = true;
+
+		} catch (PuertoSerialException exc) {
+			SystemLogManager.error("ERROR AL INICIALIZAR EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		} catch (PortInUseException exc) {
+			SystemLogManager.error("ERROR: EL PUERTO " + idPuerto + " ESTA OCUPADO [" + exc.getMessage() + "]", exc);
+		} catch (UnsupportedCommOperationException exc) {
+			SystemLogManager.error(
+					"ERROR: OPERACION NO SOPORTADA POR EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		} catch (IOException exc) {
+			SystemLogManager.error("ERROR DE ESCRITURA EN EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		} catch (Exception exc) {
+			SystemLogManager.error("ERROR GENERAL EN EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
+		}
+		return ok;
+	}
+
 	public void finalize() {
 		try {
 			getPuertoSerial_BARRERA().close();
@@ -215,6 +249,11 @@ public class RepeaterDelegated {
 		}
 		try {
 			getPuertoSerial_SERVER().close();
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
+		try {
+			getPuertoSerial_ARDUINO().close();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}

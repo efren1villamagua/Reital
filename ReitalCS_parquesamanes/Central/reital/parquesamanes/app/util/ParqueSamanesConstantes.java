@@ -11,13 +11,8 @@ public class ParqueSamanesConstantes {
 
 	public static final String SISTEMA_VERSION = "20160310_1639";
 
-	public static final String ARCHIVO_CONFIGURACION = Constantes.CONFIG_DIR + File.separator + "reital_parquesamanes.properties";
-
-	public static class System {
-		public static String BARRA_1_COMMAND = null;
-		public static String BARRA_2_COMMAND = null;
-		public static String BARRA_3_COMMAND = null;
-	}
+	public static final String ARCHIVO_CONFIGURACION = Constantes.CONFIG_DIR + File.separator
+			+ "reital_parquesamanes.properties";
 
 	public static class Aplicacion {
 		public static boolean TICKET_BAR_CODE_WITH_BAR_ID = true;
@@ -82,22 +77,6 @@ public class ParqueSamanesConstantes {
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
-			// System
-			try {
-				ParqueSamanesConstantes.System.BARRA_1_COMMAND = propiedades.getProperty("System.BARRA_1_COMMAND").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
-				ParqueSamanesConstantes.System.BARRA_2_COMMAND = propiedades.getProperty("System.BARRA_2_COMMAND").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
-			try {
-				ParqueSamanesConstantes.System.BARRA_3_COMMAND = propiedades.getProperty("System.BARRA_3_COMMAND").trim();
-			} catch (Exception exc) {
-				exc.getMessage();
-			}
 			// LegalInfo
 			try {
 				ParqueSamanesConstantes.LegalInfo.SRI_NOMBRE = propiedades.getProperty("LegalInfo.SRI_NOMBRE").trim();
@@ -110,7 +89,8 @@ public class ParqueSamanesConstantes {
 				exc.getMessage();
 			}
 			try {
-				ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL = propiedades.getProperty("LegalInfo.NOMBRE_COMERCIAL").trim();
+				ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL = propiedades
+						.getProperty("LegalInfo.NOMBRE_COMERCIAL").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
@@ -136,7 +116,8 @@ public class ParqueSamanesConstantes {
 				exc.getMessage();
 			}
 			try {
-				ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH = propiedades.getProperty("DataSource.REMOTE_FILE_PATH").trim();
+				ParqueSamanesConstantes.DataSource.REMOTE_FILE_PATH = propiedades
+						.getProperty("DataSource.REMOTE_FILE_PATH").trim();
 			} catch (Exception exc) {
 				exc.getMessage();
 			}
