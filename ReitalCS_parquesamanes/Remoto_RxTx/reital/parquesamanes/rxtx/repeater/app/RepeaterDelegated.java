@@ -12,50 +12,50 @@ import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.rxtx.app.PuertoSerialException;
 import reital.parquesamanes.rxtx.app.PuertoSerialIN;
 import reital.parquesamanes.rxtx.app.PuertoSerialINOUT;
+import reital.parquesamanes.rxtx.app.PuertoSerialOUT;
 
 public class RepeaterDelegated {
 
-	private PuertoSerialIN puertoSerialIN = null;
-	private PuertoSerialINOUT puertoSerialINOUT = null;
+	private PuertoSerialIN puertoSerial_BARRERA = null;
+	private PuertoSerialINOUT puertoSerial_SERVER = null;
+	private PuertoSerialOUT puertoSerial_ARDUINO = null;
 	private String requestingAppName;
-	private String idPuerto_IN;
-	private String idPuerto_INOUT;
-	private BarreraManager barManager;
+	private String idPuerto_BARRERA;
+	private String idPuerto_SERVER;
+	private String idPuerto_ARDUINO;
 
-	public RepeaterDelegated(String requestingAppName, String idPuerto_IN, String idPuerto_INOUT,
-			String osCommandToOpenBar) {
+	public RepeaterDelegated(String requestingAppName, String idPuerto_BARRERA, String idPuerto_SERVER,
+			String idPuerto_ARDUINO) {
 		super();
 		setRequestingAppName(requestingAppName);
-		setIdPuerto_IN(idPuerto_IN);
-		setIdPuerto_INOUT(idPuerto_INOUT);
-		setBarManager(new BarreraManager(osCommandToOpenBar));
+		setIdPuerto_BARRERA(idPuerto_BARRERA);
+		setIdPuerto_SERVER(idPuerto_SERVER);
+		setIdPuerto_ARDUINO(idPuerto_ARDUINO);
 		initialize();
 	}
 
 	private void initialize() {
 
-		// boolean ok1 = false;
-		// if (getIdPuerto_IN() == null) {
-		// ok1 = true;
-		// } else {
-		// ok1 = initializeIN_fromMatriz(getIdPuerto_IN());
-		// }
-		// boolean ok2 = true;
-
 		boolean ok1 = false;
-		if (getIdPuerto_IN() == null) {
+		if (getIdPuerto_BARRERA() == null) {
 			ok1 = true;
 		} else {
-			ok1 = initializeIN(getIdPuerto_IN());
+			ok1 = initializeBARRERA(getIdPuerto_BARRERA());
 		}
 		boolean ok2 = false;
-		if (getIdPuerto_INOUT() == null) {
+		if (getIdPuerto_SERVER() == null) {
 			ok2 = true;
 		} else {
-			ok2 = initializeINOUT(getIdPuerto_INOUT());
+			ok2 = initializeSERVER(getIdPuerto_SERVER());
+		}
+		boolean ok3 = false;
+		if (getIdPuerto_ARDUINO() == null) {
+			ok3 = true;
+		} else {
+			ok3 = initializeARDUINO(getIdPuerto_ARDUINO());
 		}
 
-		if (ok1 && ok2) {
+		if (ok1 && ok2 && ok3) {
 			String mensaje = RepeaterApp.class.getName() + " " + ParqueSamanesConstantes.SISTEMA_VERSION
 					+ " trabajando...";
 			SystemLogManager.info(mensaje);
@@ -69,22 +69,20 @@ public class RepeaterDelegated {
 
 	}
 
-	private boolean initializeIN(String idPuerto) {
+	private boolean initializeBARRERA(String idPuerto) {
 
-		// LECTURA DEL PUERTO QUE ESTA CONECTADO A LA BARRERA
-
-		setPuertoSerialIN(new PuertoSerialIN());
+		setPuertoSerial_BARRERA(new PuertoSerialIN());
 
 		boolean ok = false;
 		try {
-			getPuertoSerialIN().initialize(idPuerto, getRequestingAppName());
-			getPuertoSerialIN().getSerialPort().notifyOnDataAvailable(true);
+			getPuertoSerial_BARRERA().initialize(idPuerto, getRequestingAppName());
+			getPuertoSerial_BARRERA().getSerialPort().notifyOnDataAvailable(true);
 
 			String mensaje = idPuerto + " inicializado ok.";
 			SystemLogManager.info(mensaje);
 			System.out.println(mensaje);
 
-			getPuertoSerialIN().getSerialPort().addEventListener(new SerialPortEventListener() {
+			getPuertoSerial_BARRERA().getSerialPort().addEventListener(new SerialPortEventListener() {
 				public void serialEvent(SerialPortEvent event) {
 					switch (event.getEventType()) {
 					case SerialPortEvent.BI:
@@ -101,18 +99,18 @@ public class RepeaterDelegated {
 						byte[] readBuffer = new byte[1024];
 						try {
 
-							InputStream is = getPuertoSerialIN().getInputStream();
+							InputStream is = getPuertoSerial_BARRERA().getInputStream();
 							while (is.available() > 0) {
 								@SuppressWarnings("unused")
 								int numBytes = is.read(readBuffer);
 							}
 
-							if (getPuertoSerialINOUT() != null) {
+							if (getPuertoSerial_SERVER() != null) {
 								String texto = new String(readBuffer).trim();
-								SystemLogManager.info("Puerto \"" + getPuertoSerialIN().getSerialPort().getName()
+								SystemLogManager.info("Puerto \"" + getPuertoSerial_BARRERA().getSerialPort().getName()
 										+ "\" - lectura desde la barrera: " + texto);
-								getPuertoSerialINOUT().write(texto);
-								SystemLogManager.info("Puerto \"" + getPuertoSerialINOUT().getSerialPort().getName()
+								getPuertoSerial_SERVER().write(texto);
+								SystemLogManager.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
 										+ "\" - envio a matriz: " + texto);
 							}
 
@@ -139,19 +137,20 @@ public class RepeaterDelegated {
 		return ok;
 	}
 
-	private boolean initializeINOUT(String idPuerto) {
-		setPuertoSerialINOUT(new PuertoSerialINOUT());
+	private boolean initializeSERVER(String idPuerto) {
+
+		setPuertoSerial_SERVER(new PuertoSerialINOUT());
 
 		boolean ok = false;
 		try {
-			getPuertoSerialINOUT().initialize(idPuerto, getRequestingAppName());
-			getPuertoSerialINOUT().getSerialPort().notifyOnDataAvailable(true);
+			getPuertoSerial_SERVER().initialize(idPuerto, getRequestingAppName());
+			getPuertoSerial_SERVER().getSerialPort().notifyOnDataAvailable(true);
 
 			String mensaje = idPuerto + " inicializado ok.";
 			SystemLogManager.info(mensaje);
 			System.out.println(mensaje);
 
-			getPuertoSerialINOUT().getSerialPort().addEventListener(new SerialPortEventListener() {
+			getPuertoSerial_SERVER().getSerialPort().addEventListener(new SerialPortEventListener() {
 				public void serialEvent(SerialPortEvent event) {
 					switch (event.getEventType()) {
 					case SerialPortEvent.BI:
@@ -167,7 +166,7 @@ public class RepeaterDelegated {
 					case SerialPortEvent.DATA_AVAILABLE:
 						byte[] readBuffer = new byte[1024];
 						try {
-							InputStream is = getPuertoSerialINOUT().getInputStream();
+							InputStream is = getPuertoSerial_SERVER().getInputStream();
 							int numBytes = 0;
 							while (is.available() > 0) {
 								numBytes = is.read(readBuffer);
@@ -178,8 +177,9 @@ public class RepeaterDelegated {
 							new Thread(new Runnable() {
 								public void run() {
 									String respuestaDesdeMatriz = new String(readBufferTemp).trim();
-									SystemLogManager.info("Puerto \"" + getPuertoSerialINOUT().getSerialPort().getName()
-											+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
+									SystemLogManager
+											.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
+													+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
 									System.out.println(respuestaDesdeMatriz);
 									getBarManager().manage(respuestaDesdeMatriz);
 								}
@@ -207,84 +207,25 @@ public class RepeaterDelegated {
 		return ok;
 	}
 
-	private boolean initializeIN_fromMatriz(String idPuerto) {
-
-		// LECTURA DEL PUERTO QUE ESTA CONECTADO A LA BARRERA
-
-		setPuertoSerialIN(new PuertoSerialIN());
-
-		boolean ok = false;
-		try {
-			getPuertoSerialIN().initialize(idPuerto, getRequestingAppName());
-			getPuertoSerialIN().getSerialPort().notifyOnDataAvailable(true);
-
-			String mensaje = idPuerto + " inicializado ok.";
-			SystemLogManager.info(mensaje);
-			System.out.println(mensaje);
-
-			while (true) {
-				try {
-					byte[] readBuffer = new byte[1024];
-					try {
-						InputStream is = getPuertoSerialIN().getInputStream();
-						int numBytes = 0;
-						while (is.available() > 0) {
-							numBytes = is.read(readBuffer);
-						}
-						@SuppressWarnings("unused")
-						final int numBytesTemp = numBytes;
-						final byte[] readBufferTemp = readBuffer;
-						new Thread(new Runnable() {
-							public void run() {
-								String respuestaDesdeMatriz = new String(readBufferTemp).trim();
-								SystemLogManager.info("Puerto \"" + getPuertoSerialIN().getSerialPort().getName()
-										+ "\" - respuesta desde matriz: " + respuestaDesdeMatriz);
-								System.out.println(respuestaDesdeMatriz);
-								// getBarManager().manage(respuestaDesdeMatriz);
-							}
-						}).start();
-					} catch (IOException exc1) {
-						exc1.printStackTrace();
-					}
-				} catch (Exception exc) {
-					exc.getMessage();
-				}
-			}
-			// ok = true;
-		} catch (PuertoSerialException exc) {
-			SystemLogManager.error("ERROR AL INICIALIZAR EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
-		} catch (PortInUseException exc) {
-			SystemLogManager.error("ERROR: EL PUERTO " + idPuerto + " ESTA OCUPADO [" + exc.getMessage() + "]", exc);
-		} catch (UnsupportedCommOperationException exc) {
-			SystemLogManager.error(
-					"ERROR: OPERACION NO SOPORTADA POR EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
-		} catch (IOException exc) {
-			SystemLogManager.error("ERROR DE ESCRITURA EN EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
-		} catch (Exception exc) {
-			SystemLogManager.error("ERROR GENERAL EN EL PUERTO " + idPuerto + " [" + exc.getMessage() + "]", exc);
-		}
-		return ok;
-	}
-
 	public void finalize() {
 		try {
-			getPuertoSerialIN().close();
+			getPuertoSerial_BARRERA().close();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
 		try {
-			getPuertoSerialINOUT().close();
+			getPuertoSerial_SERVER().close();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
 	}
 
-	public PuertoSerialIN getPuertoSerialIN() {
-		return puertoSerialIN;
+	public PuertoSerialIN getPuertoSerial_BARRERA() {
+		return puertoSerial_BARRERA;
 	}
 
-	public void setPuertoSerialIN(PuertoSerialIN puertoSerialIN) {
-		this.puertoSerialIN = puertoSerialIN;
+	public void setPuertoSerial_BARRERA(PuertoSerialIN puertoSerial_BARRERA) {
+		this.puertoSerial_BARRERA = puertoSerial_BARRERA;
 	}
 
 	public String getRequestingAppName() {
@@ -295,36 +236,44 @@ public class RepeaterDelegated {
 		this.requestingAppName = requestingAppName;
 	}
 
-	public String getIdPuerto_IN() {
-		return idPuerto_IN;
+	public String getIdPuerto_BARRERA() {
+		return idPuerto_BARRERA;
 	}
 
-	public void setIdPuerto_IN(String idPuerto_IN) {
-		this.idPuerto_IN = idPuerto_IN;
+	public void setIdPuerto_BARRERA(String idPuerto_BARRERA) {
+		this.idPuerto_BARRERA = idPuerto_BARRERA;
 	}
 
-	public PuertoSerialINOUT getPuertoSerialINOUT() {
-		return puertoSerialINOUT;
+	public PuertoSerialINOUT getPuertoSerial_SERVER() {
+		return puertoSerial_SERVER;
 	}
 
-	public void setPuertoSerialINOUT(PuertoSerialINOUT puertoSerialINOUT) {
-		this.puertoSerialINOUT = puertoSerialINOUT;
+	public void setPuertoSerial_SERVER(PuertoSerialINOUT puertoSerial_SERVER) {
+		this.puertoSerial_SERVER = puertoSerial_SERVER;
 	}
 
-	public String getIdPuerto_INOUT() {
-		return idPuerto_INOUT;
+	public String getIdPuerto_SERVER() {
+		return idPuerto_SERVER;
 	}
 
-	public void setIdPuerto_INOUT(String idPuerto_INOUT) {
-		this.idPuerto_INOUT = idPuerto_INOUT;
+	public void setIdPuerto_SERVER(String idPuerto_SERVER) {
+		this.idPuerto_SERVER = idPuerto_SERVER;
 	}
 
-	public BarreraManager getBarManager() {
-		return barManager;
+	public PuertoSerialOUT getPuertoSerial_ARDUINO() {
+		return puertoSerial_ARDUINO;
 	}
 
-	public void setBarManager(BarreraManager barManager) {
-		this.barManager = barManager;
+	public void setPuertoSerial_ARDUINO(PuertoSerialOUT puertoSerial_ARDUINO) {
+		this.puertoSerial_ARDUINO = puertoSerial_ARDUINO;
+	}
+
+	public String getIdPuerto_ARDUINO() {
+		return idPuerto_ARDUINO;
+	}
+
+	public void setIdPuerto_ARDUINO(String idPuerto_ARDUINO) {
+		this.idPuerto_ARDUINO = idPuerto_ARDUINO;
 	}
 
 }

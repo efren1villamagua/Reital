@@ -36,44 +36,46 @@ public class RepeaterApp {
 		}
 		Locale.setDefault(new Locale("es", "ES"));
 
-		String idPuerto_IN = null;
+		String idPuerto_BARRERA = null;
 		try {
-			idPuerto_IN = args[0].trim();
+			idPuerto_BARRERA = args[0].trim();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
-		String idPuerto_INOUT = null;
+		String idPuerto_SERVER = null;
 		try {
-			idPuerto_INOUT = args[1].trim();
+			idPuerto_SERVER = args[1].trim();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
-		String osCommandToOpenBar = null;
+		String idPuerto_ARDUINO = null;
 		try {
-			osCommandToOpenBar = args[2].trim();
+			idPuerto_ARDUINO = args[2].trim();
 		} catch (Exception exc) {
 			SystemLogManager.error(exc);
 		}
 
-		new RepeaterApp(idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar);
+		new RepeaterApp(idPuerto_BARRERA, idPuerto_SERVER, idPuerto_ARDUINO);
 	}
 
 	private RepeaterDelegated delegated;
 
-	public RepeaterApp(String idPuerto_IN, String idPuerto_INOUT, String osCommandToOpenBar) {
+	public RepeaterApp(String idPuerto_BARRERA, String idPuerto_SERVER, String idPuerto_ARDUINO) {
 		super();
-		initialize(idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar);
+		initialize(idPuerto_BARRERA, idPuerto_SERVER, idPuerto_ARDUINO);
 	}
 
-	private void initialize(String idPuerto_IN, String idPuerto_INOUT, String osCommandToOpenBar) {
-		String mensaje = "Inicializacion de \"" + getClass().getSimpleName() + "\": idPuerto_IN=\"" + idPuerto_IN
-				+ "\" idPuerto_INOUT=\"" + idPuerto_INOUT + "\" osCommandToOpenBar=\"" + osCommandToOpenBar + "\"";
+	private void initialize(String idPuerto_BARRERA, String idPuerto_SERVER, String idPuerto_ARDUINO) {
+		String mensaje = "Inicializacion de \"" + getClass().getSimpleName() + "\": idPuerto_BARRERA=\""
+				+ idPuerto_BARRERA + "\" idPuerto_SERVER=\"" + idPuerto_SERVER + "\" idPuerto_ARDUINO=\""
+				+ idPuerto_ARDUINO + "\"";
 		SystemLogManager.info(mensaje);
 		System.out.println(mensaje);
-		idPuerto_IN = idPuerto_IN.equalsIgnoreCase("null") ? null : idPuerto_IN;
-		idPuerto_INOUT = idPuerto_INOUT.equalsIgnoreCase("null") ? null : idPuerto_INOUT;
+		idPuerto_BARRERA = idPuerto_BARRERA.equalsIgnoreCase("null") ? null : idPuerto_BARRERA;
+		idPuerto_SERVER = idPuerto_SERVER.equalsIgnoreCase("null") ? null : idPuerto_SERVER;
+		idPuerto_ARDUINO = idPuerto_ARDUINO.equalsIgnoreCase("null") ? null : idPuerto_ARDUINO;
 		setDelegated(
-				new RepeaterDelegated(getClass().getSimpleName(), idPuerto_IN, idPuerto_INOUT, osCommandToOpenBar));
+				new RepeaterDelegated(getClass().getSimpleName(), idPuerto_BARRERA, idPuerto_SERVER, idPuerto_ARDUINO));
 	}
 
 	public RepeaterDelegated getDelegated() {
