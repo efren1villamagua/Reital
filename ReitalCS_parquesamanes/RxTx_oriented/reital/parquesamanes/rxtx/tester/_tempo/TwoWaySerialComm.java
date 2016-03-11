@@ -1,4 +1,4 @@
-package reital.parquesamanes.rxtx.tester.app;
+package reital.parquesamanes.rxtx.tester._tempo;
 
 import java.io.IOException;
 import java.io.InputStream;

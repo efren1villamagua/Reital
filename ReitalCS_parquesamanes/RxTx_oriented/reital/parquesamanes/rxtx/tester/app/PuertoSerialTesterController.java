@@ -14,13 +14,13 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
-import reital.parquesamanes.rxtx.app.PuertoSerial;
-import reital.parquesamanes.rxtx.app.PuertoSerial.Tipo;
 import reital.parquesamanes.rxtx.app.PuertoSerialException;
+import reital.parquesamanes.rxtx.app.PuertoSerialINOUT;
+import reital.parquesamanes.rxtx.app.Resultado;
 
 public class PuertoSerialTesterController {
 
-	private PuertoSerial puertoSerial = null;
+	private PuertoSerialINOUT puertoSerialINOUT = null;
 	private JTextField cajaTextoIdPuerto;
 	private JButton botonEnvio;
 	private JTextField cajaTextoEnvio;
@@ -60,8 +60,7 @@ public class PuertoSerialTesterController {
 					}
 				});
 			}
-			setPuertoSerial(new PuertoSerial(Tipo.IN_OUT) {
-			});
+			setPuertoSerialINOUT(new PuertoSerialINOUT());
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
@@ -70,9 +69,12 @@ public class PuertoSerialTesterController {
 	private boolean initializeSerialPort(String idPuerto, JTextArea logArea, JFrame mainView) {
 		boolean ok = false;
 		try {
-			getPuertoSerial().initialize(idPuerto, getRequestingAppName(), logArea);
-			getPuertoSerial().getSerialPort().notifyOnDataAvailable(true);
-			getPuertoSerial().getSerialPort().addEventListener(new SerialPortEventListener() {
+			Resultado res = getPuertoSerialINOUT().initialize(idPuerto, getRequestingAppName());
+			if (res != null && res.getMensajeString() != null && res.getMensajeString().trim().length() > 0) {
+				logArea.append(res.getMensajeString());
+			}
+			getPuertoSerialINOUT().getSerialPort().notifyOnDataAvailable(true);
+			getPuertoSerialINOUT().getSerialPort().addEventListener(new SerialPortEventListener() {
 				public void serialEvent(SerialPortEvent event) {
 					switch (event.getEventType()) {
 					case SerialPortEvent.BI:
@@ -88,7 +90,7 @@ public class PuertoSerialTesterController {
 					case SerialPortEvent.DATA_AVAILABLE:
 						byte[] readBuffer = new byte[1024];
 						try {
-							InputStream is = getPuertoSerial().getInputStream();
+							InputStream is = getPuertoSerialINOUT().getInputStream();
 							int numBytes = 0;
 							while (is.available() > 0) {
 								numBytes = is.read(readBuffer);
@@ -155,7 +157,7 @@ public class PuertoSerialTesterController {
 				new Thread(new Runnable() {
 					public void run() {
 						try {
-							getPuertoSerial().writeToPort(textoTemp);
+							getPuertoSerialINOUT().write(textoTemp);
 							logEnvio(textoTemp);
 							getCajaTextoEnvio().setText("");
 						} catch (Exception exc) {
@@ -174,14 +176,6 @@ public class PuertoSerialTesterController {
 		if (getTextAreaLogEnvio() != null) {
 			getTextAreaLogEnvio().append("[" + System.currentTimeMillis() + "]" + texto + System.lineSeparator());
 		}
-	}
-
-	public PuertoSerial getPuertoSerial() {
-		return puertoSerial;
-	}
-
-	private void setPuertoSerial(PuertoSerial puertoSerial) {
-		this.puertoSerial = puertoSerial;
 	}
 
 	public JButton getBotonEnvio() {
@@ -242,7 +236,7 @@ public class PuertoSerialTesterController {
 
 	public void finalize() {
 		try {
-			getPuertoSerial().close();
+			getPuertoSerialINOUT().close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -254,5 +248,13 @@ public class PuertoSerialTesterController {
 
 	private void setMainView(JFrame mainView) {
 		this.mainView = mainView;
+	}
+
+	public PuertoSerialINOUT getPuertoSerialINOUT() {
+		return puertoSerialINOUT;
+	}
+
+	public void setPuertoSerialINOUT(PuertoSerialINOUT puertoSerialINOUT) {
+		this.puertoSerialINOUT = puertoSerialINOUT;
 	}
 }

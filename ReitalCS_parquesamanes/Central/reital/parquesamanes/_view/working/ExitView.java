@@ -70,6 +70,16 @@ public class ExitView extends JFrame {
 	private ActividadRepository actividadRepository;
 
 	public static void main(String args[]) {
+		String baseDir = null;
+		try {
+			if (args.length >= 1) {
+				baseDir = args[0];
+			}
+			System.setProperty("efren.util.config.basedir", ((baseDir == null || baseDir.trim().length() == 0)
+					? System.getProperty("user.dir") : baseDir.trim()));
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
 		try {
 			LoggerManager
 					.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_" + ExitView.class.getSimpleName());

@@ -39,4 +39,8 @@ public class Resultado {
 		getMensaje().append(texto);
 	}
 
+	public String getMensajeString() {
+		return getMensaje().toString();
+	}
+
 }

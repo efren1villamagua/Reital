@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,7 +23,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import efren.util.LoggerManager;
+import efren.util.SystemLogManager;
 import efren.util.lookandfeel.LookAndFeelManager;
+import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class PuertoSerialTesterView2 extends JFrame {
 
@@ -127,7 +131,28 @@ public class PuertoSerialTesterView2 extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		String baseDir = null;
+		try {
+			if (args.length >= 1) {
+				baseDir = args[0];
+			}
+			System.setProperty("efren.util.config.basedir", ((baseDir == null || baseDir.trim().length() == 0)
+					? System.getProperty("user.dir") : baseDir.trim()));
+		} catch (Exception exc) {
+			SystemLogManager.error(exc);
+		}
+
 		LookAndFeelManager.simpleSetLookAndFeel();
+
+		try {
+			LoggerManager.init(ParqueSamanesConstantes.LegalInfo.NOMBRE_COMERCIAL + "_"
+					+ PuertoSerialTesterView2.class.getSimpleName());
+			SystemLogManager.setLogger(LoggerManager.logger);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		Locale.setDefault(new Locale("es", "ES"));
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				PuertoSerialTesterView2 thisClass = new PuertoSerialTesterView2();
