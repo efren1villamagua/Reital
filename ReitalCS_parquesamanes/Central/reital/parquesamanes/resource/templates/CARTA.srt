@@ -26,8 +26,6 @@
 <RunningTotals>
 </RunningTotals>
 <Header Type="256">
-<ImageElement ID="Image1" Alignment="65" Indent="0.0" Hindent="0" Spacing="0" Block="false" Continuation="false" Visible="true" KeepWithNext="false" Font="Serif-PLAIN-10"
- Background="-1" Foreground="-4144960" PathType="1" Embedded="true" Layout="0" Wrapping="3" Rotation="0" Size="0.8194444x0.29166666" Margin="1,1,1,1">
 <![CDATA[D:\Java_work\Reital_workspace\ReitalCS_fybeca2\reital_fybeca2\reital\fybeca2\resource\images\fybeca.gif]]>
 <Image Width="150" Height="42">
 <![CDATA[GhVOi4fVL:&D$:>5d44mEsWWM^eV*J?L%duHWqFN_*S\aX^:*!`6Jh)hF;Gn=$Q5-+j=;6P4Nb:J`1WF
