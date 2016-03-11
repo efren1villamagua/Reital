@@ -160,7 +160,7 @@ public class ValidatorDelegated {
 			System.out.println(msg);
 			salidaOk = false;
 		} else {
-
+			String msg;
 			switch (actividadEntity.getEstadoPago()) {
 			case PAGADO:
 			case PASE_LIBRE:
@@ -171,10 +171,22 @@ public class ValidatorDelegated {
 				CalendarManager cmSalida = new CalendarManager(actividadEntity.getSalida());
 				String salidaStr = cmSalida.getInternationalDateExpression() + "  hora: "
 						+ cmSalida.getTimeExpression2();
-				String msg = actividadEntity.getCodigo() + " - " + entradaStr + " - " + salidaStr + " - SALIDA OK.";
-				SystemLogManager.info(msg);
-				System.out.println(msg);
-				salidaOk = true;
+				// validacion de que el timestamp de la salida del ticket no sea
+				// mas de 1 hora
+				CalendarManager cmNow = new CalendarManager();
+				long oneHourMillis = 3600 * 1000;
+				if (cmNow.getCalendar().getTimeInMillis() - cmSalida.getCalendar().getTimeInMillis() >= oneHourMillis) {
+					msg = actividadEntity.getCodigo() + " - " + entradaStr + " - " + salidaStr
+							+ " - SALIDA NEGADA - HA PASADO MAS DE 1 HORA DESDE EL PAGO.";
+					SystemLogManager.info(msg);
+					System.out.println(msg);
+					salidaOk = false;
+				} else {
+					msg = actividadEntity.getCodigo() + " - " + entradaStr + " - " + salidaStr + " - SALIDA OK.";
+					SystemLogManager.info(msg);
+					System.out.println(msg);
+					salidaOk = true;
+				}
 				break;
 			default:
 				msg = "ERROR_2: pendiente de pago o pase libre";

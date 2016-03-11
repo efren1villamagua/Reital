@@ -20,7 +20,7 @@ public class CalendarManager {
 
 	private String timeSeparator = ":";
 
-	public CalendarManager() throws Throwable {
+	public CalendarManager() {
 		this(_server_currentCalendar());
 	}
 
@@ -58,7 +58,7 @@ public class CalendarManager {
 	 * @return
 	 * @throws Throwable
 	 */
-	private static GregorianCalendar _server_currentCalendar() throws Throwable {
+	private static GregorianCalendar _server_currentCalendar() {
 		return _SQL_server_currentCalendar();
 	}
 
@@ -67,7 +67,7 @@ public class CalendarManager {
 	 * @return
 	 * @throws Throwable
 	 */
-	private static GregorianCalendar _SQL_server_currentCalendar() throws Throwable {
+	private static GregorianCalendar _SQL_server_currentCalendar() {
 		return new GregorianCalendar();
 		/*
 		 * try { Connection con = Conn.conectar(); Statement st =
@@ -141,7 +141,8 @@ public class CalendarManager {
 				int anioOtherCalendar = otherCalendar.get(Calendar.YEAR);
 				int mesOtherCalendar = otherCalendar.get(Calendar.MONTH);
 				int diaOtherCalendar = otherCalendar.get(Calendar.DAY_OF_MONTH);
-				if ((anioEsteCalendar == anioOtherCalendar) && (mesEsteCalendar == mesOtherCalendar) && (diaEsteCalendar == diaOtherCalendar)) {
+				if ((anioEsteCalendar == anioOtherCalendar) && (mesEsteCalendar == mesOtherCalendar)
+						&& (diaEsteCalendar == diaOtherCalendar)) {
 					return true;
 				}
 				return false;
@@ -490,13 +491,17 @@ public class CalendarManager {
 	public long diffInDays(Calendar otherCalendar) {
 
 		/* retorna la diferencia en días con otherCalendar */
-		return (new Double((this.getCalendar().getTime().getTime() - otherCalendar.getTime().getTime()) / (3600 * 1000 * 24))).longValue();
+		return (new Double(
+				(this.getCalendar().getTime().getTime() - otherCalendar.getTime().getTime()) / (3600 * 1000 * 24)))
+						.longValue();
 	}
 
 	public long diffInHours(Calendar otherCalendar) {
 
 		/* retorna la diferencia en horas con otherCalendar */
-		return (new Double((this.getCalendar().getTime().getTime() - otherCalendar.getTime().getTime()) / (3600 * 1000))).longValue();
+		return (new Double(
+				(this.getCalendar().getTime().getTime() - otherCalendar.getTime().getTime()) / (3600 * 1000)))
+						.longValue();
 	}
 
 	public long diffInSeconds(Calendar otherCalendar) {
@@ -522,13 +527,13 @@ public class CalendarManager {
 	}
 
 	public String getAbsoluteInternationalDateExpression() {
-		return getInternationalDateExpression() + "::" + getCalendar().get(Calendar.HOUR_OF_DAY) + "h:" + getCalendar().get(Calendar.MINUTE) + "m:"
-				+ getCalendar().get(Calendar.SECOND) + "s";
+		return getInternationalDateExpression() + "::" + getCalendar().get(Calendar.HOUR_OF_DAY) + "h:"
+				+ getCalendar().get(Calendar.MINUTE) + "m:" + getCalendar().get(Calendar.SECOND) + "s";
 	}
 
 	public String getAbsoluteRegionalDateExpression() {
-		return getDMYDateExpression() + "::" + getCalendar().get(Calendar.HOUR_OF_DAY) + "h:" + getCalendar().get(Calendar.MINUTE) + "m:"
-				+ getCalendar().get(Calendar.SECOND) + "s";
+		return getDMYDateExpression() + "::" + getCalendar().get(Calendar.HOUR_OF_DAY) + "h:"
+				+ getCalendar().get(Calendar.MINUTE) + "m:" + getCalendar().get(Calendar.SECOND) + "s";
 	}
 
 	/**
@@ -658,7 +663,8 @@ public class CalendarManager {
 			mesStr = "___";
 		}
 
-		return diaStr + this.dateSeparator + mesStr + this.dateSeparator + new Integer((getCalendar().get(Calendar.YEAR))).toString().trim();
+		return diaStr + this.dateSeparator + mesStr + this.dateSeparator
+				+ new Integer((getCalendar().get(Calendar.YEAR))).toString().trim();
 	}
 
 	/**
@@ -684,8 +690,8 @@ public class CalendarManager {
 		int mes = (getCalendar().get(Calendar.MONTH)) + 1;
 		if (mes < 10)
 			mesStr = "0";
-		return new Integer((getCalendar().get(Calendar.YEAR))).toString().trim() + this.dateSeparator + mesStr + new Integer(mes).toString().trim()
-				+ this.dateSeparator + diaStr + new Integer(dia).toString().trim();
+		return new Integer((getCalendar().get(Calendar.YEAR))).toString().trim() + this.dateSeparator + mesStr
+				+ new Integer(mes).toString().trim() + this.dateSeparator + diaStr + new Integer(dia).toString().trim();
 	}
 
 	/**
@@ -861,7 +867,8 @@ public class CalendarManager {
 		if (mes < 10)
 			mesStr = "0";
 
-		return diaStr + new Integer(dia).toString().trim() + this.dateSeparator + mesStr + new Integer(mes).toString().trim() + this.dateSeparator
+		return diaStr + new Integer(dia).toString().trim() + this.dateSeparator + mesStr
+				+ new Integer(mes).toString().trim() + this.dateSeparator
 				+ new Integer((getCalendar().get(Calendar.YEAR))).toString().trim();
 
 	}
@@ -947,7 +954,8 @@ public class CalendarManager {
 	 */
 	public String getTimeExpression() {
 
-		return this.getCalendar().get(Calendar.HOUR_OF_DAY) + getTimeSeparator() + this.getCalendar().get(Calendar.MINUTE) + getTimeSeparator()
+		return this.getCalendar().get(Calendar.HOUR_OF_DAY) + getTimeSeparator()
+				+ this.getCalendar().get(Calendar.MINUTE) + getTimeSeparator()
 				+ this.getCalendar().get(Calendar.SECOND);
 	}
 
@@ -1002,8 +1010,9 @@ public class CalendarManager {
 	 *
 	 */
 	public String toString() {
-		return "" + getCalendar().get(Calendar.YEAR) + "-" + (getCalendar().get(Calendar.MONTH) + 1) + "-" + getCalendar().get(Calendar.DAY_OF_MONTH) + "_"
-				+ getCalendar().get(Calendar.HOUR_OF_DAY) + ":" + getCalendar().get(Calendar.MINUTE) + ":" + getCalendar().get(Calendar.SECOND);
+		return "" + getCalendar().get(Calendar.YEAR) + "-" + (getCalendar().get(Calendar.MONTH) + 1) + "-"
+				+ getCalendar().get(Calendar.DAY_OF_MONTH) + "_" + getCalendar().get(Calendar.HOUR_OF_DAY) + ":"
+				+ getCalendar().get(Calendar.MINUTE) + ":" + getCalendar().get(Calendar.SECOND);
 	}
 
 	/**
