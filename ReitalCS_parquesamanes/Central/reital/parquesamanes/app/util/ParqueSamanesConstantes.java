@@ -9,7 +9,7 @@ import efren.util.config.SystemProperties;
 
 public class ParqueSamanesConstantes {
 
-	public static final String SISTEMA_VERSION = "20160311_1349";
+	public static final String SISTEMA_VERSION = "20160502_0358";
 
 	public static final String ARCHIVO_CONFIGURACION = Constantes.CONFIG_DIR + File.separator
 			+ "reital_parquesamanes.properties";
@@ -19,6 +19,7 @@ public class ParqueSamanesConstantes {
 	public static class Aplicacion {
 		public static boolean TICKET_BAR_CODE_WITH_BAR_ID = true;
 		public static int TICKET_BAR_CODE_LENGTH = 13;
+		public static int SEGUNDOS_OFFSET = -1;
 	}
 
 	public static class LegalInfo {
@@ -71,11 +72,27 @@ public class ParqueSamanesConstantes {
 			try {
 				String temp = propiedades.getProperty("Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID").trim();
 				ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID = temp.equalsIgnoreCase("SI");
-				if (ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID) {
-					ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH = 13;
-				} else {
-					ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH = 12;
-				}
+				// if
+				// (ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID)
+				// {
+				// ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH =
+				// 13;
+				// } else {
+				// ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH =
+				// 12;
+				// }
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			try {
+				ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_LENGTH = Integer
+						.parseInt(propiedades.getProperty("Aplicacion.TICKET_BAR_CODE_LENGTH").trim());
+			} catch (Exception exc) {
+				exc.getMessage();
+			}
+			try {
+				ParqueSamanesConstantes.Aplicacion.SEGUNDOS_OFFSET = Integer
+						.parseInt(propiedades.getProperty("Aplicacion.SEGUNDOS_OFFSET").trim());
 			} catch (Exception exc) {
 				exc.getMessage();
 			}

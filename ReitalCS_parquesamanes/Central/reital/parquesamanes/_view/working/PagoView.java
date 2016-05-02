@@ -37,7 +37,7 @@ import javax.swing.SwingConstants;
 import efren.util.CalendarManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
-import reital.parquesamanes._view.working.PagoHelper.CadenaPair;
+import reital.parquesamanes._view.working.PagoHelper.CadenaCaracteresDto;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class PagoView extends JFrame {
@@ -412,9 +412,9 @@ public class PagoView extends JFrame {
 				for (int i = 0; i < getJPasswordFieldData().getPassword().length; i++) {
 					secuenciaCaracteres = secuenciaCaracteres + String.valueOf(getJPasswordFieldData().getPassword()[i]);
 				}
-				CadenaPair cp = getPagoHelper().parseSecuenciaCaracteres(secuenciaCaracteres);
-				getLabelBarIdValue().setText(cp.getBarraId());
-				GregorianCalendar gcEntrada = cp.getCalendar();
+				CadenaCaracteresDto ccdto = getPagoHelper().parseSecuenciaCaracteres(secuenciaCaracteres);
+				getLabelBarIdValue().setText(ccdto.getBarraId());
+				GregorianCalendar gcEntrada = ccdto.getCalendar();
 				CalendarManager cmEntrada = new CalendarManager(gcEntrada);
 				getLabelEntradaValue().setText(cmEntrada.getInternationalDateExpression() + "  hora: " + cmEntrada.getTimeExpression2());
 				jLabelStatus.setText("TICKET LEIDO");

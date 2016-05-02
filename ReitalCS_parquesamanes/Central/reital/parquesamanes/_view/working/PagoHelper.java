@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.print.PrinterJob;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -76,12 +77,13 @@ public class PagoHelper {
 	/**
 	 *
 	 */
-	public ActividadForPagoEntity createActividadEntity(String secuenciaCaracteres, PagoHelper.TIPO_CLIENTE tipoCliente, String observaciones) {
+	public ActividadForPagoEntity createActividadEntity(String secuenciaCaracteres, PagoHelper.TIPO_CLIENTE tipoCliente,
+			String observaciones) {
 		try {
-			CadenaPair cp = parseSecuenciaCaracteres(secuenciaCaracteres);
+			CadenaCaracteresDto ccdto = parseSecuenciaCaracteres(secuenciaCaracteres);
 
-			int barraId = StringTools.parseFromStringToInteger(cp.getBarraId());
-			GregorianCalendar gcEntrada = cp.getCalendar();
+			int barraId = StringTools.parseFromStringToInteger(ccdto.getBarraId());
+			GregorianCalendar gcEntrada = ccdto.getCalendar();
 			/**
 			 * PARA LA SALIDA SE TOMA EL TIMESTAMP DE LA BASE DE DATOS
 			 */
@@ -110,97 +112,114 @@ public class PagoHelper {
 	/**
 	 *
 	 */
-	public CadenaPair parseSecuenciaCaracteres(String secuenciaCaracteres) {
+	public CadenaCaracteresDto parseSecuenciaCaracteres(String secuenciaCaracteres) {
 		String barraId = null;
-		int dia = 0;
-		int mes = 0;
-		int anio = 0;
-		int hora = 0;
-		int minuto = 0;
-		int segundo = 0;
-		if (ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID) {
-			// longitud 13
-			barraId = secuenciaCaracteres.substring(0, 1).trim();
-			dia = new Integer(secuenciaCaracteres.substring(1, 3).trim()).intValue();
-			mes = new Integer(secuenciaCaracteres.substring(3, 5).trim()).intValue() - 1;
-			anio = new Integer(secuenciaCaracteres.substring(5, 7).trim()).intValue() + 2000;
-			hora = new Integer(secuenciaCaracteres.substring(7, 9).trim()).intValue();
-			minuto = new Integer(secuenciaCaracteres.substring(9, 11).trim()).intValue();
-			segundo = new Integer(secuenciaCaracteres.substring(11).trim()).intValue();
-		} else {
-			// longitud 12
-			barraId = "0";
-			dia = new Integer(secuenciaCaracteres.substring(0, 2).trim()).intValue();
-			mes = new Integer(secuenciaCaracteres.substring(2, 4).trim()).intValue() - 1;
-			anio = new Integer(secuenciaCaracteres.substring(4, 6).trim()).intValue() + 2000;
-			hora = new Integer(secuenciaCaracteres.substring(6, 8).trim()).intValue();
-			minuto = new Integer(secuenciaCaracteres.substring(8, 10).trim()).intValue();
-			segundo = new Integer(secuenciaCaracteres.substring(10).trim()).intValue();
+		// int dia = 0;
+		// int mes = 0;
+		// int anio = 0;
+		// int hora = 0;
+		// int minuto = 0;
+		// int segundo = 0;
+		// if (ParqueSamanesConstantes.Aplicacion.TICKET_BAR_CODE_WITH_BAR_ID) {
+		// // longitud 13
+		// barraId = secuenciaCaracteres.substring(0, 1).trim();
+		// dia = new Integer(secuenciaCaracteres.substring(1,
+		// 3).trim()).intValue();
+		// mes = new Integer(secuenciaCaracteres.substring(3,
+		// 5).trim()).intValue() - 1;
+		// anio = new Integer(secuenciaCaracteres.substring(5,
+		// 7).trim()).intValue() + 2000;
+		// hora = new Integer(secuenciaCaracteres.substring(7,
+		// 9).trim()).intValue();
+		// minuto = new Integer(secuenciaCaracteres.substring(9,
+		// 11).trim()).intValue();
+		// segundo = new
+		// Integer(secuenciaCaracteres.substring(11).trim()).intValue();
+		// } else {
+		// // longitud 12
+		// barraId = "0";
+		// dia = new Integer(secuenciaCaracteres.substring(0,
+		// 2).trim()).intValue();
+		// mes = new Integer(secuenciaCaracteres.substring(2,
+		// 4).trim()).intValue() - 1;
+		// anio = new Integer(secuenciaCaracteres.substring(4,
+		// 6).trim()).intValue() + 2000;
+		// hora = new Integer(secuenciaCaracteres.substring(6,
+		// 8).trim()).intValue();
+		// minuto = new Integer(secuenciaCaracteres.substring(8,
+		// 10).trim()).intValue();
+		// segundo = new
+		// Integer(secuenciaCaracteres.substring(10).trim()).intValue();
+		// }
+		/** 1-enero-2000 */
+		GregorianCalendar gcBase = new GregorianCalendar();
+		gcBase.set(Calendar.YEAR, 2000);
+		gcBase.set(Calendar.MONTH, 0);
+		gcBase.set(Calendar.DAY_OF_MONTH, 1);
+		gcBase.set(Calendar.HOUR_OF_DAY, 0);
+		gcBase.set(Calendar.MINUTE, 0);
+		gcBase.set(Calendar.SECOND, 0);
+		gcBase.set(Calendar.MILLISECOND, 0);
+		long millisBase = gcBase.getTimeInMillis();
+		/**
+		 * AASSSSSSSSSSC AA = dirección de la columna SSSSSSSSSS = segundos
+		 * desde la hora 0:00 del 01/01/2000 C = checkdigit EAN13
+		 */
+		barraId = secuenciaCaracteres.substring(0, 2).trim();
+		long segundosCount = Long.parseLong(secuenciaCaracteres.substring(2, 12).trim());
+		long millisCount = segundosCount * 1000;
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTimeInMillis(millisCount + millisBase);
+		int horasOffset = 0;
+		try {
+			horasOffset = ParqueSamanesConstantes.Aplicacion.SEGUNDOS_OFFSET;
+		} catch (Exception exc) {
+			exc.printStackTrace();
 		}
-		GregorianCalendar gc = new GregorianCalendar(anio, mes, dia, hora, minuto, segundo);
+		if (horasOffset != 0) {
+			gc.add(Calendar.HOUR_OF_DAY, horasOffset);
+		}
+		/**
+		 * 
+		 */
+		CadenaCaracteresDto ccdto = new CadenaCaracteresDto();
+		ccdto.setBarraId(barraId);
+		ccdto.setCalendar(gc);
 
-		CadenaPair cp = new CadenaPair();
-		cp.setBarraId(barraId);
-		cp.setCalendar(gc);
-
-		return cp;
+		return ccdto;
 	}
 
-	public class CadenaPair {
-		private String barraId = null;
+	public class CadenaCaracteresDto {
 
+		private String barraId = null;
 		private GregorianCalendar calendar = null;
 
-		/**
-		 * @return the barraId
-		 */
 		public String getBarraId() {
 			return barraId;
 		}
 
-		/**
-		 * @param barraId
-		 *            the barraId to set
-		 */
 		public void setBarraId(String barraId) {
 			this.barraId = barraId;
 		}
 
-		/**
-		 * @return the calendar
-		 */
 		public GregorianCalendar getCalendar() {
 			return calendar;
 		}
 
-		/**
-		 * @param calendar
-		 *            the calendar to set
-		 */
 		public void setCalendar(GregorianCalendar calendar) {
 			this.calendar = calendar;
 		}
 
 	}
 
-	/**
-	 * @return the actividad
-	 */
 	public ActividadForPagoEntity getActividad() {
 		return actividad;
 	}
 
-	/**
-	 * @param actividad
-	 *            the actividad to set
-	 */
 	public void setActividad(ActividadForPagoEntity actividad) {
 		this.actividad = actividad;
 	}
 
-	/**
-	 *
-	 */
 	public void validarYCalcularPago(PagoHelper.TIPO_CLIENTE tipoCliente, String observaciones) {
 		String error1 = "Error en la lectura del ticket. Vuelva a intentar la operación !";
 		try {
@@ -209,7 +228,8 @@ public class PagoHelper {
 
 			String secuenciaCaracteres = "";
 			for (int i = 0; i < getPagoView().getJPasswordFieldData().getPassword().length; i++) {
-				secuenciaCaracteres = secuenciaCaracteres + String.valueOf(getPagoView().getJPasswordFieldData().getPassword()[i]);
+				secuenciaCaracteres = secuenciaCaracteres
+						+ String.valueOf(getPagoView().getJPasswordFieldData().getPassword()[i]);
 			}
 
 			if (secuenciaCaracteres.trim().length() == 0) {
@@ -235,7 +255,8 @@ public class PagoHelper {
 			/**
 			 *
 			 */
-			ActividadForPagoEntity registroActividad = createActividadEntity(secuenciaCaracteres, tipoCliente, observaciones);
+			ActividadForPagoEntity registroActividad = createActividadEntity(secuenciaCaracteres, tipoCliente,
+					observaciones);
 
 			long milisEntrada = registroActividad.getEntrada().getTimeInMillis();
 			long milisSalida = registroActividad.getSalida().getTimeInMillis();
@@ -276,16 +297,19 @@ public class PagoHelper {
 			CalendarManager cmSalidaAbsoluta = new CalendarManager(registroActividad.getSalida());
 			CalendarManager cmEntradaAbsoluta = new CalendarManager(registroActividad.getEntrada());
 
-			getPagoView().getLabelEntradaValue()
-					.setText(cmEntradaAbsoluta.getInternationalDateExpression() + "  hora: " + cmEntradaAbsoluta.getTimeExpression2());
-			getPagoView().getLabelSalidaValue().setText(cmSalidaAbsoluta.getInternationalDateExpression() + "  hora: " + cmSalidaAbsoluta.getTimeExpression2());
+			getPagoView().getLabelEntradaValue().setText(cmEntradaAbsoluta.getInternationalDateExpression() + "  hora: "
+					+ cmEntradaAbsoluta.getTimeExpression2());
+			getPagoView().getLabelSalidaValue().setText(cmSalidaAbsoluta.getInternationalDateExpression() + "  hora: "
+					+ cmSalidaAbsoluta.getTimeExpression2());
 
 			switch (tipoCliente) {
 			case CLIENTE:
-				getPagoView().getJLabelStatus().setText("CLIENTE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
+				getPagoView().getJLabelStatus()
+						.setText("CLIENTE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
 				break;
 			case PASE_LIBRE:
-				getPagoView().getJLabelStatus().setText("PASE LIBRE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
+				getPagoView().getJLabelStatus().setText(
+						"PASE LIBRE: $ " + StringTools.parseFromNumberToQuantity(registroActividad.getValor()));
 				break;
 			default:
 				break;
@@ -295,7 +319,8 @@ public class PagoHelper {
 
 				registroActividad.setEstadoPago(EstadoPago.PASE_LIBRE);
 
-				boolean actividadPersistida = new Factory().getPagoControllerBean().registrarActividad(registroActividad);
+				boolean actividadPersistida = new Factory().getPagoControllerBean()
+						.registrarActividad(registroActividad);
 
 				getPagoView().reinicializarVisual();
 
@@ -309,7 +334,8 @@ public class PagoHelper {
 
 					registroActividad.setEstadoPago(EstadoPago.TIEMPO_GRACIA);
 
-					boolean actividadPersistida = new Factory().getPagoControllerBean().registrarActividad(registroActividad);
+					boolean actividadPersistida = new Factory().getPagoControllerBean()
+							.registrarActividad(registroActividad);
 
 					getPagoView().reinicializarVisual();
 
@@ -368,20 +394,24 @@ public class PagoHelper {
 			} else {
 				if (diaSalida > diaEntrada) {
 					// por ahora solo esta considerado un dia despues
-					CalendarManager cmSalidaIntermedia = new CalendarManager(new GregorianCalendar(cmEntradaAbsoluta.getYear(),
-							(cmEntradaAbsoluta.getMonth() - 1), cmEntradaAbsoluta.getDayOfMonth(), 23, 59, 59));
+					CalendarManager cmSalidaIntermedia = new CalendarManager(
+							new GregorianCalendar(cmEntradaAbsoluta.getYear(), (cmEntradaAbsoluta.getMonth() - 1),
+									cmEntradaAbsoluta.getDayOfMonth(), 23, 59, 59));
 					Dia dia = new Dia();
 					dia.setEntrada(cmEntradaAbsoluta);
 					dia.setSalida(cmSalidaIntermedia);
 					dias.addElement(dia);
 					// ...CALCULAMOS EL OFFSET DE MINUTOS A NO TOMARSE EN CUENTA
 					// EN EL PERIODO DEL SIGUIENTE DIA
-					int minutosSalidaIntermediaTemp = (cmSalidaIntermedia.getHoraDelDia() * 60) + cmSalidaIntermedia.getMinutos();
-					int minutosEntradaAbsolutosTemp = (cmEntradaAbsoluta.getHoraDelDia() * 60) + cmEntradaAbsoluta.getMinutos();
+					int minutosSalidaIntermediaTemp = (cmSalidaIntermedia.getHoraDelDia() * 60)
+							+ cmSalidaIntermedia.getMinutos();
+					int minutosEntradaAbsolutosTemp = (cmEntradaAbsoluta.getHoraDelDia() * 60)
+							+ cmEntradaAbsoluta.getMinutos();
 					int minutosOffset = (minutosSalidaIntermediaTemp - minutosEntradaAbsolutosTemp) % 60;
 					// ...
-					CalendarManager cmEntradaIntermedia = new CalendarManager(new GregorianCalendar(cmSalidaAbsoluta.getYear(),
-							(cmSalidaAbsoluta.getMonth() - 1), cmSalidaAbsoluta.getDayOfMonth(), 0, (minutosOffset + 1), 0));
+					CalendarManager cmEntradaIntermedia = new CalendarManager(
+							new GregorianCalendar(cmSalidaAbsoluta.getYear(), (cmSalidaAbsoluta.getMonth() - 1),
+									cmSalidaAbsoluta.getDayOfMonth(), 0, (minutosOffset + 1), 0));
 					dia = new Dia();
 					dia.setEntrada(cmEntradaIntermedia);
 					dia.setSalida(cmSalidaAbsoluta);
@@ -398,8 +428,10 @@ public class PagoHelper {
 
 				diaTemp = dias.elementAt(i);
 
-				int minutosSalidaAbsolutosTemp = (diaTemp.getSalida().getHoraDelDia() * 60) + diaTemp.getSalida().getMinutos();
-				int minutosEntradaAbsolutosTemp = (diaTemp.getEntrada().getHoraDelDia() * 60) + diaTemp.getEntrada().getMinutos();
+				int minutosSalidaAbsolutosTemp = (diaTemp.getSalida().getHoraDelDia() * 60)
+						+ diaTemp.getSalida().getMinutos();
+				int minutosEntradaAbsolutosTemp = (diaTemp.getEntrada().getHoraDelDia() * 60)
+						+ diaTemp.getEntrada().getMinutos();
 
 				/**
 				 * SE RECORRE EL TIEMPO Y POR CADA HORA SE CALCULA SU VALOR
@@ -438,7 +470,8 @@ public class PagoHelper {
 					Hashtable<Integer, BigDecimal> hv = null;
 
 					Vector<FranjaHoraria> franjasPorCobrar = new Vector<FranjaHoraria>();
-					FranjaHoraria franjaAnterior = new Factory().getPagoControllerBean().getFranjaHorariaFor(minutosTemp);
+					FranjaHoraria franjaAnterior = new Factory().getPagoControllerBean()
+							.getFranjaHorariaFor(minutosTemp);
 					if (franjaAnterior == null) {
 						throw new Exception("Error al recuperar información de las franjas horarias");
 					}
@@ -468,7 +501,8 @@ public class PagoHelper {
 									valorXHora = new BigDecimal(0.00).setScale(2, BigDecimal.ROUND_HALF_UP);
 								} else {
 									hv = FranjaHorariaABMDetailsView.getHorasValores(franjaAnterior.getHorasValores());
-									valorXHora = hv.get(horasCount) == null ? new BigDecimal(0).setScale(2, BigDecimal.ROUND_HALF_UP)
+									valorXHora = hv.get(horasCount) == null
+											? new BigDecimal(0).setScale(2, BigDecimal.ROUND_HALF_UP)
 											: hv.get(horasCount).setScale(2, BigDecimal.ROUND_HALF_UP);
 								}
 								franjasPorCobrar.addElement(franjaAnterior);
@@ -498,7 +532,8 @@ public class PagoHelper {
 							valorXHora = new BigDecimal(0.00).setScale(2, BigDecimal.ROUND_HALF_UP);
 						} else {
 							hv = FranjaHorariaABMDetailsView.getHorasValores(franjaAnterior.getHorasValores());
-							valorXHora = hv.get(horasCount) == null ? new BigDecimal(0).setScale(2, BigDecimal.ROUND_HALF_UP)
+							valorXHora = hv.get(horasCount) == null
+									? new BigDecimal(0).setScale(2, BigDecimal.ROUND_HALF_UP)
 									: hv.get(horasCount).setScale(2, BigDecimal.ROUND_HALF_UP);
 						}
 						franjasPorCobrar.addElement(franjaAnterior);
@@ -556,7 +591,8 @@ public class PagoHelper {
 				return;
 			}
 
-			InputStream plantilla = getClass().getResourceAsStream("/reital/parquesamanes/resource/templates/TIRA01.srt");
+			InputStream plantilla = getClass()
+					.getResourceAsStream("/reital/parquesamanes/resource/templates/TIRA01.srt");
 			Builder builder = Builder.getBuilder(Builder.TEMPLATE, plantilla);
 
 			StyleSheet report = null;
