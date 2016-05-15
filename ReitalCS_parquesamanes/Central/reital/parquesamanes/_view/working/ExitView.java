@@ -41,6 +41,7 @@ import efren.util.SystemLogManager;
 import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import reital.parquesamanes.app.ioc.Factory;
+import reital.parquesamanes.app.util.InfoHelper;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.entidades.ActividadForPagoEntity;
 import reital.parquesamanes.domain.repos.ActividadRepository;
@@ -70,6 +71,7 @@ public class ExitView extends JFrame {
 	private ActividadRepository actividadRepository;
 
 	public static void main(String args[]) {
+		InfoHelper.systemStarted(ExitView.class.getSimpleName());
 		String baseDir = null;
 		try {
 			if (args.length >= 1) {
@@ -87,6 +89,7 @@ public class ExitView extends JFrame {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
 		try {
 			try {

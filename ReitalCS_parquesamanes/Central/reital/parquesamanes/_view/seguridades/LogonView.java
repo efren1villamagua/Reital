@@ -35,6 +35,7 @@ import reital.parquesamanes._view.working.ControlPanelView;
 import reital.parquesamanes._view.working.PagoView;
 import reital.parquesamanes.app.controllers.LogonController;
 import reital.parquesamanes.app.ioc.Factory;
+import reital.parquesamanes.app.util.InfoHelper;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.domain.AutenticacionRespuesta;
 import reital.parquesamanes.infra.ParqueSamanesConn;
@@ -178,6 +179,7 @@ public class LogonView extends JFrame {
 	}
 
 	public static void main(String args[]) {
+		InfoHelper.systemStarted(LogonView.class.getSimpleName());
 
 		String baseDir = null;
 		try {
@@ -198,6 +200,7 @@ public class LogonView extends JFrame {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
 		try {
 			LogonView ventana = new LogonView();

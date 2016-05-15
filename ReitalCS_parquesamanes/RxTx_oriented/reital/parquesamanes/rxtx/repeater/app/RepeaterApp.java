@@ -4,11 +4,13 @@ import java.util.Locale;
 
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
+import reital.parquesamanes.app.util.InfoHelper;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class RepeaterApp {
 
 	public static void main(String[] args) {
+		InfoHelper.systemStarted(RepeaterApp.class.getSimpleName());
 
 		String baseDir = null;
 		try {
@@ -34,6 +36,7 @@ public class RepeaterApp {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
 
 		String idPuerto_BARRERA = null;

@@ -110,11 +110,11 @@ public class RepeaterDelegated {
 								String texto = new String(readBuffer).trim();
 								if (texto.trim().length() > 0) {
 									SystemLogManager
-											.info("Puerto \"" + getPuertoSerial_BARRERA().getSerialPort().getName()
+											.info("[PASO 1] Puerto \"" + getPuertoSerial_BARRERA().getSerialPort().getName()
 													+ "\" - lectura desde la barrera: " + texto);
 									getPuertoSerial_SERVER().write(texto);
 									SystemLogManager
-											.info("Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
+											.info("[PASO 2] Puerto \"" + getPuertoSerial_SERVER().getSerialPort().getName()
 													+ "\" - envio a matriz: " + texto);
 								}
 							}

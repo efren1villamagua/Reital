@@ -32,6 +32,7 @@ import efren.util.WindowManager2;
 import efren.util.gui.dialogs.InfoView;
 import efren.util.lookandfeel.LookAndFeelManager;
 import reital.parquesamanes._view.working.UsuarioABMView;
+import reital.parquesamanes.app.util.InfoHelper;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 import reital.parquesamanes.infra.DBConnectionModel;
 import reital.parquesamanes.infra.ParqueSamanesConn;
@@ -167,6 +168,7 @@ public class LogonToUsuariosView extends JFrame {
 	}
 
 	public static void main(String args[]) {
+		InfoHelper.systemStarted(LogonToUsuariosView.class.getSimpleName());
 
 		String baseDir = null;
 		try {
@@ -188,6 +190,7 @@ public class LogonToUsuariosView extends JFrame {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
 
 		SwingUtilities.invokeLater(new Runnable() {

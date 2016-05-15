@@ -26,6 +26,7 @@ import javax.swing.border.TitledBorder;
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
 import efren.util.lookandfeel.LookAndFeelManager;
+import reital.parquesamanes.app.util.InfoHelper;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class PuertoSerialTesterView2 extends JFrame {
@@ -131,6 +132,7 @@ public class PuertoSerialTesterView2 extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		InfoHelper.systemStarted(PuertoSerialTesterView2.class.getSimpleName());
 		String baseDir = null;
 		try {
 			if (args.length >= 1) {
@@ -151,6 +153,7 @@ public class PuertoSerialTesterView2 extends JFrame {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
 
 		SwingUtilities.invokeLater(new Runnable() {

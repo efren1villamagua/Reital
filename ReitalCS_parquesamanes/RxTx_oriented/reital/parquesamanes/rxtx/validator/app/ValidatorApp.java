@@ -5,11 +5,13 @@ import java.util.Locale;
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
 import reital.parquesamanes.app.util.H2ServerManager;
+import reital.parquesamanes.app.util.InfoHelper;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ValidatorApp {
 
 	public static void main(String[] args) {
+		InfoHelper.systemStarted(ValidatorApp.class.getSimpleName());
 
 		String baseDir = null;
 		try {
@@ -35,6 +37,7 @@ public class ValidatorApp {
 		} catch (Exception e) {
 			e.getMessage();
 		}
+		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
 
 		String idPuerto_INOUT = null;
