@@ -9,7 +9,7 @@ import efren.util.config.SystemProperties;
 
 public class ParqueSamanesConstantes {
 
-	public static final String SISTEMA_VERSION = "20160515_0222";
+	public static final String SISTEMA_VERSION = "20160727_1932_i586";
 
 	public static final String ARCHIVO_CONFIGURACION = Constantes.CONFIG_DIR + File.separator
 			+ "reital_parquesamanes.properties";
