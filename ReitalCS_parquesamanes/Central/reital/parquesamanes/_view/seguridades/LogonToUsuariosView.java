@@ -168,7 +168,7 @@ public class LogonToUsuariosView extends JFrame {
 	}
 
 	public static void main(String args[]) {
-		InfoHelper.systemStarted(LogonToUsuariosView.class.getSimpleName());
+		InfoHelper.systemStarted(LogonToUsuariosView.class.getSimpleName(), "");
 
 		String baseDir = null;
 		try {
@@ -326,9 +326,6 @@ public class LogonToUsuariosView extends JFrame {
 			try {
 				if (ParqueSamanesConn.getDBConnection() != null) {
 					ParqueSamanesConn.getDBConnection().close();
-				}
-				if (ParqueSamanesConn.getH2Server() != null) {
-					ParqueSamanesConn.getH2Server().stop();
 				}
 			} catch (Exception exc) {
 				SystemLogManager.error(exc);

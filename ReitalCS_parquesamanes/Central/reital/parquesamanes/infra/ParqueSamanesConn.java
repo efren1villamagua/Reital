@@ -17,11 +17,16 @@ public class ParqueSamanesConn {
 		return con;
 	}
 
-	public static Server getH2Server() {
-		return h2Server;
-	}
-
 	public static void setH2Server(Server h2Server) {
 		ParqueSamanesConn.h2Server = h2Server;
 	}
+
+	public static boolean isH2ServerNull() {
+		return ParqueSamanesConn.h2Server == null;
+	}
+
+	public static void stopH2Server() {
+		ParqueSamanesConn.h2Server.stop();
+	}
+
 }

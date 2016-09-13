@@ -132,7 +132,7 @@ public class PuertoSerialTesterView2 extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		InfoHelper.systemStarted(PuertoSerialTesterView2.class.getSimpleName());
+		InfoHelper.systemStarted(PuertoSerialTesterView2.class.getSimpleName(), "");
 		String baseDir = null;
 		try {
 			if (args.length >= 1) {

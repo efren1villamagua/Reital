@@ -10,7 +10,28 @@ import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 public class RepeaterApp {
 
 	public static void main(String[] args) {
-		InfoHelper.systemStarted(RepeaterApp.class.getSimpleName());
+
+		String idPuerto_BARRERA = null;
+		try {
+			idPuerto_BARRERA = args[0].trim();
+		} catch (Exception exc) {
+			// SystemLogManager.error(exc);
+		}
+		String idPuerto_SERVER = null;
+		try {
+			idPuerto_SERVER = args[1].trim();
+		} catch (Exception exc) {
+			// SystemLogManager.error(exc);
+		}
+		String idPuerto_ARDUINO = null;
+		try {
+			idPuerto_ARDUINO = args[2].trim();
+		} catch (Exception exc) {
+			// SystemLogManager.error(exc);
+		}
+
+		String postFix = idPuerto_BARRERA + "-" + idPuerto_SERVER + "-" + idPuerto_ARDUINO;
+		InfoHelper.systemStarted(RepeaterApp.class.getSimpleName(), postFix);
 
 		String baseDir = null;
 		try {
@@ -38,25 +59,6 @@ public class RepeaterApp {
 		}
 		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
-
-		String idPuerto_BARRERA = null;
-		try {
-			idPuerto_BARRERA = args[0].trim();
-		} catch (Exception exc) {
-			SystemLogManager.error(exc);
-		}
-		String idPuerto_SERVER = null;
-		try {
-			idPuerto_SERVER = args[1].trim();
-		} catch (Exception exc) {
-			SystemLogManager.error(exc);
-		}
-		String idPuerto_ARDUINO = null;
-		try {
-			idPuerto_ARDUINO = args[2].trim();
-		} catch (Exception exc) {
-			SystemLogManager.error(exc);
-		}
 
 		new RepeaterApp(idPuerto_BARRERA, idPuerto_SERVER, idPuerto_ARDUINO);
 	}

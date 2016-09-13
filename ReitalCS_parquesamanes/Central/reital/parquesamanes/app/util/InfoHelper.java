@@ -9,9 +9,10 @@ import efren.util.SystemLogManager;
 public class InfoHelper {
 
 	private static String VOLATILE_1 = null;
+	private static String VOLATILE_2 = null;
 
 	public static void logCharset() {
-		systemStarted(VOLATILE_1);
+		systemStarted(VOLATILE_1, VOLATILE_2);
 		SystemLogManager.info("Default Charset=" + Charset.defaultCharset());
 		SystemLogManager.info("Default Charset in Use=" + getDefaultCharSet());
 	}
@@ -22,9 +23,11 @@ public class InfoHelper {
 		return enc;
 	}
 
-	public static void systemStarted(String nombreSistema) {
+	public static void systemStarted(String nombreSistema, String postFix) {
 		SystemLogManager.info("Sistema \"" + nombreSistema + "\" iniciado");
 		VOLATILE_1 = nombreSistema;
+		VOLATILE_2 = postFix;
+		System.setProperty("reital.parquesamanes.nombreSistema", nombreSistema + "-" + postFix);
 	}
 
 }

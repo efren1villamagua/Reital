@@ -4,14 +4,22 @@ import java.util.Locale;
 
 import efren.util.LoggerManager;
 import efren.util.SystemLogManager;
-import reital.parquesamanes.app.util.H2ServerManager;
 import reital.parquesamanes.app.util.InfoHelper;
 import reital.parquesamanes.app.util.ParqueSamanesConstantes;
 
 public class ValidatorApp {
 
 	public static void main(String[] args) {
-		InfoHelper.systemStarted(ValidatorApp.class.getSimpleName());
+
+		String idPuerto_INOUT = null;
+		try {
+			idPuerto_INOUT = args[0].trim();
+		} catch (Exception exc) {
+			// SystemLogManager.error(exc);
+		}
+
+		String postFix = idPuerto_INOUT;
+		InfoHelper.systemStarted(ValidatorApp.class.getSimpleName(), postFix);
 
 		String baseDir = null;
 		try {
@@ -39,15 +47,6 @@ public class ValidatorApp {
 		}
 		InfoHelper.logCharset();
 		Locale.setDefault(new Locale("es", "ES"));
-
-		String idPuerto_INOUT = null;
-		try {
-			idPuerto_INOUT = args[0].trim();
-		} catch (Exception exc) {
-			SystemLogManager.error(exc);
-		}
-
-		H2ServerManager.h2ServerStart();
 
 		new ValidatorApp(idPuerto_INOUT);
 	}

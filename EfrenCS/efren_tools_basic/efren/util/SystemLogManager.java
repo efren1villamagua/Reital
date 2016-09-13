@@ -24,6 +24,7 @@ public class SystemLogManager {
 		if (unLogger != null) {
 			loggerTemp = unLogger;
 		}
+		outString = buildOutString(outString);
 		try {
 			if (t == null) {
 				loggerTemp.debug(outString);
@@ -56,6 +57,7 @@ public class SystemLogManager {
 		if (unLogger != null) {
 			loggerTemp = unLogger;
 		}
+		outString = buildOutString(outString);
 		try {
 			if (t == null) {
 				loggerTemp.info(outString);
@@ -88,6 +90,7 @@ public class SystemLogManager {
 		if (unLogger != null) {
 			loggerTemp = unLogger;
 		}
+		outString = buildOutString(outString);
 		try {
 			if (t == null) {
 				loggerTemp.warn(outString);
@@ -124,6 +127,7 @@ public class SystemLogManager {
 		if (unLogger != null) {
 			loggerTemp = unLogger;
 		}
+		outString = buildOutString(outString);
 		try {
 			if (t == null) {
 				loggerTemp.error(outString);
@@ -156,6 +160,7 @@ public class SystemLogManager {
 		if (unLogger != null) {
 			loggerTemp = unLogger;
 		}
+		outString = buildOutString(outString);
 		try {
 			if (t == null) {
 				loggerTemp.fatal(outString);
@@ -170,6 +175,11 @@ public class SystemLogManager {
 		} catch (Exception e) {
 			System.out.println(outString + " [" + e.getMessage() + "]");
 		}
+	}
+
+	private static String buildOutString(String outString) {
+		String nombreSistema = System.getProperty("reital.parquesamanes.nombreSistema");
+		return "[" + nombreSistema + "] " + outString;
 	}
 
 	/**

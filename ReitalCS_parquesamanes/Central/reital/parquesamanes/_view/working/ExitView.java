@@ -71,7 +71,7 @@ public class ExitView extends JFrame {
 	private ActividadRepository actividadRepository;
 
 	public static void main(String args[]) {
-		InfoHelper.systemStarted(ExitView.class.getSimpleName());
+		InfoHelper.systemStarted(ExitView.class.getSimpleName(), "");
 		String baseDir = null;
 		try {
 			if (args.length >= 1) {
